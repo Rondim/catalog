@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 
 const App = () => {
   return (
-    <div className=".container">
+    <div>
       <span>Super Catalog</span>
     </div>
   );
