@@ -1,11 +1,15 @@
 import React, { Component } from 'react';
+import Nav from '../containers/Nav';
 
-const App = () => {
-  return (
-    <div>
-      <span>Super Catalog</span>
-    </div>
-  );
+class App extends Component {
+  render() {
+    return (
+      <div>
+        <Nav />
+        {this.props.children}
+      </div>
+    );
+  } 
 }
 
 export default App;

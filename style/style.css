@@ -1,5 +1,33 @@
-span {
-  color: green;
-  line-height: 2em;
-  font-size: 2em;
+#root {
+  width: 960px;
+  margin: 0 auto;
+}
+.nav {
+  margin: 10px 0 20px 0;
+}
+
+.nav a:hover {
+  cursor: pointer;
+}
+
+.catalog_sidebar {
+  border: 1px solid black;
+}
+
+.item_list {
+  border: 1px solid black;
+}
+.container {
+  min-width: 960px;
+}
+
+.product_item {
+}
+
+.product_list {
+  list-style-type: none;
+  padding: 0;
+}
+.product_list_container {
+  padding: 0;
 }

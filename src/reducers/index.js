@@ -1,9 +1,7 @@
 import { combineReducers } from 'redux';
 import { reducer as formReducer } from 'redux-form';
+import menuReducer from './menuReducer';
 
-export default (state={}, action) => {
-  return state;
-}
-// export default combineReducers({
-//
-// });
+export default combineReducers({
+  menuSelected: menuReducer
+});

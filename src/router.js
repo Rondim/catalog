@@ -2,11 +2,15 @@ import React from 'react';
 import { Router, Route, IndexRoute, hashHistory } from 'react-router';
 
 import App from './components/App';
+import Catalog from './containers/Catalog';
+import Manager from './containers/Manager';
 
 const Routes = () => {
   return (
     <Router history={hashHistory}>
       <Route path="/" component={App}>
+        <IndexRoute component={Catalog} />
+        <Route path="/manager" component={Manager} />
       </Route>
     </Router>
   );
