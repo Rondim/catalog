@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 
 const App = () => {
   return (
-    <div>
-      <span>ReactReduxStarterKit</span>
+    <div className=".container">
+      <span>Super Catalog</span>
     </div>
   );
 }

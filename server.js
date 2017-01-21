@@ -4,6 +4,7 @@ const path = require('path');
 
 const app = express();
 
+console.log(process.env.NODE_ENV);
 
 if (process.env.NODE_ENV !== 'production') {
   const webpackMiddleware = require('webpack-dev-middleware');
