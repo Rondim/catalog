@@ -8,7 +8,7 @@ class Nav extends Component {
     return (
       <nav>
         <ul className="nav nav-pills">
-          <NavLink to="/">Каталог</NavLink>
+          <NavLink to="/">Каталогу</NavLink>
           <NavLink to="/manager">Менеджер</NavLink>
         </ul>
       </nav>
