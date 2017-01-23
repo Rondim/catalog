@@ -1,33 +1,41 @@
 #root {
-  width: 960px;
+  min-width: 960px;
+  width: 1200px;
   margin: 0 auto;
 }
+/*NAV STYLES*/
 .nav {
-  margin: 10px 0 20px 0;
+  margin: 10px 10px 20px 10px;
 }
-
 .nav a:hover {
   cursor: pointer;
 }
-
-.catalog_sidebar {
-  border: 1px solid black;
-}
-
-.item_list {
-  border: 1px solid black;
-}
+/*PRODUCT LIST AND SIDEBAR CONTAINER*/
 .container {
   min-width: 960px;
+  margin: 0 10px 0 10px;
 }
-
-.product_item {
+/*PRODUCT LIST STYLES*/
+.product_list_container {
+  border: 1px solid black;
 }
-
 .product_list {
   list-style-type: none;
   padding: 0;
 }
-.product_list_container {
-  padding: 0;
+.product_item {
+}
+/*SIDEBAR STYLES*/
+.catalog_sidebar, .manager_sidebar {
+  border: 1px solid black;
+}
+.department_manufacturer {
+  width: 80%;
+}
+.metals {
+  margin-top: 10px;
+  width: 80%;
+}
+.metals button {
+  width: 50%;
 }

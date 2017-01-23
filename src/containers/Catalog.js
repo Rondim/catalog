@@ -8,7 +8,7 @@ class Catalog extends Component {
     return (
       <div className="container">
         <div className="row">
-          <div className="col-xs-9 product_list_container">
+          <div className="col-xs-9">
             <ProductList />
           </div>
           <div className="col-xs-3">
