@@ -1,20 +1,23 @@
 import React, { Component } from 'react';
+import SidebarButton from './SidebarButton';
+import DualSidebarButton from './DualSidebarButton'
 
 class ManagerSideBar extends Component {
   render() {
     return (
       <div className="manager_sidebar text-center">
+        <SidebarButton btnName="Отдел" />
+        <SidebarButton btnName="Производитель" />
 
-            <div className="btn-group-vertical btn-group-lg department_manufacturer" role="group">
-              <button type="button" className="btn btn-default">Отдел</button>
-              <button type="button" className="btn btn-default">Производитель</button>
-            </div>
-            <div className="btn-group metals" role="group">
-              <div className="text-center">
-                <button type="button" className="btn btn-default">Au</button>
-                <button type="button" className="btn btn-default">Ag</button>
-              </div>
-            </div>
+        <DualSidebarButton leftName="Au" rightName="Ag" />
+
+        <SidebarButton btnName="Серьги" />
+        <SidebarButton btnName="Пластины" />
+        <SidebarButton btnName="Размеры" />
+
+        <SidebarButton btnName="Фианиты" />
+        <SidebarButton btnName="Агат" />
+
 
       </div>
     );
