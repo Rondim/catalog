@@ -7,10 +7,10 @@ class NavBar extends Component {
   render() {
     return (
       <Nav bsStyle="pills">
-          <IndexLinkContainer to="/" activeClassName="active">
+          <IndexLinkContainer to="/" activeHref="active">
             <NavItem>Каталог</NavItem>
           </IndexLinkContainer>
-          <LinkContainer to="/manager" activeClassName="active">
+          <LinkContainer to="/manager" activeHref="active">
             <NavItem>Менеджер</NavItem>
           </LinkContainer>
       </Nav>
