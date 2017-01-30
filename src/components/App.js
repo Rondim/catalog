@@ -1,15 +1,15 @@
 import React, { Component } from 'react';
-import Nav from '../containers/Nav';
+import NavBar from '../containers/NavBar';
 
 class App extends Component {
   render() {
     return (
       <div>
-        <Nav />
+        <NavBar />
         {this.props.children}
       </div>
     );
-  } 
+  }
 }
 
 export default App;
