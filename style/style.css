@@ -29,13 +29,13 @@
 .catalog_sidebar, .manager_sidebar {
   border: 1px solid black;
 }
+.department_manufacturer {
+  width: 80%;
+}
 .metals {
   margin-top: 10px;
   width: 80%;
 }
 .metals button {
   width: 50%;
-}
-.btn-sidebar {
-  width: 80%;
 }
