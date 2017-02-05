@@ -20,8 +20,8 @@ class ManagerSideBar extends Component {
     this.handleUploadFile = this.handleUploadFile.bind(this);
   }
   componentWillMount(){
-      const login = "";//сюда вставить почту из firebase api
-      const pass = "";//сюда вставить пароль из firebase api
+      const login = "lueurxax@gmail";//сюда вставить почту из firebase api
+      const pass = "Ropejump2010";//сюда вставить пароль из firebase api
       Auth(login,pass);
       this.setState({itemsRef: Storage()});
   }

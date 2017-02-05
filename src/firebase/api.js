@@ -15,11 +15,10 @@ export const Auth = (email,password) => {
         // Handle Errors here.
         const errorCode = error.code;
         const errorMessage = error.message;
-        console.log(errorCode, errorMessage);
+        alert(errorCode, errorMessage);
         // ...
     });
 };
 export const Storage = () => {
     return firebase.storage().ref().child('items');
-
 };

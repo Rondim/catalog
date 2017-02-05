@@ -10,10 +10,10 @@ class Manager extends Component {
       <div className="container">
         <Grid>
           <Row className="show-grid">
-            <Col lg={9} md={9}>
+            <Col lg={9} md={9} xs={9}>
               <ProductList />
             </Col>
-            <Col lg={3} md={3}>
+            <Col lg={3} md={3} xs={3}>
               <ManagerSideBar />
             </Col>
           </Row>

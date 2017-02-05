@@ -1,3 +1,6 @@
+:root {
+    --border-default: 1px solid black;
+}
 #root {
   margin: 0 auto;
   min-width: 960px;
@@ -14,11 +17,12 @@
 /*PRODUCT LIST AND SIDEBAR CONTAINER*/
 .container {
   margin: 0 10px 0 10px;
+    width: 1200px!important;
 }
 
 /*PRODUCT LIST STYLES*/
 .product_list_container {
-  border: 1px solid black;
+  border: var(--border-default);
 }
 .product_list {
   list-style-type: none;
@@ -27,7 +31,7 @@
 
 /*SIDEBAR STYLES*/
 .catalog_sidebar, .manager_sidebar {
-  border: 1px solid black;
+  border: var(--border-default);
   height: 500px
 }
 .department_manufacturer {
@@ -63,15 +67,6 @@
     opacity: 0;
     cursor: pointer
 }
-@media (max-width: 768px) {}
-@media (min-width: 768px) and (max-width: 992px) {}
-@media (min-width: 992px) and (max-width: 1200px) {
-  .negativeMargin {
-    margin-left: -119px;
-  }
-}
-@media (min-width: 1200px) {
-  .negativeMargin {
-  margin-left: -270px;
-  }
+.negativeMargin {
+    margin-left: -278px;
 }
