@@ -85,7 +85,7 @@ export const base={
             name: "Кольцо1",
             subType: "double",
             tags: "лучшее,красивое,нужное",
-            url: "https://dl.dropboxusercontent.com/s/cyttpcxnhi0ogdx/c030713_1%2C59.jpg"
+            url: "https://firebasestorage.googleapis.com/v0/b/catalog-26b41.appspot.com/o/items%2Fc030713_1.jpeg?alt=media&token=f0b2017b-863f-4bfc-8236-dd0ebd1f0f14"
         },
         item2: {
             itemType: "Rings",
@@ -93,7 +93,7 @@ export const base={
             name: "Кольцо2",
             subType: "wedding",
             tags: "красивое",
-            url: "https://dl.dropboxusercontent.com/s/5f5gkue3lj8gyiu/c031430_1.18.jpg"
+            url: "https://firebasestorage.googleapis.com/v0/b/catalog-26b41.appspot.com/o/items%2Fc031430_1.18.jpg?alt=media&token=d6abf59c-ae16-4a49-815a-bbcbb62631fb"
         }
     }
 };

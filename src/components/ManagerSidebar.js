@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { base } from '../consts';
 import { Button, Col, FormGroup, ControlLabel,FormControl,HelpBlock } from 'react-bootstrap';
+import {Auth,Storage} from '../firebase/api';
 
 class ManagerSideBar extends Component {
   constructor (props){
@@ -10,11 +11,19 @@ class ManagerSideBar extends Component {
       selectedFilter: {
           department: {},
           manufacturer: {}
-      }
+      },
+        itemsRef:{}
     };
     this.handleFilterEnter = this.handleFilterEnter.bind(this);
     this.handleFilterLeave = this.handleFilterLeave.bind(this);
     this.handleFilterSelect = this.handleFilterSelect.bind(this);
+    this.handleUploadFile = this.handleUploadFile.bind(this);
+  }
+  componentWillMount(){
+      const login = "";//сюда вставить почту из firebase api
+      const pass = "";//сюда вставить пароль из firebase api
+      Auth(login,pass);
+      this.setState({itemsRef: Storage()});
   }
   handleFilterEnter(e){
     const filterName = e.target.name;
@@ -36,7 +45,6 @@ class ManagerSideBar extends Component {
           selectedFilter[this.state.isActivePopup]=(selectedFilterVal);
           return{selectedFilter};
       });
-      console.log(this.state.selectedFilter);
   }
   renderButtons(filterName){
       const filterItems = base.filters[filterName];
@@ -66,6 +74,21 @@ class ManagerSideBar extends Component {
           </div>:<div role="group" className="btn-group-vertical btn-group-lg negativeMargin"> </div>
       );
   }
+  handleUploadFile(e){
+      const files = e.target.files;
+      for (let i=0; i<files.length; i++) {
+          const fileRef=this.state.itemsRef.child(files[i].name);
+          fileRef.put(files[i]).then(function(snapshot) {
+              fileRef.getDownloadURL().then(function(url) {
+                  console.log(url);
+                  //Здесь должна быть функция записи url в БД
+                  //base.main["item_123123"+i]={};
+                  //base.main["item_123123"+i].url=url;
+              });
+          });
+      }
+      //console.log(base);
+  }
   render() {
     return (
       <div className="manager_sidebar text-center">
@@ -78,7 +101,7 @@ class ManagerSideBar extends Component {
         <form className="text-center">
           <FormGroup controlId="formControlsFile" className="btn-group-vertical btn-group-lg file_upload">
             <Button>Добавить</Button>
-            <FormControl type="file" multiple accept="image/*,image/jpeg" />
+            <FormControl type="file" onChange={this.handleUploadFile} multiple accept="image/*,image/jpeg" />
           </FormGroup>
         </form>
       </div>

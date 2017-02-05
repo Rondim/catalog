@@ -63,8 +63,8 @@
     opacity: 0;
     cursor: pointer
 }
-@media (max-width: @screen-xs-max) {}
-@media (min-width: @screen-sm-min) and (max-width: @screen-sm-max) {}
+@media (max-width: 768px) {}
+@media (min-width: 768px) and (max-width: 992px) {}
 @media (min-width: 992px) and (max-width: 1200px) {
   .negativeMargin {
     margin-left: -119px;
