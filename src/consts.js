@@ -32,7 +32,7 @@ export const base={
             }
         }
     },
-    filter: {
+    filters: {
         department: {
             dep1: {
                 address: "Красный проспект 10",
@@ -64,8 +64,12 @@ export const base={
             name: "Тип"
         },
         manufacturer: {
-            Delta: true,
-            Sokolov: true
+            man1:{
+                name:'Delta'
+            },
+            man2:{
+                name: 'Sokolov'
+            }
         },
         metal: {
             Ag925: true,
