@@ -19,14 +19,13 @@ class ManagerSideBar extends Component {
   handleFilterEnter(e){
     const filterName = e.target.name;
     //Дальше напишем работу со state
-    
-    this.setState({isActivePopup: filterName});
+      this.setState({isActivePopup: filterName});
   }
-    handleFilterLeave(e){
-        const filterName = e.target.name;
+    handleFilterLeave(){
+        //const filterName = e.target.name;
         //Дальше напишем работу со state
 
-        this.setState({isActivePopup: false});
+    this.setState({isActivePopup: false});
     }
   handleFilterSelect(e){
       const id = e.target.id;
@@ -44,11 +43,11 @@ class ManagerSideBar extends Component {
       return Object.keys(filterItems).map((key)=> {
           const item = filterItems[key].name;
           return (<Button
-              name={filterName}
               onClick={this.handleFilterSelect}
               key={key}
               id={key}
               bsStyle={this.state.selectedFilter[filterName][key] ? "success":"primary"}
+              name={filterName}
               onMouseEnter={this.handleFilterEnter}
               onMouseLeave={this.handleFilterLeave}
           >{item}</Button>)
@@ -56,9 +55,15 @@ class ManagerSideBar extends Component {
   }
   renderFilter(filterName){
     return (this.state.isActivePopup==filterName ?
-          <Col className="btn-group-vertical btn-group-lg negativeMargin" role="group"  lg={7} md={9}>
+          <div
+              role="group"
+              className="btn-group-vertical btn-group-lg negativeMargin"
+              name={filterName}
+              onMouseEnter={this.handleFilterEnter}
+              onMouseLeave={this.handleFilterLeave}
+          >
               {this.renderButtons(filterName)}
-          </Col>:<Col  lg={7} md={7} className="negativeMargin"></Col>
+          </div>:<div role="group" className="btn-group-vertical btn-group-lg negativeMargin"> </div>
       );
   }
   render() {
