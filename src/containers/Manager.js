@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 
 import ProductList from '../components/ProductList';
-import ManagerSideBar from '../components/ManagerSideBar';
+import ManagerSideBar from '../components/ManagerSidebar';
 
 class Manager extends Component {
   render() {
