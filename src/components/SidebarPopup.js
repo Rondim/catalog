@@ -7,7 +7,6 @@ export default class SidebarPopup extends Component {
 
   renderButtons() {
     const { subFilters, filterName, onMouseEnter, onMouseLeave, onMouseClick } = this.props;
-    console.log(subFilters);
     return Object.keys(subFilters).map(key => {
       return <Button
         name={filterName}

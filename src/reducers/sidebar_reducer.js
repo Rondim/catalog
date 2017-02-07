@@ -8,15 +8,14 @@ const sidebarReducer = (state={ filters: {}, activeFilter: '' }, action) => {
       return { filters };
     case SUBFILTER_SELECT:
       // Создаем копию состояния и меняем внутри одного подфильтра значение isSelected
-      let newFilterState = Object.assign({}, state);
-      // let newFilterState = {...state};
+      let newFilterState = {...state};
       let subFilterObj = newFilterState['filters'][action.filter][action.subFilter];
       subFilterObj['isSelected'] = !subFilterObj['isSelected'];
       return newFilterState;
     case FILTER_ENTER:
-      return Object.assign({}, state, { activeFilter: action.filterName });
+      return {...state, activeFilter: action.filterName };
     case FILTER_LEAVE:
-      return Object.assign({}, state, { activeFilter: '' });
+      return {...state, activeFilter: "" };
     default:
       return state;
   }
