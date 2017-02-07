@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Grid,Row,Col } from 'react-bootstrap';
 
 import ProductList from '../components/ProductList';
-import ManagerSideBar from '../components/ManagerSidebar';
+import NewManagerSideBar from '../components/NewManagerSidebar';
 
 class Manager extends Component {
   render() {
@@ -14,7 +14,7 @@ class Manager extends Component {
               <ProductList />
             </Col>
             <Col lg={3} md={3} xs={3}>
-              <ManagerSideBar />
+              <NewManagerSideBar />
             </Col>
           </Row>
         </Grid>

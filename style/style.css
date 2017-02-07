@@ -34,7 +34,7 @@
   border: var(--border-default);
   height: 500px
 }
-.department_manufacturer {
+.sidebar_button_group {
   width: 80%;
 }
 .metals {
@@ -53,7 +53,7 @@
   position: relative;
   overflow: hidden;
   font-size: 1em;        /* example */
-  line-height: 2em 
+  line-height: 2em
 }
 .file_upload input[type=file]{
     position: absolute;

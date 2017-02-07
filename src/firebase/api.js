@@ -15,10 +15,20 @@ export const Auth = (email,password) => {
         // Handle Errors here.
         const errorCode = error.code;
         const errorMessage = error.message;
-        alert(errorCode, errorMessage);
+        console.log('Firebase auth error: ', errorCode, errorMessage);
         // ...
     });
 };
 export const Storage = () => {
     return firebase.storage().ref().child('items');
 };
+
+export function getTestData() {
+  let filterRef = firebase.database().ref('/filter');
+  filterRef.on('value', (snapshot) => {
+    console.log(snapshot.val());
+  });
+};
+
+
+export const firebaseDB = firebase.database();
