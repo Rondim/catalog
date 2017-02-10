@@ -70,3 +70,10 @@
 .negativeMargin {
     margin-left: -278px;
 }
+.disabled_button {
+  opacity: 0.5;
+}
+/* Потом это надо убрать и сделать двойную подменю фильтра */
+.subfilter {
+  font-size: 1em !important;
+}

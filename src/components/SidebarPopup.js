@@ -6,32 +6,33 @@ export default class SidebarPopup extends Component {
 
 
   renderButtons() {
-    const { subFilters, filterName, onMouseEnter, onMouseLeave, onMouseClick } = this.props;
-    return Object.keys(subFilters).map(key => {
-      return <Button
+    const { subfilters, filterName, onMouseEnter, onMouseLeave, onMouseClick } = this.props;
+    let buttonsArr = [];
+    Object.keys(subfilters).forEach(key => {
+      const isSelected = subfilters[key]['isSelected'];
+      const isShow = subfilters[key]['isShow'];
+      isShow && buttonsArr.push(<Button
         name={filterName}
-        onClick={(e) => onMouseClick(e.target.name, e.target.id)}
+        onClick={(e) => onMouseClick(e.target.name, e.target.id, isSelected)}
         onMouseEnter={onMouseEnter}
         onMouseLeave={onMouseLeave}
         id={key}
         key={key}
-        bsStyle={subFilters[key]['isSelected'] ? "primary" : "default"}>
-        {subFilters[key]['name']}
-      </Button>;
+        bsStyle={isSelected ? "primary" : "default"}
+        className="subfilter">
+        {subfilters[key]['name']}
+      </Button>);
     });
+    return buttonsArr;
   }
   render() {
     const { isActive } = this.props;
     return (
       <div
         role="group"
-        className="btn-group-vertical btn-group-lg negativeMargin">
+        className="btn-group-vertical btn-group-sm negativeMargin">
         {isActive && this.renderButtons()}
       </div>
     );
   }
 }
-
-
-//<div role="group" className="btn-group-vertical btn-group-lg negativeMargin"></div>
-//className="btn-group-vertical btn-group-lg sidebar_button_group" role="group"
