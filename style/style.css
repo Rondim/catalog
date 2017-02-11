@@ -73,6 +73,9 @@
 .disabled_button {
   opacity: 0.5;
 }
+.selected_button {
+  background-color: #DDDDDD;
+}
 /* Потом это надо убрать и сделать двойную подменю фильтра */
 .subfilter {
   font-size: 1em !important;
