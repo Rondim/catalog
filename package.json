@@ -8,7 +8,9 @@
     "build": "npm run clean && NODE_ENV=production webpack -p",
     "serve": "webpack-dev-server",
     "servecloud": "webpack-dev-server --port $PORT --host $IP",
-    "start": "node server.js"
+    "start": "node server.js",
+    "test": "mocha --compilers js:babel-core/register --require ./test/test_helper.js --recursive ./test",
+    "test:watch": "npm run test -- --watch"
   },
   "repository": "https://github.com/Rondim/catalog  ",
   "author": "Dmitry Tsydenov",
@@ -29,7 +31,8 @@
     "redux-form": "^6.3.2",
     "redux-promise": "^0.5.3",
     "redux-thunk": "^2.1.0",
-    "reselect": "^2.5.4"
+    "reselect": "^2.5.4",
+    "babel-preset-stage-1": "^6.1.18"
   },
   "devDependencies": {
     "babel-core": "^6.17.0",
@@ -43,6 +46,12 @@
     "style-loader": "^0.13.1",
     "webpack": "2.2.0-rc.0",
     "webpack-dev-middleware": "^1.9.0",
-    "webpack-dev-server": "^2.2.0-rc.0"
+    "webpack-dev-server": "^2.2.0-rc.0",
+    "chai": "^3.5.0",
+    "chai-jquery": "^2.0.0",
+    "jquery": "^2.2.1",
+    "jsdom": "^8.1.0",
+    "mocha": "^2.4.5",
+    "react-addons-test-utils": "^15.4.1"
   }
 }

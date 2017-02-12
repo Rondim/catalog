@@ -22,6 +22,6 @@ const sidebarReducer = (state=initialSidebarState, action) => {
     default:
       return state;
   }
-}
+};
 
 export default sidebarReducer;
