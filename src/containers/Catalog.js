@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Grid,Row,Col } from 'react-bootstrap';
 
 import CatalogSidebar from '../components/CatalogSidebar';
 import ProductList from '../components/ProductList';
@@ -7,14 +8,16 @@ class Catalog extends Component {
   render() {
     return (
       <div className="container">
-        <div className="row">
-          <div className="col-xs-9">
-            <ProductList />
-          </div>
-          <div className="col-xs-3">
+        <Grid>
+          <Row className="show-grid">
+            <Col lg={9} md={9} xs={9}>
+              <ProductList />
+            </Col>
+            <Col lg={3} md={3} xs={3}>
             <CatalogSidebar />
-          </div>
-        </div>
+            </Col>
+          </Row>
+        </Grid>
       </div>
     );
   }
