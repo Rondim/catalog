@@ -1,14 +1,23 @@
 import React, { Component } from 'react';
-import { base } from '../consts';
+import { connect } from 'react-redux';
+import {loadItems} from '../actions/';
+
 
 import ProductListItem from './ProductListItem';
 
 
 class ItemList extends Component {
+    constructor (props){
+        super(props);
+    }
+    componentWillMount(){
+        this.props.loadItems();
+    }
   renderList() {
-    //const items = [1, 2, 3, 4, 5, 6, 7, 8]; //Тут должен быть массив с изделиями
-      const items = base.main;
-      return Object.keys(items).map(key => <ProductListItem id={key} key={key}/>);
+        let items = this.props.ProductList.items;
+      return Object.keys(items).map(item =>
+          <ProductListItem key={item} url={items[item].url}/>
+      );
   }
   render() {
     return (
@@ -21,4 +30,8 @@ class ItemList extends Component {
   }
 }
 
-export default ItemList;
+function mapStateToProps(state) {
+    return { ProductList: state.ProductList };
+}
+
+export default connect(mapStateToProps, {loadItems})(ItemList);

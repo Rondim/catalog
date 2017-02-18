@@ -28,7 +28,7 @@ export function getTestData() {
   filterRef.on('value', (snapshot) => {
     console.log(snapshot.val());
   });
-};
+}
 
 
 export const firebaseDB = firebase.database();
