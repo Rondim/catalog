@@ -2,8 +2,8 @@
  * Created by xax on 18.02.2017.
  */
 import { expect } from '../test_helper';
-import {loadItems} from '../../src/actions';
-import {LOAD_ITEMS} from '../../src/actions/types';
+import {loadItems,newItem} from '../../src/actions';
+import {LOAD_ITEMS,NEW_ITEM} from '../../src/actions/types';
 
 describe('actions',()=>{
     describe('loadItems', ()=>{

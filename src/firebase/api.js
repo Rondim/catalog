@@ -20,7 +20,7 @@ export const Auth = (email,password) => {
     });
 };
 export const Storage = () => {
-    return firebase.storage().ref().child('items');
+    return firebase.storage().ref('items');
 };
 
 export function getTestData() {

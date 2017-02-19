@@ -1,5 +1,4 @@
 import { firebaseDB, Storage } from '../firebase/api';
-import {makeHash} from './hash_gen';
 
 import {SET_INITIAL_STATE, SUBFILTER_SELECT, LOAD_ITEMS, NEW_ITEM, FILTER_ENTER, FILTER_LEAVE} from './types'
 
@@ -43,12 +42,15 @@ export function loadItems() {
     }
 }
 export function newItem(file) {
-    const itemsRef= Storage();
-    const uploadTask=itemsRef.child(file.name).put(file);
-    const url = uploadTask.then(
-        snapshot=> snapshot.downloadURL,
-        err => console.log('File fetch error')
-    );
+    let url='';
+    if(file){
+        const fileRef = Storage().child(file.name);
+        const uploadTask=fileRef.put(file);
+        url = uploadTask.then(
+            snapshot=> snapshot.downloadURL,
+            err => console.log('File fetch error')
+        );
+    }
     return{
         type: NEW_ITEM,
         payload: url
