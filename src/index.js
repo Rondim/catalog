@@ -6,13 +6,15 @@ import ReduxPromise from 'redux-promise';
 import reducers from './reducers';
 import Routes from './router';
 import '../style/style.css';
+import reduxThunk from 'redux-thunk';
+
+
 
 const App = () => {
-  const store = createStore(reducers, {}, applyMiddleware(ReduxPromise));
+    const store = createStore(reducers, {}, applyMiddleware(reduxThunk,ReduxPromise));
 
-  return <Provider store={store}>
-      <Routes />
+    return <Provider store={store}>
+        <Routes />
     </Provider>;
 };
-
 ReactDOM.render(<App />, document.getElementById('root'));

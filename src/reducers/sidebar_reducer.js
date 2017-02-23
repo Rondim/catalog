@@ -1,4 +1,4 @@
-import { SET_INITIAL_STATE, SUBFILTER_SELECT, FILTER_ENTER, FILTER_LEAVE } from '../actions/';
+import { SET_INITIAL_STATE, SUBFILTER_SELECT, FILTER_ENTER, FILTER_LEAVE } from '../actions/types';
 import { initializeProps, handleFilterSelect } from './sidebar_helper';
 const initialSidebarState = {
   filters: {},

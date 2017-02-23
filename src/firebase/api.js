@@ -10,15 +10,7 @@ const config = {
     storageBucket: "catalog-26b41.appspot.com",
 };
 firebase.initializeApp(config);
-export const Auth = (email,password) => {
-    firebase.auth().signInWithEmailAndPassword(email, password).catch(function (error) {
-        // Handle Errors here.
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        console.log('Firebase auth error: ', errorCode, errorMessage);
-        // ...
-    });
-};
+export const firebaseAuth = firebase.auth();
 export const Storage = () => {
     return firebase.storage().ref('items');
 };

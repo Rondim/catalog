@@ -16,4 +16,10 @@ describe('actions',()=>{
             expect(payload).to.exist;
         });
     });
+    describe('upload file',()=>{
+        it('тип - корректен',()=>{
+            const action = newItem();
+            expect(action.type).to.equal(NEW_ITEM);
+        });
+    });
 });

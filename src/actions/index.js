@@ -1,6 +1,13 @@
-import { firebaseDB, Storage } from '../firebase/api';
-
-import {SET_INITIAL_STATE, SUBFILTER_SELECT, LOAD_ITEMS, NEW_ITEM, FILTER_ENTER, FILTER_LEAVE} from './types'
+import { firebaseDB, Storage, firebaseAuth } from '../firebase/api';
+import {AUTH_USER,
+    UNAUTH_USER,
+    LOAD_ITEMS,
+    NEW_ITEM,SET_INITIAL_STATE,
+    SUBFILTER_SELECT,
+    FILTER_ENTER,
+    FILTER_LEAVE,
+    CHECK_AUTH} from './types';
+import {hashHistory} from 'react-router';
 
 
 export function setInitialState() {
@@ -54,5 +61,36 @@ export function newItem(file) {
     return{
         type: NEW_ITEM,
         payload: url
+    }
+}
+
+export function signinUser(values) {
+    const email = values.email;
+    const password = values.password;
+    const request = firebaseAuth.signInWithEmailAndPassword(email, password);
+    return{
+        type: AUTH_USER,
+        payload: request
+    }
+}
+
+export function signoutUser() {
+    const request = firebaseAuth.signOut();
+    return{
+        type: UNAUTH_USER,
+        payload: request
+    }
+}
+
+export function checkAuthentificated() {
+    return function (dispatch) {
+        firebaseAuth.onAuthStateChanged((user) => {
+            if(user){
+                dispatch({type:AUTH_USER,payload:user});
+            }
+            else {
+                hashHistory.push('/signin');
+            }
+        });
     }
 }

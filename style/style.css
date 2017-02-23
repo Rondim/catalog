@@ -80,3 +80,6 @@
 .subfilter {
   font-size: 1em !important;
 }
+.error{
+    color: red;
+}
