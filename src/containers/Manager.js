@@ -1,10 +1,15 @@
 import React, { Component } from 'react';
 import { Grid,Row,Col } from 'react-bootstrap';
+import { connect } from 'react-redux'
+import * as actions from '../actions'
 
 import ProductList from '../components/ProductList';
 import NewManagerSideBar from '../components/NewManagerSidebar';
 
 class Manager extends Component {
+  componentWillUpdate(){
+    this.props.fetchItemList();
+  }
   render() {
     return (
       <div className="container">
@@ -23,4 +28,5 @@ class Manager extends Component {
   }
 }
 
-export default Manager;
+
+export default connect(null,actions)(Manager);

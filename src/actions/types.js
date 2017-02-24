@@ -9,3 +9,4 @@ export const LOAD_ITEMS = 'LOAD_ITEMS';
 export const NEW_ITEM = 'NEW_ITEM';
 export const AUTH_USER = 'auth_user';
 export const UNAUTH_USER='unauth_user';
+export const FETCH_ITEM_LIST='fetch_item_list';

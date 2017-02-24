@@ -8,7 +8,7 @@ export default function (state = {},action) {
         case AUTH_USER:
             return action.payload.code ?
                 {...state,error: action.payload.message, authenticated: false}:
-                ({...state, error: '', authenticated: true});
+                ({...state, error: '', authenticated: action.payload});
         case  UNAUTH_USER:
             return {...state, authenticated: false};
     }

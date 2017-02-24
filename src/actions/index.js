@@ -1,11 +1,14 @@
 import { firebaseDB, Storage, firebaseAuth } from '../firebase/api';
-import {AUTH_USER,
+import {
+    AUTH_USER,
     UNAUTH_USER,
     LOAD_ITEMS,
     NEW_ITEM,SET_INITIAL_STATE,
     SUBFILTER_SELECT,
     FILTER_ENTER,
-    FILTER_LEAVE} from './types';
+    FILTER_LEAVE,
+    FETCH_ITEM_LIST
+} from './types';
 import {hashHistory} from 'react-router';
 
 
@@ -39,28 +42,40 @@ export function filterLeave() {
     type: FILTER_LEAVE
   };
 }
-export function loadItems() {
-  const items = firebaseDB.ref('/main').once('value')
-      .then(snapshot => snapshot.val(), err => console.log('Items fetch error'));
+export function loadItems(list) {
+  const items = firebaseDB.ref(`/lists/${list}`).once('value')
+      .then(snapshot => snapshot.val(), err => console.log(err));
     return{
       type: LOAD_ITEMS,
       payload: items
     }
 }
 export function newItem(file) {
-    let url='';
-    if(file){
-        const fileRef = Storage().child(file.name);
-        const uploadTask=fileRef.put(file);
-        url = uploadTask.then(
-            snapshot=> snapshot.downloadURL,
-            err => console.log('File fetch error')
-        );
-    }
-    return{
-        type: NEW_ITEM,
-        payload: url
-    }
+    return function (dispatch,getState) {
+        if(file){
+            const list = getState().ProductList.activeList;
+            const fileRef = Storage().child(file.name);
+            const uploadTask=fileRef.put(file);
+            uploadTask.then(
+                snapshot=> {
+                    const key = firebaseDB.ref().child(list).push().key;
+                    let updates = {};
+                    const url = snapshot.downloadURL;
+                    updates[`/lists/${list}/${key}/url`] = url;
+                    firebaseDB.ref().update(updates);
+                    const meta = {
+                        customMetadata: {'item':key}
+                    };
+                    fileRef.updateMetadata(meta).catch(err=>console.log(err));
+                    dispatch({
+                        type: NEW_ITEM,
+                        payload: {key,url}
+                    })
+                },
+                err => console.log('File fetch error')
+            );
+        }
+    };
 }
 
 export function signinUser(values) {
@@ -85,11 +100,40 @@ export function checkAuthentificated() {
     return function (dispatch) {
         firebaseAuth.onAuthStateChanged((user) => {
             if(user){
-                dispatch({type:AUTH_USER,payload:user});
+                dispatch({type:AUTH_USER,payload:user.uid});
             }
             else {
                 hashHistory.push('/signin');
             }
         });
     }
+}
+
+export function fetchItemList() {
+    return function (dispatch,getState) {
+        const uid = getState().auth.authenticated;
+        if(uid){
+            firebaseDB.ref(`/users/${uid}/lists`).once('value')
+            //firebaseDB.ref(`/users/testuser/lists`).once('value')
+                .then(snapshot => {
+                    if(snapshot.val()){
+                        const key = Object.keys(snapshot.val())[0];
+                        dispatch({
+                            type: FETCH_ITEM_LIST,
+                            payload: key
+                        });
+                    }
+                    else {
+                        const key = firebaseDB.ref().child(`/lists`).push().key;
+                        let updates = {};
+                        updates[`/users/${uid}/lists/${key}`] = true;
+                        firebaseDB.ref().update(updates);
+                        dispatch({
+                            type: FETCH_ITEM_LIST,
+                            payload: key
+                        })
+                    }
+                }, err => console.log(err));
+        }
+    };
 }
