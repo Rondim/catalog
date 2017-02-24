@@ -11,7 +11,7 @@ import {hashHistory} from 'react-router';
 
 class Signin extends Component {
     componentWillUpdate(){
-        this.props.authenticated? hashHistory.push('/#/'):''
+        this.props.authenticated? hashHistory.push('/'):''
     }
     renderAlert(){
         return (this.props.errorMessage ?

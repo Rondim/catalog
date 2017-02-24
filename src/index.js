@@ -11,7 +11,7 @@ import reduxThunk from 'redux-thunk';
 
 
 const App = () => {
-    const store = createStore(reducers, {}, applyMiddleware(reduxThunk,ReduxPromise));
+    const store = createStore(reducers, {}, applyMiddleware(ReduxPromise,reduxThunk));
 
     return <Provider store={store}>
         <Routes />

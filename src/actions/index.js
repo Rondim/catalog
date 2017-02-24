@@ -5,8 +5,7 @@ import {AUTH_USER,
     NEW_ITEM,SET_INITIAL_STATE,
     SUBFILTER_SELECT,
     FILTER_ENTER,
-    FILTER_LEAVE,
-    CHECK_AUTH} from './types';
+    FILTER_LEAVE} from './types';
 import {hashHistory} from 'react-router';
 
 
