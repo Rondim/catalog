@@ -8,16 +8,21 @@ import ProductList from '../components/ProductList';
 
 class Catalog extends Component {
     shouldComponentUpdate(nextProps){
-        if(nextProps.uid&&this.props.uid !== nextProps.uid){
+        if(this.props.uid !== nextProps.uid){
             return true;
         }
         if(this.props.ProductList.activeList !== nextProps.ProductList.activeList){
             return true;
         }
-        if(!this.props.ProductList.items&&nextProps.ProductList.items){
+        if(this.props.ProductList.items!==nextProps.ProductList.items){
             return true;
         }
         return false;
+    }
+    componentWillMount(){
+        if(this.props.uid){
+            this.props.fetchItemList();
+        }
     }
     componentWillUpdate(nextProps){
         if(nextProps.uid){

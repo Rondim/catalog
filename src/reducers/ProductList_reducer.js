@@ -24,7 +24,7 @@ const productlistReducer = (state=initialState, action) => {
         case NEW_ITEM:
             let itemsNew = state.items;
             const url = action.payload.url;
-            itemsNew[action.payload.key] = {url};
+            itemsNew.manager[action.payload.key] = {url};
             return {...state, items:itemsNew};
         case FETCH_ITEM_LIST:
             return {...state, activeList: action.payload};

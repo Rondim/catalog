@@ -92,7 +92,7 @@ export function checkAuthentificated() {
     return function (dispatch) {
         firebaseAuth.onAuthStateChanged((user) => {
             if(user){
-                dispatch({type:AUTH_USER,payload:user.uid});
+                dispatch({type:AUTH_USER,payload:user});
             }
             else {
                 hashHistory.push('/signin');
@@ -137,7 +137,14 @@ export function fetchItemList(list) {
                         dispatch({
                             type: FETCH_ITEM_LIST,
                             payload: key
-                        })
+                        });
+                        firebaseDB.ref(`/main`).once('value')
+                            .then((snapshot) => {
+                                dispatch({
+                                    type: LOAD_ITEMS,
+                                    payload: {catalog: snapshot.val()}
+                                });
+                            }, err => console.log(err));
                     }
                 }, err => console.log(err));
         }
