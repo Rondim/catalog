@@ -23,9 +23,9 @@ class Signin extends Component {
     render(){
         const {handleSubmit, submitting} = this.props;
         return(
-            <form onSubmit={handleSubmit(this.props.signinUser)}>
-                <Field name="email" type="email" component={renderField} label="email"/>
-                <Field name="password" type="password" component={renderField} label="password"/>
+            <form onSubmit={handleSubmit(this.props.signinUser)} className="form" role="form">
+                <Field name="email" type="email" component={renderField} label="e-mail" className="form-group"/>
+                <Field name="password" type="password" component={renderField} label="password" className="form-group"/>
                 {this.renderAlert()}
                 <button type="submit" disabled={submitting} className="btn btn-primary">Sign in</button>
             </form>
@@ -61,11 +61,9 @@ Signin = connect(mapStateToProps,{signinUser})(Signin);
 export default Signin;
 
 const renderField = ({ input, label, type, meta: { touched, error, warning } }) => (
-    <div>
-        <label>{label}</label>
-        <div>
-            <input {...input} placeholder={label} type={type}/>
-            {touched && ((error && <span className="error">{error}</span>) )}
-        </div>
+    <div className="form-group">
+        <label className="form-group-addon">{label}</label>
+        <input {...input} placeholder={label} type={type} className="form-control"/>
+        {touched && ((error && <span className="error form-group-addon">{error}</span>) )}
     </div>
 );
