@@ -30,7 +30,7 @@ class Catalog extends Component {
         <Grid>
           <Row className="show-grid">
             <Col lg={9} md={9} xs={9}>
-              <ProductList items={this.props.ProductList.items} />
+              <ProductList items={this.props.ProductList.items.catalog} />
             </Col>
             <Col lg={3} md={3} xs={3}>
             <CatalogSidebar />

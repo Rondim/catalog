@@ -46,11 +46,11 @@ export function newItem(file) {
     return function (dispatch,getState) {
         if(file){
             const list = getState().ProductList.activeList;
-            const fileRef = Storage().child(file.name);
+            const key = firebaseDB.ref().child(list).push().key;
+            const fileRef = Storage().child(key);
             const uploadTask=fileRef.put(file);
             uploadTask.then(
                 snapshot=> {
-                    const key = firebaseDB.ref().child(list).push().key;
                     let updates = {};
                     const url = snapshot.downloadURL;
                     updates[`/lists/${list}/${key}/url`] = url;
@@ -101,7 +101,7 @@ export function checkAuthentificated() {
     }
 }
 
-export function fetchItemList() {
+export function fetchItemList(list) {
     return function (dispatch,getState) {
         const uid = getState().auth.authenticated;
         const {activeList} = getState().ProductList;
@@ -118,7 +118,14 @@ export function fetchItemList() {
                             .then((snapshot) => {
                                 dispatch({
                                     type: LOAD_ITEMS,
-                                    payload: snapshot.val()
+                                    payload: {manager: snapshot.val()}
+                                });
+                            }, err => console.log(err));
+                        firebaseDB.ref(`/main`).once('value')
+                            .then((snapshot) => {
+                                dispatch({
+                                    type: LOAD_ITEMS,
+                                    payload: {catalog: snapshot.val()}
                                 });
                             }, err => console.log(err));
                     }
