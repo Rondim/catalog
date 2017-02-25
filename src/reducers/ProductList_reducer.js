@@ -3,7 +3,7 @@
  */
 import { LOAD_ITEMS, NEW_ITEM, FETCH_ITEM_LIST } from '../actions/types';
 
-const productlistReducer = (state={items: {},activeList:false}, action) => {
+const productlistReducer = (state={items: '',activeList:false}, action) => {
     switch (action.type) {
         case LOAD_ITEMS:
             const items = action.payload;

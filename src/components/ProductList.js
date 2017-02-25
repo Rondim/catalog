@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import {loadItems} from '../actions/';
+
 
 
 import ProductListItem from './ProductListItem';
@@ -10,13 +9,8 @@ class ItemList extends Component {
     constructor (props){
         super(props);
     }
-    componentDidUpdate(){
-        if(this.props.ProductList.activeList){
-            this.props.loadItems(this.props.ProductList.activeList);
-        }
-    }
   renderList() {
-        let items = this.props.ProductList.items;
+        let items = this.props.items;
       return Object.keys(items).map(item =>
           <ProductListItem key={item} url={items[item].url}/>
       );
@@ -32,8 +26,5 @@ class ItemList extends Component {
   }
 }
 
-function mapStateToProps(state) {
-    return { ProductList: state.ProductList };
-}
 
-export default connect(mapStateToProps, {loadItems})(ItemList);
+export default ItemList;

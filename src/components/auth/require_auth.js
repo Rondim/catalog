@@ -10,11 +10,15 @@ export default function (ComposedComponent) {
         static contextTypes = {
             router: React.PropTypes.object
         };
-        componentWillMount(){
-            this.props.checkAuthentificated();
+        componentWillMount() {
+            if(!this.props.authenticated){
+                this.props.checkAuthentificated();
+            }
         }
         componentWillUpdate(nextProps){
-            this.props.checkAuthentificated();
+            if(!nextProps.authenticated) {
+                nextProps.checkAuthentificated();
+            }
         }
         render(){
             return <ComposedComponent {...this.props}/>

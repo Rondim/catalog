@@ -42,14 +42,6 @@ export function filterLeave() {
     type: FILTER_LEAVE
   };
 }
-export function loadItems(list) {
-  const items = firebaseDB.ref(`/lists/${list}`).once('value')
-      .then(snapshot => snapshot.val(), err => console.log(err));
-    return{
-      type: LOAD_ITEMS,
-      payload: items
-    }
-}
 export function newItem(file) {
     return function (dispatch,getState) {
         if(file){
@@ -112,9 +104,9 @@ export function checkAuthentificated() {
 export function fetchItemList() {
     return function (dispatch,getState) {
         const uid = getState().auth.authenticated;
-        if(uid){
+        const {activeList} = getState().ProductList;
+        if(uid&&!activeList){
             firebaseDB.ref(`/users/${uid}/lists`).once('value')
-            //firebaseDB.ref(`/users/testuser/lists`).once('value')
                 .then(snapshot => {
                     if(snapshot.val()){
                         const key = Object.keys(snapshot.val())[0];
@@ -122,6 +114,13 @@ export function fetchItemList() {
                             type: FETCH_ITEM_LIST,
                             payload: key
                         });
+                        firebaseDB.ref(`/lists/${key}`).once('value')
+                            .then((snapshot) => {
+                                dispatch({
+                                    type: LOAD_ITEMS,
+                                    payload: snapshot.val()
+                                });
+                            }, err => console.log(err));
                     }
                     else {
                         const key = firebaseDB.ref().child(`/lists`).push().key;
