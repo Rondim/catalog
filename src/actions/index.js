@@ -7,7 +7,10 @@ import {
     SUBFILTER_SELECT,
     FILTER_ENTER,
     FILTER_LEAVE,
-    FETCH_ITEM_LIST
+    FILTER_RESET,
+    FETCH_ITEM_LIST,
+    MARK_ACTIVE,
+    UPDATE_ITEM
 } from './types';
 import {hashHistory} from 'react-router';
 
@@ -22,12 +25,28 @@ export function setInitialState() {
 }
 
 export function subFilterSelect(filter, subfilter, prevSelected) {
-  return {
-    type: SUBFILTER_SELECT,
-    filter,
-    subfilter,
-    prevSelected
-  };
+    return function (dispatch, getState) {
+        dispatch({
+            type: SUBFILTER_SELECT,
+            filter,
+            subfilter,
+            prevSelected
+        });
+        const items = getState().ProductList.activeItems;
+        const list = getState().ProductList.activeList;
+        let updates = {};
+        items.map(item =>{
+            updates[`/lists/${list}/${item}/filters/${filter}`] = subfilter;
+            let itemFilters = {item,filters:{}};
+            itemFilters.filters[filter]=subfilter;
+            console.log(getState().sidebar.filters);
+            dispatch({
+                type: UPDATE_ITEM,
+                payload:itemFilters
+            });
+        });
+        firebaseDB.ref().update(updates);
+    }
 }
 
 export function filterEnter(filterName) {
@@ -55,10 +74,6 @@ export function newItem(file) {
                     const url = snapshot.downloadURL;
                     updates[`/lists/${list}/${key}/url`] = url;
                     firebaseDB.ref().update(updates);
-                    const meta = {
-                        customMetadata: {'item':key}
-                    };
-                    fileRef.updateMetadata(meta).catch(err=>console.log(err));
                     dispatch({
                         type: NEW_ITEM,
                         payload: {key,url}
@@ -101,7 +116,7 @@ export function checkAuthentificated() {
     }
 }
 
-export function fetchItemList(list) {
+export function fetchItemList() {
     return function (dispatch,getState) {
         const uid = getState().auth.authenticated;
         const {activeList} = getState().ProductList;
@@ -147,6 +162,44 @@ export function fetchItemList(list) {
                             }, err => console.log(err));
                     }
                 }, err => console.log(err));
+        }
+    };
+}
+export function mark(key,type) {
+    return function (dispatch, getState) {
+        dispatch({
+            type: MARK_ACTIVE,
+            payload:{key,type}
+        });
+        if(getState().ProductList.activeItems.length==1){
+            const item = getState().ProductList.items.manager[key];
+            if(!item.filters) item.filters={};
+            firebaseDB.ref('/filter').once('value')
+                .then(snapshot => {
+                    dispatch ({
+                        type: SET_INITIAL_STATE,
+                        payload: snapshot.val()
+                    });
+                    Object.keys(item.filters).forEach((filter)=>{
+                        const subfilter = item.filters[filter];
+                        const prevSelected = getState().sidebar.filters[filter].subfilters[subfilter].isSelected;
+                        dispatch({
+                            type: SUBFILTER_SELECT,
+                            filter,
+                            subfilter,
+                            prevSelected
+                        });
+                    });
+                }, err => console.log('Filters fetch error'));
+        }
+        if(getState().ProductList.activeItems.length==0){
+            firebaseDB.ref('/filter').once('value')
+                .then(snapshot => {
+                    dispatch ({
+                        type: SET_INITIAL_STATE,
+                        payload: snapshot.val()
+                    });
+                }, err => console.log('Filters fetch error'));
         }
     };
 }

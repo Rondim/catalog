@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
-import { base } from '../consts';
 
 const ProductListItem = (props) => {
+    status = props.status ? 'active' : 'bad';
   return (
-    <li className="col-xs-3 product_item">
-        <a href="#" className="thumbnail">
-          <img src={props.url} />
+    <li className={`col-xs-3 product_item ${status}`}>
+        <a href="#" onClick={props.handleSelect} className="thumbnail">
+          <img src={props.url} id={props.id} />
         </a>
     </li>
   );

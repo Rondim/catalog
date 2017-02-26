@@ -5,14 +5,25 @@ import React, { Component } from 'react';
 import ProductListItem from './ProductListItem';
 
 
-class ItemList extends Component {
+class ProductList extends Component {
     constructor (props){
         super(props);
+        this.onSelect = this.onSelect.bind(this);
+    }
+    onSelect(e){
+        e.preventDefault();
+        this.props.setActive(e.target.id);
     }
   renderList() {
         let items = this.props.items;
       return Object.keys(items).map(item =>
-          <ProductListItem key={item} url={items[item].url}/>
+          <ProductListItem
+              id={item}
+              status={items[item].active}
+              key={item}
+              url={items[item].url}
+              handleSelect={e=>this.onSelect(e)
+              }/>
       );
   }
   render() {
@@ -27,4 +38,4 @@ class ItemList extends Component {
 }
 
 
-export default ItemList;
+export default ProductList;

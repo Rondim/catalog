@@ -83,3 +83,16 @@
 .error{
     color: red;
 }
+.product_item a{
+    border-style: solid;
+    border-width: 2px;
+}
+.product_item.bad a{
+    border-color: red;
+}
+.product_item.good a{
+    border-color: green;
+}
+.product_item.active a{
+    border-color: blue;
+}

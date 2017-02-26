@@ -1,11 +1,11 @@
 /**
  * Created by xax on 23.02.2017.
  */
-import React,{Component} from 'react';
+import React,{ Component } from 'react';
 import { Field, reduxForm } from 'redux-form';
-import {signinUser} from '../../actions';
-import {connect} from 'react-redux';
-import {hashHistory} from 'react-router';
+import { signinUser } from '../../actions';
+import { connect } from 'react-redux';
+import { hashHistory } from 'react-router';
 
 
 
