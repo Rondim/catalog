@@ -1,11 +1,15 @@
 import React, { Component } from 'react';
 
 const ProductListItem = (props) => {
-    status = props.status ? 'active' : 'bad';
+    let active;
+    let complited;
+    active = props.active? 'active':'';
+    complited = props.complited? 'complited':'';
+    active = !props.active&&!props.complited ? 'bad':active;
   return (
-    <li className={`col-xs-3 product_item ${status}`}>
+    <li className={`col-xs-3 product_item ${complited} ${active}`}>
         <a href="#" onClick={props.handleSelect} className="thumbnail">
-          <img src={props.url} id={props.id} />
+          <img src={props.url} id={props.id} className="img-responsive img-rounded"/>
         </a>
     </li>
   );

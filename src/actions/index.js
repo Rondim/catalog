@@ -39,7 +39,6 @@ export function subFilterSelect(filter, subfilter, prevSelected) {
             updates[`/lists/${list}/${item}/filters/${filter}`] = subfilter;
             let itemFilters = {item,filters:{}};
             itemFilters.filters[filter]=subfilter;
-            console.log(getState().sidebar.filters);
             dispatch({
                 type: UPDATE_ITEM,
                 payload:itemFilters
@@ -180,19 +179,32 @@ export function mark(key,type) {
                         type: SET_INITIAL_STATE,
                         payload: snapshot.val()
                     });
-                    Object.keys(item.filters).forEach((filter)=>{
-                        const subfilter = item.filters[filter];
-                        const prevSelected = getState().sidebar.filters[filter].subfilters[subfilter].isSelected;
+                    const filter = 'itemType';
+                    const subfilteritemType = item.filters[filter];
+                    if(subfilteritemType){
+                        const prevSelecteditemType = getState().sidebar.filters[filter].subfilters[subfilteritemType].isSelected;
                         dispatch({
                             type: SUBFILTER_SELECT,
                             filter,
-                            subfilter,
-                            prevSelected
+                            subfilter:subfilteritemType,
+                            prevSelected:prevSelecteditemType
                         });
+                    }
+                    Object.keys(item.filters).forEach((filter)=>{
+                        if(filter!='itemType'){
+                            const subfilter = item.filters[filter];
+                            const prevSelected = getState().sidebar.filters[filter].subfilters[subfilter].isSelected;
+                            dispatch({
+                                type: SUBFILTER_SELECT,
+                                filter,
+                                subfilter,
+                                prevSelected
+                            });
+                        }
                     });
                 }, err => console.log('Filters fetch error'));
         }
-        if(getState().ProductList.activeItems.length==0){
+        if(getState().ProductList.activeItems.length!=1){
             firebaseDB.ref('/filter').once('value')
                 .then(snapshot => {
                     dispatch ({

@@ -90,9 +90,12 @@
 .product_item.bad a{
     border-color: red;
 }
-.product_item.good a{
-    border-color: green;
-}
 .product_item.active a{
     border-color: blue;
+}
+.complited a{
+    background-color: #3fdc26;
+}
+.complited img{
+    opacity: 0.5;
 }

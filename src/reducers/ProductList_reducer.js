@@ -21,6 +21,13 @@ const productlistReducer = (state=initialState, action) => {
             items.catalog = action.payload.catalog ?
                 action.payload.catalog :
                 state.items.catalog;
+            //Проверяем завершенные изделия или нет
+            if(action.payload.manager){
+                Object.keys(items.manager).forEach((item)=>{
+                    if(Object.keys(items.manager[item].filters).length==5) items.manager[item].complited = true;
+                    if(Object.keys(items.manager[item].filters).length==4&&items.manager[item].filters.itemType=='earrings') items.manager[item].complited = true;
+                });
+            }
             return {...state, items};
         case NEW_ITEM:
             const url = action.payload.url;
@@ -45,8 +52,10 @@ const productlistReducer = (state=initialState, action) => {
             }
             return state;
         case UPDATE_ITEM:
-            items.manager[action.payload.item].filters = Object.assign(items.manager[action.payload.item].filters,action.payload.filters);
-            console.log(items.manager[action.payload.item]);
+            const item = action.payload.item;
+            items.manager[item].filters = Object.assign(items.manager[item].filters,action.payload.filters);
+            if(Object.keys(items.manager[item].filters).length==5) items.manager[item].complited = true;
+            if(Object.keys(items.manager[item].filters).length==4&&items.manager[item].filters.itemType=='earrings') items.manager[item].complited = true;
             return {...state,items};
     }
     return state;

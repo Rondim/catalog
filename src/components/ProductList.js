@@ -19,7 +19,8 @@ class ProductList extends Component {
       return Object.keys(items).map(item =>
           <ProductListItem
               id={item}
-              status={items[item].active}
+              active={items[item].active}
+              complited={items[item].complited}
               key={item}
               url={items[item].url}
               handleSelect={e=>this.onSelect(e)
