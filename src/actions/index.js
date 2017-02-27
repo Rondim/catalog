@@ -13,6 +13,7 @@ import {
     UPDATE_ITEM
 } from './types';
 import {hashHistory} from 'react-router';
+import {obj_cross} from './functions/objects_crossing';
 
 
 export function setInitialState() {
@@ -170,48 +171,41 @@ export function mark(key,type) {
             type: MARK_ACTIVE,
             payload:{key,type}
         });
-        if(getState().ProductList.activeItems.length==1){
-            const item = getState().ProductList.items.manager[key];
-            if(!item.filters) item.filters={};
-            firebaseDB.ref('/filter').once('value')
-                .then(snapshot => {
-                    dispatch ({
-                        type: SET_INITIAL_STATE,
-                        payload: snapshot.val()
+        firebaseDB.ref('/filter').once('value')
+            .then(snapshot => {
+                dispatch ({
+                    type: SET_INITIAL_STATE,
+                    payload: snapshot.val()
+                });
+                const activeItems = getState().ProductList.activeItems;
+                let items = [];
+                activeItems.forEach((item)=>{
+                    items.push(getState().ProductList.items.manager[item])
+                });
+                const filters = obj_cross(items);
+                const filter = 'itemType';
+                const subfilteritemType = filters[filter];
+                if(subfilteritemType){
+                    const prevSelecteditemType = getState().sidebar.filters[filter].subfilters[subfilteritemType].isSelected;
+                    dispatch({
+                        type: SUBFILTER_SELECT,
+                        filter,
+                        subfilter:subfilteritemType,
+                        prevSelected:prevSelecteditemType
                     });
-                    const filter = 'itemType';
-                    const subfilteritemType = item.filters[filter];
-                    if(subfilteritemType){
-                        const prevSelecteditemType = getState().sidebar.filters[filter].subfilters[subfilteritemType].isSelected;
+                }
+                Object.keys(filters).forEach((filter)=>{
+                    if(filter!='itemType'){
+                        const subfilter = filters[filter];
+                        const prevSelected = getState().sidebar.filters[filter].subfilters[subfilter].isSelected;
                         dispatch({
                             type: SUBFILTER_SELECT,
                             filter,
-                            subfilter:subfilteritemType,
-                            prevSelected:prevSelecteditemType
+                            subfilter,
+                            prevSelected
                         });
                     }
-                    Object.keys(item.filters).forEach((filter)=>{
-                        if(filter!='itemType'){
-                            const subfilter = item.filters[filter];
-                            const prevSelected = getState().sidebar.filters[filter].subfilters[subfilter].isSelected;
-                            dispatch({
-                                type: SUBFILTER_SELECT,
-                                filter,
-                                subfilter,
-                                prevSelected
-                            });
-                        }
-                    });
-                }, err => console.log('Filters fetch error'));
-        }
-        if(getState().ProductList.activeItems.length!=1){
-            firebaseDB.ref('/filter').once('value')
-                .then(snapshot => {
-                    dispatch ({
-                        type: SET_INITIAL_STATE,
-                        payload: snapshot.val()
-                    });
-                }, err => console.log('Filters fetch error'));
-        }
+                });
+            }, err => console.log('Filters fetch error'));
     };
 }
