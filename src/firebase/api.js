@@ -3,6 +3,7 @@
  */
 import * as firebase from "firebase";
 
+
 const config = {
     apiKey: "AIzaSyB0nn0cVuc7GPb67UYzKeBI1_BAcTImj-g",
     authDomain: " catalog-26b41.firebaseapp.com",

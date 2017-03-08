@@ -7,6 +7,7 @@ import authReducer from './auth_reducer';
 // export default (state={}, action) => {
 //   return state;
 // }
+
 export default combineReducers({
     sidebar: sidebarReducer,
     ProductList: productlistReducer,

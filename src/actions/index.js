@@ -61,6 +61,11 @@ export function filterLeave() {
     type: FILTER_LEAVE
   };
 }
+/**
+ * Загружает новую картинку в Storage, возвращает URL, который потом записывает в новосозданный item
+ * @param {file} file -  файл полученный через <input type="file">, картинка нового item'a
+ * @returns {Function}
+ */
 export function newItem(file) {
     return function (dispatch,getState) {
         if(file){
@@ -84,7 +89,14 @@ export function newItem(file) {
         }
     };
 }
-
+/**
+ * Иницирует начало сессии пользоателя, отправляя запрос в firebase на вход по почте/паролю,
+ * пользователи создаются в firebase
+ * @param {object} values содержит в себе два знаечения:
+ * 1 email - для почты
+ * 2 password - для пароля
+ * @returns {{type, payload: (firebase.Promise<any>|*|{name, a}|!firebase.Promise.<!firebase.User>)}}
+ */
 export function signinUser(values) {
     const email = values.email;
     const password = values.password;
@@ -94,7 +106,10 @@ export function signinUser(values) {
         payload: request
     }
 }
-
+/**
+ * Иницирует окончание сессии пользователя, посылая в firebase запрос на выход.
+ * @returns {{type, payload: (firebase.Promise<any>|*|{name, a}|!firebase.Promise.<void>)}}
+ */
 export function signoutUser() {
     const request = firebaseAuth.signOut();
     return{
@@ -102,7 +117,10 @@ export function signoutUser() {
         payload: request
     }
 }
-
+/**
+ * Обращается к api firebase, сверяет хэш пользователя для доступа к сайту, работает через reduxThunk
+ * @returns {Function}
+ */
 export function checkAuthentificated() {
     return function (dispatch) {
         firebaseAuth.onAuthStateChanged((user) => {
@@ -115,7 +133,11 @@ export function checkAuthentificated() {
         });
     }
 }
-
+/**
+ * Запрашивает из базы данных список item'ов, на текущий момент не имеет переменных, запрашивает астивный лист и каталог,
+ * работает через reduxThunk
+ * @returns {Function}
+ */
 export function fetchItemList() {
     return function (dispatch,getState) {
         const uid = getState().auth.authenticated;
@@ -165,6 +187,13 @@ export function fetchItemList() {
         }
     };
 }
+/**
+ * Меняет состояние item, работает через reduxThunk
+ *
+ * @param {string} key - ключ item
+ * @param {string} type - новое состояние item'a
+ * @returns {Function}
+ */
 export function mark(key,type) {
     return function (dispatch, getState) {
         dispatch({

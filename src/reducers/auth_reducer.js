@@ -3,6 +3,12 @@
  */
 import {AUTH_USER,UNAUTH_USER} from '../actions/types';
 
+/**
+ * Редюсер авторизации
+ * @param state
+ * @param action
+ * @returns {*}
+ */
 export default function (state = {authenticated: false,error: ''},action) {
     switch (action.type) {
         case AUTH_USER:
