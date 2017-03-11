@@ -153,6 +153,7 @@ export function fetchItemList() {
                         });
                         firebaseDB.ref(`/lists/${key}`).once('value')
                             .then((snapshot) => {
+                                console.log(snapshot.numChildren());
                                 dispatch({
                                     type: LOAD_ITEMS,
                                     payload: {manager: snapshot.val()}
