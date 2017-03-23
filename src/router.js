@@ -5,6 +5,7 @@ import { Router, Route, IndexRoute, hashHistory } from 'react-router';
 import App from './components/App';
 import Catalog from './containers/Catalog';
 import Manager from './containers/Manager';
+import DandDCells from './containers/D&DCells';
 import Signin from './components/auth/signin';
 import Signout from './components/auth/signout';
 import RequireAuth from './components/auth/require_auth';
@@ -15,6 +16,7 @@ const Routes = () => {
       <Route path="/" component={App}>
         <IndexRoute component={RequireAuth(Catalog)} />
         <Route path="/manager" component={RequireAuth(Manager)} />
+          <Route path="/manager2" component={RequireAuth(DandDCells)} />
           <Route path="/signin" component={Signin} />
           <Route path="/signout" component={Signout} />
       </Route>

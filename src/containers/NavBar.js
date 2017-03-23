@@ -15,6 +15,9 @@ class NavBar extends Component {
           <LinkContainer to="/manager" activeHref="active">
             <NavItem>Менеджер</NavItem>
           </LinkContainer>
+          <LinkContainer to="/manager2" activeHref="active">
+              <NavItem>DragAndDrop Manager</NavItem>
+          </LinkContainer>
       </Nav>
     );
   }

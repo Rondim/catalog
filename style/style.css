@@ -21,10 +21,10 @@
 }
 
 /*PRODUCT LIST STYLES*/
-.product_list_container {
+.product_list_container,.cells_container {
   border: var(--border-default);
 }
-.product_list {
+.product_list,.cells {
   list-style-type: none;
   padding: 0;
 }
