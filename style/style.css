@@ -33,18 +33,20 @@
     height: 0;
     border: none;
 }
+.cells{
+    border-style: solid;
+    border-width: 1px;
+    border-collapse: collapse;
+}
+td{
+    border-style: solid;
+    border-width: 1px;
+}
 .cell{
     padding-top: 16.67%;
     background-color: #fff;
     border: 1px solid #ddd;
     border-radius: 4px;
-}
-.cell-context{
-    position: absolute;
-    top: 1px;
-    right: 1px;
-    bottom: 1px;
-    left: 1px;
 }
 /*SIDEBAR STYLES*/
 .catalog_sidebar, .manager_sidebar {
