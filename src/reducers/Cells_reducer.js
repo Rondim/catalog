@@ -14,8 +14,8 @@ const free={url:""};
 const initialState = {
     i0: 0,
     j0: 0,
-    di: 6,
-    dj: 6,
+    di: 4,
+    dj: 4,
     list: [
         [ {id:"0", url:"https://firebasestorage.googleapis.com/v0/b/catalog-26b41.appspot.com/o/items%2F-Ke7_Uu7kNGUlCMldxd8?alt=media&token=31266f78-2314-4af0-9cdb-274db7eadddc"} ,
             {id:"1",url:"https://firebasestorage.googleapis.com/v0/b/catalog-26b41.appspot.com/o/items%2F-Ke7_Uu7kNGUlCMldxd8?alt=media&token=31266f78-2314-4af0-9cdb-274db7eadddc"},

@@ -5,9 +5,12 @@ import React, { Component } from 'react';
 
 const Cell = (props) => {
     return (
-            <a href="#">
-                <img src={props.url} id={props.id} className="img-responsive img-rounded"/>
-            </a>
+            <img
+                draggable='false'
+                src={props.url}
+                id={props.id}
+                className="img-responsive img-rounded"/>
+
     );
 };
 
