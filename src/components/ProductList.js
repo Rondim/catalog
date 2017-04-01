@@ -15,6 +15,7 @@ class ProductList extends Component {
         super(props);
         this.onSelect = this.onSelect.bind(this);
         this.handleChangePage = this.handleChangePage.bind(this);
+        this.handleKeyDown = this.handleKeyDown.bind(this);
         this.state = {
             page:1
         }
@@ -28,6 +29,14 @@ class ProductList extends Component {
     onSelect(e){
         e.preventDefault();
         this.props.setActive(e.target.id);
+    }
+    handleKeyDown(e){
+        if(e.keyCode === 39){
+            this.handleChangePage(true);
+        }
+        else if(e.keyCode === 37){
+            this.handleChangePage(false);
+        }
     }
     handleChangePage(forward){
         const max = Object.keys(this.props.items).length/8;
@@ -85,7 +94,7 @@ class ProductList extends Component {
      */
   render() {
     return (
-      <div className="product_list_container" >
+      <div className="product_list_container" tabIndex="1" onKeyDown={this.handleKeyDown}>
           <div className="text-center">
               <Button onClick={()=>this.handleChangePage(false)}>{"<"} </Button>
               <Button onClick={()=>this.handleChangePage(true)}> > </Button>

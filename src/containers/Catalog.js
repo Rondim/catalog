@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Grid,Row,Col } from 'react-bootstrap';
-import { connect } from 'react-redux'
-import * as actions from '../actions'
+import { connect } from 'react-redux';
+import * as actions from '../actions';
 
 import CatalogSidebar from '../components/CatalogSidebar';
 import ProductList from '../components/ProductList';
