@@ -12,16 +12,27 @@ export default class Cells extends Component {
         this.handlerDragStart=this.handlerDragStart.bind(this);
         this.handlerDragStop=this.handlerDragStop.bind(this);
         this.preventDefault=this.preventDefault.bind(this);
+        this.state = {
+            i:false,
+            j:false,
+            cells:this.props.cells
+        }
     }
-    handlerDragStart(e){
-        console.log("DragStart");
+    handlerDragStart(i,j){
+        this.setState({i,j});
     }
     preventDefault(e){
         e.preventDefault();
     }
-    handlerDragStop(e){
+    handlerDragStop(e,i,j){
         e.preventDefault();
-        console.log("Drop");
+        this.setState((prevState) => {
+            let cells = prevState.cells;
+            const tmp = cells[prevState.i][prevState.j];
+            cells[prevState.i][prevState.j]=cells[i][j];
+            cells[i][j]=tmp;
+            return{cells,i:false,j:false}
+        });
     }
     renderTr(i){
         const j0=this.props.j0;
@@ -39,12 +50,12 @@ export default class Cells extends Component {
                 <td
                     key={i+'-'+j}
                     draggable="true"
-                    onDragStart={this.handlerDragStart}
-                    onDrop={this.handlerDragStop}
+                    onDragStart={()=>this.handlerDragStart(i,j)}
+                    onDrop={(e)=>this.handlerDragStop(e,i,j)}
                     onDragOver={this.preventDefault}
                 >
 
-                <Cell url={this.props.cells[i][j].url} id={this.props.cells[i][j].id}/>
+                <Cell url={this.state.cells[i][j].url} id={this.state.cells[i][j].id}/>
             </td>);
         }
         return out;
