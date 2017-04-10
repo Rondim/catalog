@@ -5,7 +5,7 @@ import React, { Component } from 'react';
 import Cell from './Cell'
 
 const leter = ["A","B","C","D","E","F","G", "H","I", "J", "K", "L", "M", "N","O", "P", "Q", "R", "S", "T","U", "V", "W", "X", "Y", "Z"];
-
+const free={item:{url:""},id:false};
 export default class Cells extends Component {
     constructor(props){
         super(props);
@@ -16,7 +16,7 @@ export default class Cells extends Component {
             i:false,
             j:false,
             cells:this.props.cells
-        }
+        };
     }
     handlerDragStart(i,j){
         this.setState({i,j});
@@ -34,6 +34,15 @@ export default class Cells extends Component {
             return{cells,i:false,j:false}
         });
     }
+    renderTbody(){
+        const i0=this.props.i0;
+        const di=this.props.di;
+        let out = [<tr key="zero">{this.renderTr("letter")}</tr>];
+        for(let i=i0;i<i0+di;i++){
+            out.push(<tr key={i}>{this.renderTr(i)}</tr>);
+        }
+        return out;
+    }
     renderTr(i){
         const j0=this.props.j0;
         const dj=this.props.dj;
@@ -44,8 +53,10 @@ export default class Cells extends Component {
             }
             return out;
         }
+        let tr = this.state.cells[i]!==undefined ? this.state.cells[i] : [];
         let out=[<td key={i}>{i}</td>];
         for(let j=j0;j<j0+dj;j++){
+            const cell = tr[j] ? tr[j] : free;
             out.push(
                 <td
                     key={i+'-'+j}
@@ -55,17 +66,8 @@ export default class Cells extends Component {
                     onDragOver={this.preventDefault}
                 >
 
-                <Cell url={this.state.cells[i][j].url} id={this.state.cells[i][j].id}/>
+                <Cell url={cell.item.url} id={cell.id}/>
             </td>);
-        }
-        return out;
-    }
-    renderTbody(){
-        const i0=this.props.i0;
-        const di=this.props.di;
-        let out = [<tr key="zero">{this.renderTr("letter")}</tr>];
-        for(let i=i0;i<i0+di;i++){
-            out.push(<tr key={i}>{this.renderTr(i)}</tr>);
         }
         return out;
     }

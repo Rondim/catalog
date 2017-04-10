@@ -12,3 +12,5 @@ export const UNAUTH_USER='unauth_user';
 export const FETCH_ITEM_LIST='fetch_item_list';
 export const MARK_ACTIVE='mark_active';
 export const UPDATE_ITEM='update_item';
+export const FETCH_ITEM_CELLS='fetch_item_cells';
+export const LOAD_CELLS='load_cells';

@@ -13,12 +13,13 @@ class DragAndDropCells extends Component {
         this.handleKeyDown = this.handleKeyDown.bind(this);
         this.state={
             i0: this.props.Cells.i0,
-            j0: this.props.Cells.j0,
-            list: this.props.Cells.list
+            j0: this.props.Cells.j0
         }
     }
+    componentWillUpdate(){
+        this.props.fetchCells();
+    }
     handleKeyDown(e){
-        console.log(this.props.Cells.list[0].length);
         if(e.keyCode === 39){
             this.setState((prevState) => {
                 return{j0:prevState.j0+1}
@@ -51,7 +52,7 @@ class DragAndDropCells extends Component {
                 <Grid>
                     <Row className="show-grid">
                         <Col lg={6} md={6} xs={6}>
-                            <Cells i0={this.state.i0} j0={this.state.j0} di={this.props.Cells.di}  dj={this.props.Cells.dj} cells={this.state.list}/>
+                            <Cells i0={this.state.i0} j0={this.state.j0} di={this.props.Cells.di}  dj={this.props.Cells.dj} cells={this.props.Cells.list}/>
                         </Col>
                     </Row>
                 </Grid>

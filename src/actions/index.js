@@ -10,7 +10,9 @@ import {
     FILTER_RESET,
     FETCH_ITEM_LIST,
     MARK_ACTIVE,
-    UPDATE_ITEM
+    UPDATE_ITEM,
+    FETCH_ITEM_CELLS,
+    LOAD_CELLS
 } from './types';
 import {hashHistory} from 'react-router';
 import {obj_cross} from './functions/objects_crossing';
@@ -239,3 +241,58 @@ export function mark(key,type) {
             }, err => console.log('Filters fetch error'));
     };
 }
+
+
+
+//Start D&DCells
+export function fetchCells() {
+    return function (dispatch,getState) {
+        const uid = getState().auth.authenticated;
+        const {activeCells} = getState().cells;
+        if(uid&&!activeCells){
+            firebaseDB.ref(`/users/${uid}/cells`).once('value')
+                .then(snapshot => {
+                    if(snapshot.val()){
+                        const key = Object.keys(snapshot.val())[0];
+                        dispatch({
+                            type: FETCH_ITEM_CELLS,
+                            payload: key
+                        });
+                        firebaseDB.ref(`/cells/${key}`).once('value')
+                            .then((snapshot) => {
+                                const cellsDb=snapshot.val();
+                                Object.keys(cellsDb).forEach(cellId=>{
+                                    const i  = cellsDb[cellId].i;
+                                    const j  = cellsDb[cellId].j;
+                                    const itemId = cellsDb[cellId].item;
+                                    firebaseDB.ref(`/main/${itemId}`).once('value')
+                                        .then((snapshot) => {
+                                            const cell={
+                                                id: cellId,
+                                                item:snapshot.val()
+                                            };
+                                            dispatch({
+                                                type: LOAD_CELLS,
+                                                payload: {cell,i,j}
+                                            });
+                                        });
+                                });
+                            }, err => console.log(err));
+                    }
+                    else {
+                        const key = firebaseDB.ref().child(`/cells`).push().key;
+                        let updates = {};
+                        updates[`/users/${uid}/cells/${key}`] = true;
+                        firebaseDB.ref().update(updates);
+                        dispatch({
+                            type: FETCH_ITEM_CELLS,
+                            payload: key
+                        });
+                    }
+                }, err => console.log(err));
+        }
+    }
+}
+
+
+//End D&DCells
