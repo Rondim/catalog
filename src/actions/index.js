@@ -12,7 +12,8 @@ import {
     MARK_ACTIVE,
     UPDATE_ITEM,
     FETCH_ITEM_CELLS,
-    LOAD_CELLS
+    LOAD_CELLS,
+    UPDATE_CELLS
 } from './types';
 import {hashHistory} from 'react-router';
 import {obj_cross} from './functions/objects_crossing';
@@ -267,10 +268,11 @@ export function fetchCells() {
                                     const itemId = cellsDb[cellId].item;
                                     firebaseDB.ref(`/main/${itemId}`).once('value')
                                         .then((snapshot) => {
-                                            const cell={
+                                            let cell={
                                                 id: cellId,
                                                 item:snapshot.val()
                                             };
+                                            cell.item.id = itemId;
                                             dispatch({
                                                 type: LOAD_CELLS,
                                                 payload: {cell,i,j}
@@ -294,5 +296,24 @@ export function fetchCells() {
     }
 }
 
+export function copyCell(item,i,j){
+    return function (dispatch, getState) {
+        const {activeCells} = getState().cells;
+        let {id} = getState().cells.list[i][j];
+        if(!id||id===null){
+            id = firebaseDB.ref().child(`/cells/${activeCells}`).push().key;
+            dispatch({
+                type: UPDATE_CELLS,
+                payload: {id,i,j}
+            });
+        }
+        console.log(id);
+        let updates = {};
+        updates[`/cells/${activeCells}/${id}/item`] = item;
+        updates[`/cells/${activeCells}/${id}/i`] = i;
+        updates[`/cells/${activeCells}/${id}/j`] = j;
+        firebaseDB.ref().update(updates);
+    }
+}
 
 //End D&DCells

@@ -118,3 +118,8 @@ td{
 .complited img{
     opacity: 0.5;
 }
+.cell{
+    width: 140px;
+    height: 140px;
+    padding: 0;
+}

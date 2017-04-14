@@ -14,3 +14,4 @@ export const MARK_ACTIVE='mark_active';
 export const UPDATE_ITEM='update_item';
 export const FETCH_ITEM_CELLS='fetch_item_cells';
 export const LOAD_CELLS='load_cells';
+export const UPDATE_CELLS='update_cells';

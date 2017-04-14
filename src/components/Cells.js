@@ -5,7 +5,7 @@ import React, { Component } from 'react';
 import Cell from './Cell'
 
 const leter = ["A","B","C","D","E","F","G", "H","I", "J", "K", "L", "M", "N","O", "P", "Q", "R", "S", "T","U", "V", "W", "X", "Y", "Z"];
-const free={item:{url:""},id:false};
+const free={item:{url:""},id:null};
 export default class Cells extends Component {
     constructor(props){
         super(props);
@@ -26,13 +26,24 @@ export default class Cells extends Component {
     }
     handlerDragStop(e,i,j){
         e.preventDefault();
-        this.setState((prevState) => {
-            let cells = prevState.cells;
-            const tmp = cells[prevState.i][prevState.j];
-            cells[prevState.i][prevState.j]=cells[i][j];
-            cells[i][j]=tmp;
-            return{cells,i:false,j:false}
-        });
+        if(e.altKey){
+            this.setState((prevState) => {
+                let cells = prevState.cells;
+                cells[i][j]=cells[prevState.i][prevState.j];
+                cells[i][j].id=null;
+                this.props.handleCopy(cells[prevState.i][prevState.j].item.id,i,j);
+                return{cells,i:false,j:false}
+            });
+        }
+        else{
+            this.setState((prevState) => {
+                let cells = prevState.cells;
+                const tmp = cells[prevState.i][prevState.j];
+                cells[prevState.i][prevState.j]=cells[i][j];
+                cells[i][j]=tmp;
+                return{cells,i:false,j:false}
+            });
+        }
     }
     renderTbody(){
         const i0=this.props.i0;
@@ -64,6 +75,7 @@ export default class Cells extends Component {
                     onDragStart={()=>this.handlerDragStart(i,j)}
                     onDrop={(e)=>this.handlerDragStop(e,i,j)}
                     onDragOver={this.preventDefault}
+                    className="cell"
                 >
 
                 <Cell url={cell.item.url} id={cell.id}/>

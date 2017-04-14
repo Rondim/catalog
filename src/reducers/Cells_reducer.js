@@ -10,7 +10,7 @@
  * @param dj - количество столбцов
  * @type {{i0: number, j0: number, di: number, dj: number}}
  */
-import { FETCH_ITEM_CELLS, LOAD_CELLS } from '../actions/types';
+import { FETCH_ITEM_CELLS, LOAD_CELLS, UPDATE_CELLS } from '../actions/types';
 const free={item:{url:""},id:false};
 let initialList = [];
 for(let n=0; n < 100; n++){
@@ -31,10 +31,15 @@ const cellsReducer = (state=initialState, action) => {
         case FETCH_ITEM_CELLS:
             return {...state, activeCells: action.payload};
         case LOAD_CELLS:
-            const i = action.payload.i;
-            const j = action.payload.j;
+            const {i} = action.payload;
+            const {j} = action.payload;
             list[i][j] = action.payload.cell;
-            return {...state, list}
+            return {...state, list};
+        case UPDATE_CELLS:
+            const iu = action.payload.i;
+            const ju = action.payload.j;
+            list[iu][ju].id = action.payload.id;
+            return{...state, list}
     }
     return state;
 };

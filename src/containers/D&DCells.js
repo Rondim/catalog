@@ -52,7 +52,14 @@ class DragAndDropCells extends Component {
                 <Grid>
                     <Row className="show-grid">
                         <Col lg={6} md={6} xs={6}>
-                            <Cells i0={this.state.i0} j0={this.state.j0} di={this.props.Cells.di}  dj={this.props.Cells.dj} cells={this.props.Cells.list}/>
+                            <Cells
+                                i0={this.state.i0}
+                                j0={this.state.j0}
+                                di={this.props.Cells.di}
+                                dj={this.props.Cells.dj}
+                                cells={this.props.Cells.list}
+                                handleCopy={this.props.copyCell}
+                            />
                         </Col>
                     </Row>
                 </Grid>
