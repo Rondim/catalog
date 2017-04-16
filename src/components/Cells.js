@@ -38,7 +38,6 @@ export default class Cells extends Component {
             if(cells[prevState.i][prevState.j].id){
                 if(copy) {
                     cells[i][j] = cells[prevState.i][prevState.j];
-                    cells[i][j].id = null;
                     this.props.handleCopy(cells[prevState.i][prevState.j].item.id, i, j);
                     return {cells, i: false, j: false}
                 }
