@@ -13,7 +13,8 @@ import {
     UPDATE_ITEM,
     FETCH_ITEM_CELLS,
     LOAD_CELLS,
-    UPDATE_CELLS
+    UPDATE_CELLS,
+    REMOVE_CELL
 } from './types';
 import {hashHistory} from 'react-router';
 import {obj_cross} from './functions/objects_crossing';
@@ -299,21 +300,49 @@ export function fetchCells() {
 export function copyCell(item,i,j){
     return function (dispatch, getState) {
         const {activeCells} = getState().cells;
-        let {id} = getState().cells.list[i][j];
+        let id = !!getState().cells.list[i][j]?getState().cells.list[i][j].id:null;
         if(!id||id===null){
-            id = firebaseDB.ref().child(`/cells/${activeCells}`).push().key;
+            id = initCell(activeCells,i,j);
             dispatch({
                 type: UPDATE_CELLS,
-                payload: {id,i,j}
+                payload: {id,i,j,item}
             });
         }
-        console.log(id);
-        let updates = {};
-        updates[`/cells/${activeCells}/${id}/item`] = item;
-        updates[`/cells/${activeCells}/${id}/i`] = i;
-        updates[`/cells/${activeCells}/${id}/j`] = j;
-        firebaseDB.ref().update(updates);
+        pushItemToCell(activeCells,id,item);
     }
 }
+export function removeCell(id,i,j){
+    return function (dispatch, getState) {
+        const {activeCells} = getState().cells;
+        console.log(id);
+        firebaseDB.ref(`/cells/${activeCells}/${id}`).remove()
+            .then(() =>{
+                dispatch({
+                    type: REMOVE_CELL,
+                    payload: {i,j}
+                });
+            });
+    }
+}
+//Инициалируем компоненту высавляем координаты
+function initCell(activeCells, i,j){
+    const id = firebaseDB.ref().child(`/cells/${activeCells}`).push().key;
+    let updates = {};
+    updates[`/cells/${activeCells}/${id}/i`] = i;
+    updates[`/cells/${activeCells}/${id}/j`] = j;
+    firebaseDB.ref().update(updates);
+    return id;
+}
+//Записываем item в Cell
+function pushItemToCell(activeCells, key, item) {
+    let updates = {};
+    updates[`/cells/${activeCells}/${key}/item`] = item;
+    firebaseDB.ref().update(updates);
+}
+/*
+//Записываем instance в Cell
+function pushInstanceToCell(activeCells,key, cell) {
 
+}
+ */
 //End D&DCells

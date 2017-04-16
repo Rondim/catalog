@@ -59,6 +59,7 @@ class DragAndDropCells extends Component {
                                 dj={this.props.Cells.dj}
                                 cells={this.props.Cells.list}
                                 handleCopy={this.props.copyCell}
+                                handleRemove={this.props.removeCell}
                             />
                         </Col>
                     </Row>
