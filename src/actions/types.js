@@ -16,3 +16,5 @@ export const FETCH_ITEM_CELLS='fetch_item_cells';
 export const LOAD_CELLS='load_cells';
 export const UPDATE_CELLS='update_cells';
 export const REMOVE_CELL='remove_cell';
+export const SET_ACTIVE_CELL='set_active_cell';
+export const RESET_ACTIVE_CELL='reset_active_cell';

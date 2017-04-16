@@ -123,3 +123,8 @@ td{
     height: 140px;
     padding: 0;
 }
+.active{
+    border-color: blue;
+    border-style: solid;
+    border-width: 2px;
+}

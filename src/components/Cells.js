@@ -12,11 +12,17 @@ export default class Cells extends Component {
         this.handlerDragStart=this.handlerDragStart.bind(this);
         this.handlerDragStop=this.handlerDragStop.bind(this);
         this.preventDefault=this.preventDefault.bind(this);
+        this.handlerSelect=this.handlerSelect.bind(this);
         this.state = {
             i:false,
             j:false,
             cells:this.props.cells
         };
+    }
+    handlerSelect(e,i,j){
+        e.preventDefault();
+        if (!e.ctrlKey && !e.shiftKey ) this.props.handleResetSelected(i,j);
+        this.props.handleSelect(i,j);
     }
     handlerDragStart(i,j){
         this.setState({i,j});
@@ -76,13 +82,14 @@ export default class Cells extends Component {
                 <td
                     key={i+'-'+j}
                     draggable={!!cell.id}
-                    onDragStart={()=>this.handlerDragStart(i,j)}
+                    onDragStart={() => this.handlerDragStart(i,j)}
                     onDrop={(e)=>this.handlerDragStop(e,i,j)}
                     onDragOver={this.preventDefault}
+                    onClick={cell.id?(e) => this.handlerSelect(e,i,j):false}
                     className="cell"
                 >
 
-                <Cell url={cell.item.url} id={cell.id}/>
+                <Cell url={cell.item.url} id={cell.id} active={cell.active}/>
             </td>);
         }
         return out;

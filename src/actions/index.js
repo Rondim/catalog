@@ -14,7 +14,9 @@ import {
     FETCH_ITEM_CELLS,
     LOAD_CELLS,
     UPDATE_CELLS,
-    REMOVE_CELL
+    REMOVE_CELL,
+    SET_ACTIVE_CELL,
+    RESET_ACTIVE_CELL
 } from './types';
 import {hashHistory} from 'react-router';
 import {obj_cross} from './functions/objects_crossing';
@@ -345,4 +347,25 @@ function pushInstanceToCell(activeCells,key, cell) {
 
 }
  */
+export function setActiveCell(i,j){
+    return function (dispatch, getState) {
+        const active = !getState().cells.list[i][j].active;
+        dispatch({
+            type:SET_ACTIVE_CELL,
+            payload: {i, j, active}
+        })
+    }
+}
+export function resetActiveCells(i,j){
+    return function (dispatch, getState){
+        const active = getState().cells.active;
+
+        if(active.length !== 1 || (active[0].i!==i || active[0].j!==j)) {
+            dispatch({
+                type: RESET_ACTIVE_CELL,
+                payload: active
+            });
+        }
+    }
+}
 //End D&DCells

@@ -51,7 +51,7 @@ class DragAndDropCells extends Component {
             <div className="container" tabIndex="0" onKeyDown={this.handleKeyDown}>
                 <Grid>
                     <Row className="show-grid">
-                        <Col lg={6} md={6} xs={6}>
+                        <Col lg={12} md={12} xs={12}>
                             <Cells
                                 i0={this.state.i0}
                                 j0={this.state.j0}
@@ -60,6 +60,8 @@ class DragAndDropCells extends Component {
                                 cells={this.props.Cells.list}
                                 handleCopy={this.props.copyCell}
                                 handleRemove={this.props.removeCell}
+                                handleSelect={this.props.setActiveCell}
+                                handleResetSelected={this.props.resetActiveCells}
                             />
                         </Col>
                     </Row>
