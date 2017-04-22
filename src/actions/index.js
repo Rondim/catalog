@@ -316,7 +316,6 @@ export function copyCell(item,i,j){
 export function removeCell(id,i,j){
     return function (dispatch, getState) {
         const {activeCells} = getState().cells;
-        console.log(id);
         firebaseDB.ref(`/cells/${activeCells}/${id}`).remove()
             .then(() =>{
                 dispatch({
@@ -349,11 +348,13 @@ function pushInstanceToCell(activeCells,key, cell) {
  */
 export function setActiveCell(i,j){
     return function (dispatch, getState) {
-        const active = !getState().cells.list[i][j].active;
-        dispatch({
-            type:SET_ACTIVE_CELL,
-            payload: {i, j, active}
-        })
+        if(getState().cells.list[i][j]!==undefined) {
+            const active = !getState().cells.list[i][j].active;
+            dispatch({
+                type: SET_ACTIVE_CELL,
+                payload: {i, j, active}
+            });
+        }
     }
 }
 export function resetActiveCells(i,j){

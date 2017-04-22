@@ -22,7 +22,35 @@ export default class Cells extends Component {
     handlerSelect(e,i,j){
         e.preventDefault();
         if (!e.ctrlKey && !e.shiftKey ) this.props.handleResetSelected(i,j);
-        this.props.handleSelect(i,j);
+        if(e.shiftKey){
+            let iMin = false;
+            let jMin = false;
+            this.props.active.forEach(coord => {
+                const ia = coord.i;
+                const ja = coord.j;
+                if(iMin===false&&jMin===false){
+                    iMin = ia;
+                    jMin = ja;
+                }
+                iMin = iMin>ia ? ia : iMin;
+                jMin = jMin>ja ? ja : jMin;
+            });
+            this.props.handleResetSelected(i,j);
+            const nMin = iMin<i ? iMin: i;
+            const nMax = iMin<i ? i: iMin;
+            const mMin = jMin<j ? jMin: j;
+            const mMax = jMin<j ? j: jMin;
+            /*this.props.handleSelect(nMin,mMin);
+            this.props.handleSelect(nMax,mMax);*/
+            for(let n=nMin; n<=nMax; n++){
+                for(let m=mMin; m<=mMax; m++){
+                        this.props.handleSelect(n,m);
+                }
+            }
+        }
+        else{
+            this.props.handleSelect(i,j);
+        }
     }
     handlerDragStart(i,j){
         this.setState({i,j});
@@ -38,7 +66,11 @@ export default class Cells extends Component {
                 let cells = prevState.cells;
                 if(cells[prevState.i][prevState.j].id){
                     if(copy) {
-                        cells[i][j] = cells[prevState.i][prevState.j];
+                        cells[i][j]={
+                            item: cells[prevState.i][prevState.j].item,
+                            active: false,
+                            id: null
+                        };
                         this.props.handleCopy(cells[prevState.i][prevState.j].item.id, i, j);
                         return {cells, i: false, j: false}
                     }
@@ -87,6 +119,7 @@ export default class Cells extends Component {
                     onDrop={(e)=>this.handlerDragStop(e,i,j)}
                     onDragOver={this.preventDefault}
                     onClick={cell.id?(e) => this.handlerSelect(e,i,j):false}
+                    onContextMenu={cell.id?(e) => this.handlerSelect(e,i,j):false}
                     className="cell"
                 >
 

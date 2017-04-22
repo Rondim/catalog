@@ -41,7 +41,6 @@ const cellsReducer = (state=initialState, action) => {
             const ju = action.payload.j;
             list[iu][ju]=list[iu][ju]?list[iu][ju]:{};
             list[iu][ju].id = action.payload.id;
-            list[iu][ju].item = action.payload.item;
             return{...state, list};
         case REMOVE_CELL:
             const ir = action.payload.i;
