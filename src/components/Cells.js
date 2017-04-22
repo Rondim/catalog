@@ -40,8 +40,6 @@ export default class Cells extends Component {
             const nMax = iMin<i ? i: iMin;
             const mMin = jMin<j ? jMin: j;
             const mMax = jMin<j ? j: jMin;
-            /*this.props.handleSelect(nMin,mMin);
-            this.props.handleSelect(nMax,mMax);*/
             for(let n=nMin; n<=nMax; n++){
                 for(let m=mMin; m<=mMax; m++){
                         this.props.handleSelect(n,m);
@@ -62,30 +60,47 @@ export default class Cells extends Component {
         e.preventDefault();
         const copy = !!e.altKey;
         if(this.props.active.length<2){
-            this.setState((prevState) => {
-                let cells = prevState.cells;
-                if(cells[prevState.i][prevState.j].id){
-                    if(copy) {
-                        cells[i][j]={
-                            item: cells[prevState.i][prevState.j].item,
-                            active: false,
-                            id: null
-                        };
-                        this.props.handleCopy(cells[prevState.i][prevState.j].item.id, i, j);
-                        return {cells, i: false, j: false}
-                    }
-                    else{
-                        this.props.handleCopy(cells[prevState.i][prevState.j].item.id, i, j);
-                        if(cells[i][j].item&&cells[i][j].item.id&&cells[i][j].id!==null) this.props.handleCopy(cells[i][j].item.id, prevState.i, prevState.j);
-                        else this.props.handleRemove(cells[prevState.i][prevState.j].id, prevState.i, prevState.j);
-                        const tmp = cells[prevState.i][prevState.j];
-                        cells[prevState.i][prevState.j] = cells[i][j];
-                        cells[i][j] = tmp;
-                        return {cells, i: false, j: false}
-                    }
+            this.action(copy,i,j);
+        }
+        else{
+            let iMin = false;
+            let jMin = false;
+            this.props.active.forEach(coord => {
+                const ia = coord.i;
+                const ja = coord.j;
+                if(iMin===false&&jMin===false){
+                    iMin = ia;
+                    jMin = ja;
                 }
+                iMin = iMin>ia ? ia : iMin;
+                jMin = jMin>ja ? ja : jMin;
             });
         }
+    }
+    action(copy,i,j){
+        this.setState((prevState) => {
+            let cells = prevState.cells;
+            if(cells[prevState.i][prevState.j].id){
+                if(copy) {
+                    cells[i][j]={
+                        item: cells[prevState.i][prevState.j].item,
+                        active: false,
+                        id: null
+                    };
+                    this.props.handleCopy(cells[prevState.i][prevState.j].item.id, i, j);
+                    return {cells, i: false, j: false}
+                }
+                else{
+                    this.props.handleCopy(cells[prevState.i][prevState.j].item.id, i, j);
+                    if(cells[i][j].item&&cells[i][j].item.id&&cells[i][j].id!==null) this.props.handleCopy(cells[i][j].item.id, prevState.i, prevState.j);
+                    else this.props.handleRemove(cells[prevState.i][prevState.j].id, prevState.i, prevState.j);
+                    const tmp = cells[prevState.i][prevState.j];
+                    cells[prevState.i][prevState.j] = cells[i][j];
+                    cells[i][j] = tmp;
+                    return {cells, i: false, j: false}
+                }
+            }
+        });
     }
     renderTbody(){
         const i0=this.props.i0;
@@ -109,8 +124,8 @@ export default class Cells extends Component {
         let tr = this.state.cells[i]!==undefined ? this.state.cells[i] : [];
         let out=[<td key={i}>{i}</td>];
         for(let j=j0;j<j0+dj;j++){
-            const cell = tr[j] ? tr[j] : free;
-            //console.log(cell,i,j);
+            let cell = tr[j] ? tr[j] : free;
+            cell.item = cell.item===undefined ? {url:''} : cell.item;
             out.push(
                 <td
                     key={i+'-'+j}

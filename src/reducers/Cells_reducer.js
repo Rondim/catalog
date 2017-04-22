@@ -60,7 +60,6 @@ const cellsReducer = (state=initialState, action) => {
                     }
                 });
             }
-            console.log(active);
             return {...state, active, list};
         case RESET_ACTIVE_CELL:
             const activeOld = action.payload;
