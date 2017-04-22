@@ -33,25 +33,27 @@ export default class Cells extends Component {
     handlerDragStop(e,i,j){
         e.preventDefault();
         const copy = !!e.altKey;
-        this.setState((prevState) => {
-            let cells = prevState.cells;
-            if(cells[prevState.i][prevState.j].id){
-                if(copy) {
-                    cells[i][j] = cells[prevState.i][prevState.j];
-                    this.props.handleCopy(cells[prevState.i][prevState.j].item.id, i, j);
-                    return {cells, i: false, j: false}
+        if(this.props.active.length<2){
+            this.setState((prevState) => {
+                let cells = prevState.cells;
+                if(cells[prevState.i][prevState.j].id){
+                    if(copy) {
+                        cells[i][j] = cells[prevState.i][prevState.j];
+                        this.props.handleCopy(cells[prevState.i][prevState.j].item.id, i, j);
+                        return {cells, i: false, j: false}
+                    }
+                    else{
+                        this.props.handleCopy(cells[prevState.i][prevState.j].item.id, i, j);
+                        if(cells[i][j].item&&cells[i][j].item.id&&cells[i][j].id!==null) this.props.handleCopy(cells[i][j].item.id, prevState.i, prevState.j);
+                        else this.props.handleRemove(cells[prevState.i][prevState.j].id, prevState.i, prevState.j);
+                        const tmp = cells[prevState.i][prevState.j];
+                        cells[prevState.i][prevState.j] = cells[i][j];
+                        cells[i][j] = tmp;
+                        return {cells, i: false, j: false}
+                    }
                 }
-                else{
-                    this.props.handleCopy(cells[prevState.i][prevState.j].item.id, i, j);
-                    if(cells[i][j].item&&cells[i][j].item.id&&cells[i][j].id!==null) this.props.handleCopy(cells[i][j].item.id, prevState.i, prevState.j);
-                    else this.props.handleRemove(cells[prevState.i][prevState.j].id, prevState.i, prevState.j);
-                    const tmp = cells[prevState.i][prevState.j];
-                    cells[prevState.i][prevState.j] = cells[i][j];
-                    cells[i][j] = tmp;
-                    return {cells, i: false, j: false}
-                }
-            }
-        });
+            });
+        }
     }
     renderTbody(){
         const i0=this.props.i0;

@@ -58,6 +58,7 @@ class DragAndDropCells extends Component {
                                 di={this.props.Cells.di}
                                 dj={this.props.Cells.dj}
                                 cells={this.props.Cells.list}
+                                active={this.props.Cells.active}
                                 handleCopy={this.props.copyCell}
                                 handleRemove={this.props.removeCell}
                                 handleSelect={this.props.setActiveCell}
