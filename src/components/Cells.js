@@ -60,7 +60,11 @@ export default class Cells extends Component {
         e.preventDefault();
         const copy = !!e.altKey;
         if(this.props.active.length<2){
-            this.action(copy,i,j);
+            this.setState((prevState) => {
+                let cells = prevState.cells;
+                cells = this.action(prevState.i,prevState.j,i,j,copy,cells);
+                return {cells, i: false, j: false}
+            });
         }
         else{
             let iMin = false;
@@ -75,32 +79,38 @@ export default class Cells extends Component {
                 iMin = iMin>ia ? ia : iMin;
                 jMin = jMin>ja ? ja : jMin;
             });
+            this.props.active.forEach(coord => {
+                const n = coord.i;
+                const m = coord.j;
+                this.setState((prevState) => {
+                    let cells = prevState.cells;
+                    cells = this.action(n,m,i+n-iMin,j+m-jMin,copy,cells);
+                    return {cells, i: false, j: false}
+                });
+            });
         }
     }
-    action(copy,i,j){
-        this.setState((prevState) => {
-            let cells = prevState.cells;
-            if(cells[prevState.i][prevState.j].id){
-                if(copy) {
-                    cells[i][j]={
-                        item: cells[prevState.i][prevState.j].item,
-                        active: false,
-                        id: null
-                    };
-                    this.props.handleCopy(cells[prevState.i][prevState.j].item.id, i, j);
-                    return {cells, i: false, j: false}
-                }
-                else{
-                    this.props.handleCopy(cells[prevState.i][prevState.j].item.id, i, j);
-                    if(cells[i][j].item&&cells[i][j].item.id&&cells[i][j].id!==null) this.props.handleCopy(cells[i][j].item.id, prevState.i, prevState.j);
-                    else this.props.handleRemove(cells[prevState.i][prevState.j].id, prevState.i, prevState.j);
-                    const tmp = cells[prevState.i][prevState.j];
-                    cells[prevState.i][prevState.j] = cells[i][j];
-                    cells[i][j] = tmp;
-                    return {cells, i: false, j: false}
-                }
+    action(iOld,jOld,i,j,copy,cells){
+        if(cells[iOld][jOld].id){
+            if(copy) {
+                cells[i][j]={
+                    item: cells[iOld][jOld].item,
+                    active: false,
+                    id: null
+                };
+                this.props.handleCopy(cells[iOld][jOld].item.id, i, j);
+                return cells;
             }
-        });
+            else{
+                this.props.handleCopy(cells[iOld][jOld].item.id, i, j);
+                if(cells[i][j].item&&cells[i][j].item.id&&cells[i][j].id!==null) this.props.handleCopy(cells[i][j].item.id, iOld, jOld);
+                else this.props.handleRemove(cells[iOld][jOld].id, iOld, jOld);
+                const tmp = cells[iOld][jOld];
+                cells[iOld][jOld] = cells[i][j];
+                cells[i][j] = tmp;
+                return cells;
+            }
+        }
     }
     renderTbody(){
         const i0=this.props.i0;

@@ -44,6 +44,14 @@ class DragAndDropCells extends Component {
                 return{i0:prevState.i0+1}
             });
         }
+        else if(e.keyCode===8||e.keyCode===46){
+            this.props.Cells.active.forEach(coord => {
+                const i = coord.i;
+                const j = coord.j;
+                const id = this.props.Cells.list[i][j].id;
+                this.props.removeCell(id,i,j);
+            });
+        }
     }
     render(){
 
