@@ -5,7 +5,6 @@ describe('SidebarMenuPopup', () => {
   let component, props;
   beforeEach(() => {
     props = {
-      isPopupShow: true,
       multiSelection: true,
       filtersSelected: [],
       filters: [
@@ -17,10 +16,10 @@ describe('SidebarMenuPopup', () => {
     component = renderComponent(SidebarMenuPopup, props);
   });
   describe('rendering', () => {
-    it('has correct class', () => {
-      expect(component).to.have.class('sidebar-menu-popup');
+    it('should render', () => {
+      expect(component.get(0)).to.exist;
     });
-    it('renders filters not selected when Popup showed', () => {
+    it('renders filters not selected', () => {
       expect(component).to.contain('Серьги');
       expect(component).to.contain('Кольца');
       expect(component).to.contain('Браслеты');
@@ -34,11 +33,6 @@ describe('SidebarMenuPopup', () => {
       expect(component.find('button')[0].className).to.contain('primary');
       expect(component.find('button')[1].className).to.contain('primary');
       expect(component.find('button')[2].className).to.contain('default');
-    });
-    it('does not render filters when Popup not showed', () => {
-      props.isPopupShow = false,
-      component = renderComponent(SidebarMenuPopup, props);
-      expect(component.children().length).to.equal(0);
     });
   });
 
@@ -66,7 +60,7 @@ describe('SidebarMenuPopup', () => {
         filtersSelected: ['earrings'],
         handleFilterClick };
       component = renderComponent(SidebarMenuPopup, props);
-      component.children('.filter-button').eq(1).simulate('click');
+      component.children('button').eq(1).simulate('click');
       assert(handleFilterClick.calledWithMatch(['earrings', 'rings']));
     });
     it('unselect when clicked on previously selected', () => {
@@ -75,7 +69,7 @@ describe('SidebarMenuPopup', () => {
         filtersSelected: ['earrings', 'rings', 'bands'],
         handleFilterClick };
       component = renderComponent(SidebarMenuPopup, props);
-      component.children('.filter-button').eq(0).simulate('click');
+      component.children('button').eq(0).simulate('click');
       assert(handleFilterClick.calledWithMatch(['rings', 'bands']));
     });
   });
@@ -88,7 +82,7 @@ describe('SidebarMenuPopup', () => {
         filtersSelected: ['earrings'],
         handleFilterClick };
       component = renderComponent(SidebarMenuPopup, props);
-      component.children('.filter-button').eq(1).simulate('click');
+      component.children('button').eq(1).simulate('click');
       assert(handleFilterClick.calledWithMatch(['rings']));
     });
   });

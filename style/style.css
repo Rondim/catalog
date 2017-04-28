@@ -67,19 +67,28 @@
     opacity: 0;
     cursor: pointer
 }
+
+
+/* Sidebar styles */
+.sidebar-menu {
+
+}
 .negativeMargin, .sidebar-menu-popup {
     margin-left: -278px;
 }
-.disabled_button {
-  opacity: 0.5;
-}
-.selected_button {
-  background-color: #DDDDDD;
-}
-/* Потом это надо убрать и сделать двойную подменю фильтра */
-.subfilter, .filter-button {
+.subfilter, .sidebar-menu-popup-filter-button {
   font-size: 1em !important;
 }
+.sidebar-menu-button-disabled {
+  opacity: 0.5;
+}
+.sidebar-menu-button-selected {
+  background-color: #DDDDDD;
+}
+
+
+
+
 .error{
     color: red;
 }

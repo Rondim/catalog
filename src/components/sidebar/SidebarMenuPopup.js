@@ -3,7 +3,6 @@ import { Button } from 'react-bootstrap';
 
 /* Example of props
   props = {
-    isPopupShow: true,
     multiSelection: true,
     filtersSelected: ['earrings'],
     filters: [
@@ -38,7 +37,7 @@ export default class SidebarMenuPopup extends Component {
       return <Button
         key={filterId}
         bsStyle={ isSelected ? "primary" : "default" }
-        className="filter-button"
+        className="sidebar-menu-popup-filter-button"
         onClick={() => this.onClick(filterId, isSelected, props)}>
         {name}
       </Button>
@@ -46,13 +45,13 @@ export default class SidebarMenuPopup extends Component {
   }
   render() {
     const props = this.props;
-    const { isPopupShow, handleMouseEnter, handleMouseLeave } = props;
+    const { handleMouseEnter, handleMouseLeave } = props;
     return (<div
       role="group"
       className="btn-group-vertical btn-group-sm sidebar-menu-popup"
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}>
-      {isPopupShow && this.renderFilters(props)}
+      {this.renderFilters(props)}
     </div>);
   }
 }
