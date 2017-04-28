@@ -67,7 +67,7 @@
     opacity: 0;
     cursor: pointer
 }
-.negativeMargin {
+.negativeMargin, .sidebar-menu-popup {
     margin-left: -278px;
 }
 .disabled_button {
@@ -77,7 +77,7 @@
   background-color: #DDDDDD;
 }
 /* Потом это надо убрать и сделать двойную подменю фильтра */
-.subfilter {
+.subfilter, .filter-button {
   font-size: 1em !important;
 }
 .error{

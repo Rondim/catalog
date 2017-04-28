@@ -7,22 +7,10 @@ import ProductList from '../components/ProductList';
 import NewManagerSideBar from '../components/NewManagerSidebar';
 
 class Manager extends Component {
-    shouldComponentUpdate(nextProps){
-      if(nextProps.uid&&this.props.uid !== nextProps.uid){
-        return true;
-      }
-      if(this.props.ProductList.activeList !== nextProps.ProductList.activeList){
-        return true;
-      }
-      if(this.props.ProductList.items!==nextProps.ProductList.items){
-          return true;
-      }
-      return true;
-    }
   componentWillUpdate(nextProps){
-      if(nextProps.uid){
-          nextProps.fetchItemList();
-      }
+    if(nextProps.uid){
+        nextProps.fetchItemList();
+    }
   }
   render() {
     return (
@@ -43,7 +31,8 @@ class Manager extends Component {
 }
 
 function mapStateToProps(state) {
-    return { ProductList: state.ProductList,uid: state.auth.authenticated };
+    return { ProductList: state.ProductList,
+            uid: state.auth.authenticated };
 }
 
-export default connect(mapStateToProps,actions)(Manager);
+export default connect(mapStateToProps, actions)(Manager);

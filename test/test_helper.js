@@ -2,13 +2,14 @@ import jsdom from 'jsdom';
 import _$ from 'jquery';
 import TestUtils from 'react-addons-test-utils';
 import ReactDom from 'react-dom';
-import { expect } from 'chai';
+import { expect, assert } from 'chai';
 import React from 'react';
 import {Provider} from 'react-redux';
 import { createStore } from 'redux';
 import reducers from '../src/reducers';
 import chaiJquery from 'chai-jquery';
 import chai from 'chai';
+import sinon from 'sinon';
 
 //Set up testing environment to run like a browser in the command line
 global.document = jsdom.jsdom('<!doctype html><html><body></body></html>');
@@ -39,5 +40,4 @@ $.fn.simulate = function(eventName,value) {
 //Set up chai - jquery
 chaiJquery(chai,chai.util, $);
 
-
-export {renderComponent, expect};
+export { renderComponent, expect, assert, sinon };
