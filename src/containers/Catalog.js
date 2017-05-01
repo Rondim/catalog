@@ -3,8 +3,13 @@ import { Grid,Row,Col } from 'react-bootstrap';
 import { connect } from 'react-redux'
 import * as actions from '../actions'
 
+<<<<<<< Updated upstream:src/containers/Catalog.js
 import CatalogSidebar from '../components/CatalogSidebar';
 import ProductList from '../components/ProductList';
+=======
+import CatalogSidebar from '../containers/CatalogSidebar';
+import ProductList from '../containers/ProductListContainer';
+>>>>>>> Stashed changes:src/components/Catalog.js
 
 class Catalog extends Component {
     shouldComponentUpdate(nextProps){

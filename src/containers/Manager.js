@@ -3,8 +3,13 @@ import { Grid,Row,Col } from 'react-bootstrap';
 import { connect } from 'react-redux'
 import * as actions from '../actions'
 
+<<<<<<< Updated upstream:src/containers/Manager.js
 import ProductList from '../components/ProductList';
 import NewManagerSideBar from '../components/NewManagerSidebar';
+=======
+import ProductList from '../containers/ProductList';
+import NewManagerSideBar from '../containers/ManagerSidebar';
+>>>>>>> Stashed changes:src/components/Manager.js
 
 class Manager extends Component {
     shouldComponentUpdate(nextProps){
