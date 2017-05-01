@@ -21,14 +21,33 @@
 }
 
 /*PRODUCT LIST STYLES*/
-.product_list_container {
+.product_list_container,.cells_container {
   border: var(--border-default);
 }
-.product_list {
+.product_list,.cells {
   list-style-type: none;
   padding: 0;
 }
-
+.ratio-inner {
+    position: relative;
+    height: 0;
+    border: none;
+}
+.cells{
+    border-style: solid;
+    border-width: 1px;
+    border-collapse: collapse;
+}
+td{
+    border-style: solid;
+    border-width: 1px;
+}
+.cell{
+    padding-top: 16.67%;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
 /*SIDEBAR STYLES*/
 .catalog_sidebar, .manager_sidebar {
   border: var(--border-default);
@@ -107,3 +126,16 @@
 .complited img{
     opacity: 0.5;
 }
+<<<<<<< HEAD
+=======
+.cell{
+    width: 140px;
+    height: 140px;
+    padding: 0;
+}
+img.active{
+    border-color: blue;
+    border-style: solid;
+    border-width: 2px;
+}
+>>>>>>> origin/dev
