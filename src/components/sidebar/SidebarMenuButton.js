@@ -4,11 +4,15 @@ import { Button } from 'react-bootstrap';
 export default (props) => {
   const { filtersSelected, menuName, filters, isActive,
     handleMouseEnter, handleMouseLeave } = props;
+  const menuButtonClass = isActive ? getMenuButtonClass(filtersSelected)
+    : 'sidebar-menu-button-disabled';
+  const menuButtonText = isActive ? getMenuButtonText(filtersSelected, filters, menuName)
+    : menuName;
   return <Button
-    className={getMenuButtonClass(isActive, filtersSelected)}
-    onMouseEnter={handleMouseEnter}
-    onMouseLeave={handleMouseLeave}>
-    { getMenuButtonText(filtersSelected, filters, menuName) }
+    className={`sidebar-menu-button ${menuButtonClass}`}
+    onMouseEnter={isActive && handleMouseEnter}
+    onMouseLeave={isActive && handleMouseLeave}>
+    {menuButtonText}
   </Button>
 };
 
@@ -38,11 +42,9 @@ function getMenuButtonText(filtersSelected, filters, menuName) {
   return menuButtonText.substr(0, 20);
 }
 
-function getMenuButtonClass(isActive, filtersSelected) {
+function getMenuButtonClass(filtersSelected) {
   let menuButtonClass = '';
-  if (!isActive) {
-    menuButtonClass= 'sidebar-menu-button-disabled';
-  } else if (filtersSelected.length > 0) {
+  if (filtersSelected.length > 0) {
     menuButtonClass = 'sidebar-menu-button-selected';
   }
 

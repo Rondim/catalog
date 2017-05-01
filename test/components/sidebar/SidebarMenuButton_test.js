@@ -2,8 +2,11 @@ import { renderComponent, expect, assert, sinon } from '../../test_helper';
 import SidebarMenuButton from '../../../src/components/sidebar/SidebarMenuButton';
 
 describe('SidebarMenuButton', () => {
-  let component, props;
+  let component, props,
+  handleMouseEnter, handleMouseLeave;
   beforeEach(() => {
+    handleMouseEnter = sinon.spy();
+    handleMouseLeave = sinon.spy();
     props = {
       isActive: true,
       menuName: 'Тип изделия',
@@ -12,7 +15,9 @@ describe('SidebarMenuButton', () => {
         { name: 'Кольца', filterId: 'rings' },
         { name: 'Браслеты', filterId: 'bands' }
       ],
-      filtersSelected: []
+      filtersSelected: [],
+      handleMouseEnter,
+      handleMouseLeave
     };
     component = renderComponent(SidebarMenuButton, props);
   })
@@ -21,6 +26,9 @@ describe('SidebarMenuButton', () => {
     it('should render', () => {
       expect(component.get(0)).to.exist;
     })
+    it('has class sidebar-menu-button', () => {
+      expect(component).to.have.class('sidebar-menu-button');
+    });
     it('menu text when non selection', () => {
       expect(component).to.contain('Тип изделия');
     })
@@ -45,20 +53,26 @@ describe('SidebarMenuButton', () => {
       expect(component).to.have.class('sidebar-menu-button-selected');
     });
   });
-  describe('mouse enter and leave', () => {
-    it('should trigger handleMouseEnter when entered', () => {
-      const handleMouseEnter = sinon.spy();
-      props = { ...props, handleMouseEnter };
-      component = renderComponent(SidebarMenuButton, props);
+  describe('events', () => {
+    it('triggers handleMouseEnter when entered', () => {
       component.simulate('mouseEnter');
       assert(handleMouseEnter.called);
     });
-    it('should trigger handleMouseLeave when leave', () => {
-      const handleMouseLeave = sinon.spy();
-      props = { ...props, handleMouseLeave };
-      component = renderComponent(SidebarMenuButton, props);
+    it('triggers handleMouseLeave when leave', () => {
       component.simulate('mouseLeave');
       assert(handleMouseLeave.called);
+    });
+    it('not triggers handleMouseEnter when isActive false', () => {
+      props = {...props, isActive: false };
+      component = renderComponent(SidebarMenuButton, props);
+      component.simulate('mouseEnter');
+      assert(handleMouseEnter.notCalled);
+    });
+    it('not triggers handleMouseLeave when isActive false', () => {
+      props = {...props, isActive: false };
+      component = renderComponent(SidebarMenuButton, props);
+      component.simulate('mouseLeave');
+      assert(handleMouseLeave.notCalled);
     });
   });
 });

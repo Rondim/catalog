@@ -34,20 +34,12 @@
   border: var(--border-default);
   height: 500px
 }
-.sidebar_button_group {
-  width: 80%;
-}
 .metals {
   margin-top: 10px;
   width: 80%;
 }
 .metals button {
   width: 50%;
-}
-.negativeMargin {
-  margin-top: -46px;
-  width: 80%;
-  position:absolute;
 }
 .file_upload{
   position: relative;
@@ -69,11 +61,18 @@
 }
 
 
-/* Sidebar styles */
-.sidebar-menu {
-
+/* Sidebar styles New */
+.catalog_sidebar, .manager_sidebar, .sidebar {
+  border: var(--border-default);
+  height: 500px
+}
+.sidebar_button_group, .sidebar-menu {
+  width: 80%;
 }
 .negativeMargin, .sidebar-menu-popup {
+    margin-top: -46px;
+    width: 80%;
+    position:absolute;
     margin-left: -278px;
 }
 .subfilter, .sidebar-menu-popup-filter-button {
