@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import * as actions from '../actions';
 
 import CatalogSidebar from '../components/CatalogSidebar';
-import ProductList from '../components/ProductList';
+import ProductList from '../containers/ProductListContainer';
 
 class Catalog extends Component {
     shouldComponentUpdate(nextProps){

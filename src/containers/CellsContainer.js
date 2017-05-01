@@ -2,7 +2,7 @@
  * Created by xax on 23.03.2017.
  */
 import React, { Component } from 'react';
-import Cells from '../components/Cells';
+import Cells from '../components/cells/Cells';
 import { Grid,Row,Col } from 'react-bootstrap';
 import { connect } from 'react-redux'
 import * as actions from '../actions'

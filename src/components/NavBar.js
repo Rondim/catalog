@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Nav, NavItem } from 'react-bootstrap';
 import { IndexLinkContainer, LinkContainer } from 'react-router-bootstrap';
-import AuthNav from '../components/auth/authNav';
+import AuthNav from '../containers/authNav';
 
 
 class NavBar extends Component {

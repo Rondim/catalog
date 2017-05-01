@@ -3,9 +3,9 @@ import { Router, Route, IndexRoute, hashHistory } from 'react-router';
 
 
 import App from './components/App';
-import Catalog from './containers/Catalog';
-import Manager from './containers/Manager';
-import DandDCells from './containers/D&DCells';
+import Catalog from './components/Catalog';
+import Manager from './components/Manager';
+import DandDCells from './containers/CellsContainer';
 import Signin from './components/auth/signin';
 import Signout from './components/auth/signout';
 import RequireAuth from './components/auth/require_auth';

@@ -98,16 +98,22 @@ export default class Cells extends Component {
                     active: false,
                     id: null
                 };
-                this.props.handleCopy(cells[iOld][jOld].item.id, i, j);
+                this.props.handleCopy(cells[iOld][jOld].item, i, j);
                 return cells;
             }
             else{
-                this.props.handleCopy(cells[iOld][jOld].item.id, i, j);
-                if(cells[i][j].item&&cells[i][j].item.id&&cells[i][j].id!==null) this.props.handleCopy(cells[i][j].item.id, iOld, jOld);
+                if(cells[i][j]&&cells[i][j].item&&cells[i][j].item.id&&cells[i][j].id!==null) this.props.handleCopy(cells[i][j].item, iOld, jOld);
                 else this.props.handleRemove(cells[iOld][jOld].id, iOld, jOld);
-                const tmp = cells[iOld][jOld];
-                cells[iOld][jOld] = cells[i][j];
-                cells[i][j] = tmp;
+                this.props.handleCopy(cells[iOld][jOld].item, i, j);
+                /*const tmp = cells[iOld][jOld];
+                cells[iOld][jOld] = {
+                    item: cells[i][j].item,
+                    active: false
+                };
+                cells[i][j] = {
+                    item: tmp.item,
+                    active:false
+                };*/
                 return cells;
             }
         }

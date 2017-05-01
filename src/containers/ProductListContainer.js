@@ -3,7 +3,7 @@ import { Button, ButtonGroup, ButtonToolbar } from 'react-bootstrap';
 
 
 
-import ProductListItem from './ProductListItem';
+import ProductListItem from '../components/productList/ProductListItem';
 
 /**
  * Отрисовывает Лист продуктов через параметры принимает функцию, которая делает item активным

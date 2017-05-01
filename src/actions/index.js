@@ -220,28 +220,31 @@ export function mark(key,type) {
                 });
                 const filters = obj_cross(items);
                 const filter = 'itemType';
-                const subfilteritemType = filters[filter];
-                if(subfilteritemType){
-                    const prevSelecteditemType = getState().sidebar.filters[filter].subfilters[subfilteritemType].isSelected;
-                    dispatch({
-                        type: SUBFILTER_SELECT,
-                        filter,
-                        subfilter:subfilteritemType,
-                        prevSelected:prevSelecteditemType
-                    });
-                }
-                Object.keys(filters).forEach((filter)=>{
-                    if(filter!='itemType'){
-                        const subfilter = filters[filter];
-                        const prevSelected = getState().sidebar.filters[filter].subfilters[subfilter].isSelected;
+                if(filters) {
+                    const subfilteritemType = filters[filter];
+                    if (subfilteritemType) {
+                        const prevSelecteditemType = getState().sidebar.filters[filter].subfilters[subfilteritemType].isSelected;
                         dispatch({
                             type: SUBFILTER_SELECT,
                             filter,
-                            subfilter,
-                            prevSelected
+                            subfilter: subfilteritemType,
+                            prevSelected: prevSelecteditemType
                         });
                     }
-                });
+
+                    Object.keys(filters).forEach((filter) => {
+                        if (filter != 'itemType') {
+                            const subfilter = filters[filter];
+                            const prevSelected = getState().sidebar.filters[filter].subfilters[subfilter].isSelected;
+                            dispatch({
+                                type: SUBFILTER_SELECT,
+                                filter,
+                                subfilter,
+                                prevSelected
+                            });
+                        }
+                    });
+                }
             }, err => console.log('Filters fetch error'));
     };
 }
@@ -310,7 +313,7 @@ export function copyCell(item,i,j){
                 payload: {id,i,j,item}
             });
         }
-        pushItemToCell(activeCells,id,item);
+        pushItemToCell(activeCells,id,item.id);
     }
 }
 export function removeCell(id,i,j){

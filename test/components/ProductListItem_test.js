@@ -2,7 +2,7 @@
  * Created by xax on 18.02.2017.
  */
 import {renderComponent, expect} from '../test_helper';
-import ProductListItem from '../../src/components/ProductListItem';
+import ProductListItem from './productList/ProductListItem';
 
 describe('ProductListItem',() => {
     let component;
