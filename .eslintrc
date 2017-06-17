@@ -8,7 +8,10 @@
     "arrow-parens": 0,
     "max-len": ["error", 100],
     "comma-dangle": 0,
-    "object-curly-spacing": "off"
+    "object-curly-spacing": "off",
+    "react/jsx-uses-react": "error",
+    "react/jsx-uses-vars": "error",
+    "no-case-declarations": 0
   },
   "parserOptions": {
     "sourceType": "module",
@@ -23,5 +26,12 @@
     "node": true,
     "es6": true,
     "mocha": true
+  },
+  "settings": {
+    "react": {
+      "createClass": "createReactClass", // Regex for Component Factory to use, default to "createReactClass"
+      "pragma": "React",  // Pragma to use, default to "React"
+      "version": "15.4" // React version, default to the latest React stable release
+    }
   }
 }

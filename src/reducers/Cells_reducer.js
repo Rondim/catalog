@@ -76,7 +76,6 @@ const cellsReducer = (state=initialState, action) => {
             });
             active = [];
             return {...state, list, active};
-
     }
     return state;
 };

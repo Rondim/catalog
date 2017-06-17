@@ -13,6 +13,6 @@ export default combineReducers({
     sidebar: sidebarReducer,
     ProductList: productlistReducer,
     form,
-    auth:authReducer,
+    auth: authReducer,
     cells: cellsReducer
 });

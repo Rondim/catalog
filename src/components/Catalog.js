@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Grid,Row,Col } from 'react-bootstrap';
+import { Grid, Row, Col } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import * as actions from '../actions';
 
@@ -7,25 +7,25 @@ import CatalogSidebar from '../containers/CatalogSidebar';
 import ProductList from '../containers/ProductListContainer';
 
 class Catalog extends Component {
-    shouldComponentUpdate(nextProps){
-        if(this.props.uid !== nextProps.uid){
+    shouldComponentUpdate(nextProps) {
+        if (this.props.uid !== nextProps.uid) {
             return true;
         }
-        if(this.props.ProductList.activeList !== nextProps.ProductList.activeList){
+        if (this.props.ProductList.activeList !== nextProps.ProductList.activeList) {
             return true;
         }
-        if(this.props.ProductList.items!==nextProps.ProductList.items){
+        if (this.props.ProductList.items!==nextProps.ProductList.items) {
             return true;
         }
         return false;
     }
-    componentWillMount(){
-        if(this.props.uid){
+    componentWillMount() {
+        if (this.props.uid) {
             this.props.fetchItemList();
         }
     }
-    componentWillUpdate(nextProps){
-        if(nextProps.uid){
+    componentWillUpdate(nextProps) {
+        if (nextProps.uid) {
             nextProps.fetchItemList();
         }
     }
@@ -47,7 +47,7 @@ class Catalog extends Component {
   }
 }
 function mapStateToProps(state) {
-    return { ProductList: state.ProductList,uid: state.auth.authenticated };
+    return { ProductList: state.ProductList, uid: state.auth.authenticated };
 }
 
-export default connect(mapStateToProps,actions)(Catalog);
+export default connect(mapStateToProps, actions)(Catalog);

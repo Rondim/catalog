@@ -8,10 +8,8 @@ import Routes from './router';
 import '../style/style.css';
 import reduxThunk from 'redux-thunk';
 
-
-
 const App = () => {
-    const store = createStore(reducers, {}, applyMiddleware(ReduxPromise,reduxThunk));
+    const store = createStore(reducers, {}, applyMiddleware(ReduxPromise, reduxThunk));
 
     return <Provider store={store}>
         <Routes />
