@@ -1,22 +1,22 @@
 import { firebaseDB, Storage, firebaseAuth } from '../firebase/api';
 import {
-    AUTH_USER,
-    UNAUTH_USER,
-    LOAD_ITEMS,
-    NEW_ITEM,SET_INITIAL_STATE,
-    SUBFILTER_SELECT,
-    FILTER_ENTER,
-    FILTER_LEAVE,
-    FILTER_RESET,
-    FETCH_ITEM_LIST,
-    MARK_ACTIVE,
-    UPDATE_ITEM,
-    FETCH_ITEM_CELLS,
-    LOAD_CELLS,
-    UPDATE_CELLS,
-    REMOVE_CELL,
-    SET_ACTIVE_CELL,
-    RESET_ACTIVE_CELL
+  AUTH_USER,
+  UNAUTH_USER,
+  LOAD_ITEMS,
+  NEW_ITEM,
+  SET_INITIAL_STATE,
+  SUBFILTER_SELECT,
+  FILTER_ENTER,
+  FILTER_LEAVE,
+  FETCH_ITEM_LIST,
+  MARK_ACTIVE,
+  UPDATE_ITEM,
+  FETCH_ITEM_CELLS,
+  LOAD_CELLS,
+  UPDATE_CELLS,
+  REMOVE_CELL,
+  SET_ACTIVE_CELL,
+  RESET_ACTIVE_CELL
 } from './types';
 import {hashHistory} from 'react-router';
 import {obj_cross} from './functions/objects_crossing';
@@ -32,7 +32,7 @@ export function setInitialState() {
 }
 
 export function subFilterSelect(filter, subfilter, prevSelected) {
-    return function (dispatch, getState) {
+    return function(dispatch, getState) {
         dispatch({
             type: SUBFILTER_SELECT,
             filter,
@@ -44,15 +44,15 @@ export function subFilterSelect(filter, subfilter, prevSelected) {
         let updates = {};
         items.map(item =>{
             updates[`/lists/${list}/${item}/filters/${filter}`] = subfilter;
-            let itemFilters = {item,filters:{}};
+            let itemFilters = {item, filters: {}};
             itemFilters.filters[filter]=subfilter;
             dispatch({
                 type: UPDATE_ITEM,
-                payload:itemFilters
+                payload: itemFilters
             });
         });
         firebaseDB.ref().update(updates);
-    }
+    };
 }
 
 export function filterEnter(filterName) {
@@ -70,11 +70,11 @@ export function filterLeave() {
 /**
  * Загружает новую картинку в Storage, возвращает URL, который потом записывает в новосозданный item
  * @param {file} file -  файл полученный через <input type="file">, картинка нового item'a
- * @returns {Function}
+ * @return {Function}
  */
 export function newItem(file) {
-    return function (dispatch,getState) {
-        if(file){
+    return function(dispatch, getState) {
+        if (file) {
             const list = getState().ProductList.activeList;
             const key = firebaseDB.ref().child(list).push().key;
             const fileRef = Storage().child(key);
@@ -87,8 +87,8 @@ export function newItem(file) {
                     firebaseDB.ref().update(updates);
                     dispatch({
                         type: NEW_ITEM,
-                        payload: {key,url}
-                    })
+                        payload: {key, url}
+                    });
                 },
                 err => console.log('File fetch error')
             );
@@ -101,57 +101,58 @@ export function newItem(file) {
  * @param {object} values содержит в себе два знаечения:
  * 1 email - для почты
  * 2 password - для пароля
- * @returns {{type, payload: (firebase.Promise<any>|*|{name, a}|!firebase.Promise.<!firebase.User>)}}
+ * @return {{type, payload: (firebase.Promise<any>|*|{name, a}|!firebase.Promise.<!firebase.User>)}}
  */
 export function signinUser(values) {
     const email = values.email;
     const password = values.password;
     const request = firebaseAuth.signInWithEmailAndPassword(email, password);
-    return{
+    return {
         type: AUTH_USER,
         payload: request
-    }
+    };
 }
 /**
  * Иницирует окончание сессии пользователя, посылая в firebase запрос на выход.
- * @returns {{type, payload: (firebase.Promise<any>|*|{name, a}|!firebase.Promise.<void>)}}
+ * @return {{type, payload: (firebase.Promise<any>|*|{name, a}|!firebase.Promise.<void>)}}
  */
 export function signoutUser() {
     const request = firebaseAuth.signOut();
-    return{
+    return {
         type: UNAUTH_USER,
         payload: request
-    }
+    };
 }
 /**
- * Обращается к api firebase, сверяет хэш пользователя для доступа к сайту, работает через reduxThunk
- * @returns {Function}
+ * Обращается к api firebase, сверяет хэш пользователя для доступа к сайту,
+ * работает через reduxThunk
+ * @return {Function}
  */
 export function checkAuthentificated() {
-    return function (dispatch) {
+    return function(dispatch) {
         firebaseAuth.onAuthStateChanged((user) => {
-            if(user){
-                dispatch({type:AUTH_USER,payload:user});
-            }
-            else {
+            if (user) {
+                dispatch({type: AUTH_USER, payload: user});
+            } else {
                 hashHistory.push('/signin');
             }
         });
-    }
+    };
 }
 /**
- * Запрашивает из базы данных список item'ов, на текущий момент не имеет переменных, запрашивает астивный лист и каталог,
+ * Запрашивает из базы данных список item'ов, на текущий момент не имеет переменных,
+ * запрашивает астивный лист и каталог,
  * работает через reduxThunk
- * @returns {Function}
+ * @return {Function}
  */
 export function fetchItemList() {
-    return function (dispatch,getState) {
+    return function(dispatch, getState) {
         const uid = getState().auth.authenticated;
         const {activeList} = getState().ProductList;
-        if(uid&&!activeList){
+        if (uid&&!activeList) {
             firebaseDB.ref(`/users/${uid}/lists`).once('value')
                 .then(snapshot => {
-                    if(snapshot.val()){
+                    if (snapshot.val()) {
                         const key = Object.keys(snapshot.val())[0];
                         dispatch({
                             type: FETCH_ITEM_LIST,
@@ -172,8 +173,7 @@ export function fetchItemList() {
                                     payload: {catalog: snapshot.val()}
                                 });
                             }, err => console.log(err));
-                    }
-                    else {
+                    } else {
                         const key = firebaseDB.ref().child(`/lists`).push().key;
                         let updates = {};
                         updates[`/users/${uid}/lists/${key}`] = true;
@@ -199,31 +199,32 @@ export function fetchItemList() {
  *
  * @param {string} key - ключ item
  * @param {string} type - новое состояние item'a
- * @returns {Function}
+ * @return {Function}
  */
-export function mark(key,type) {
-    return function (dispatch, getState) {
+export function mark(key, type) {
+    return function(dispatch, getState) {
         dispatch({
             type: MARK_ACTIVE,
-            payload:{key,type}
+            payload: {key, type}
         });
         firebaseDB.ref('/filter').once('value')
             .then(snapshot => {
-                dispatch ({
+                dispatch({
                     type: SET_INITIAL_STATE,
                     payload: snapshot.val()
                 });
                 const activeItems = getState().ProductList.activeItems;
                 let items = [];
                 activeItems.forEach((item)=>{
-                    items.push(getState().ProductList.items.manager[item])
+                    items.push(getState().ProductList.items.manager[item]);
                 });
                 const filters = obj_cross(items);
                 const filter = 'itemType';
-                if(filters) {
+                if (filters) {
                     const subfilteritemType = filters[filter];
                     if (subfilteritemType) {
-                        const prevSelecteditemType = getState().sidebar.filters[filter].subfilters[subfilteritemType].isSelected;
+                        const prevSelecteditemType = getState().sidebar.filters[filter]
+                          .subfilters[subfilteritemType].isSelected;
                         dispatch({
                             type: SUBFILTER_SELECT,
                             filter,
@@ -233,9 +234,10 @@ export function mark(key,type) {
                     }
 
                     Object.keys(filters).forEach((filter) => {
-                        if (filter != 'itemType') {
+                        if (filter !== 'itemType') {
                             const subfilter = filters[filter];
-                            const prevSelected = getState().sidebar.filters[filter].subfilters[subfilter].isSelected;
+                            const prevSelected = getState().sidebar.filters[filter]
+                              .subfilters[subfilter].isSelected;
                             dispatch({
                                 type: SUBFILTER_SELECT,
                                 filter,
@@ -250,16 +252,15 @@ export function mark(key,type) {
 }
 
 
-
-//Start D&DCells
-export function fetchCells() {
-    return function (dispatch,getState) {
+// Start D&DCells
+export function fetchCellsOld() {
+    return function(dispatch, getState) {
         const uid = getState().auth.authenticated;
         const {activeCells} = getState().cells;
-        if(uid&&!activeCells){
+        if (uid&&!activeCells) {
             firebaseDB.ref(`/users/${uid}/cells`).once('value')
                 .then(snapshot => {
-                    if(snapshot.val()){
+                    if (snapshot.val()) {
                         const key = Object.keys(snapshot.val())[0];
                         dispatch({
                             type: FETCH_ITEM_CELLS,
@@ -269,25 +270,24 @@ export function fetchCells() {
                             .then((snapshot) => {
                                 const cellsDb=snapshot.val();
                                 Object.keys(cellsDb).forEach(cellId=>{
-                                    const i  = cellsDb[cellId].i;
-                                    const j  = cellsDb[cellId].j;
+                                    const i = cellsDb[cellId].i;
+                                    const j = cellsDb[cellId].j;
                                     const itemId = cellsDb[cellId].item;
                                     firebaseDB.ref(`/main/${itemId}`).once('value')
                                         .then((snapshot) => {
                                             let cell={
                                                 id: cellId,
-                                                item:snapshot.val()
+                                                item: snapshot.val()
                                             };
                                             cell.item.id = itemId;
                                             dispatch({
                                                 type: LOAD_CELLS,
-                                                payload: {cell,i,j}
+                                                payload: {cell, i, j}
                                             });
                                         });
                                 });
                             }, err => console.log(err));
-                    }
-                    else {
+                    } else {
                         const key = firebaseDB.ref().child(`/cells`).push().key;
                         let updates = {};
                         updates[`/users/${uid}/cells/${key}`] = true;
@@ -299,37 +299,84 @@ export function fetchCells() {
                     }
                 }, err => console.log(err));
         }
-    }
+    };
 }
 
-export function copyCell(item,i,j){
-    return function (dispatch, getState) {
+export function fetchCells() {
+  return async function(dispatch, getState) {
+    const uid = getState().auth.authenticated;
+    const {activeCells} = getState().cells;
+    if (uid&&!activeCells) {
+      try {
+        const snapUserCells = await firebaseDB.ref(`/users/${uid}/cells`).once('value');
+        if (snapUserCells.val()) {
+          const key = Object.keys(snapUserCells.val())[0];
+          dispatch({
+            type: FETCH_ITEM_CELLS,
+            payload: key
+          });
+          const snapCell = await firebaseDB.ref(`/cells/${key}`).once('value');
+          const cellsDb=snapCell.val();
+          for (let cellId of Object.keys(cellsDb)) {
+            const i = cellsDb[cellId].i;
+            const j = cellsDb[cellId].j;
+            const itemId = cellsDb[cellId].item;
+            const snapItem = await firebaseDB.ref(`/main/${itemId}`).once('value');
+            let cell={
+              id: cellId,
+              item: snapItem.val()
+            };
+            cell.item.id = itemId;
+            dispatch({
+              type: LOAD_CELLS,
+              payload: {cell, i, j}
+            });
+          }
+        } else {
+          const key = firebaseDB.ref().child(`/cells`).push().key;
+          let updates = {};
+          updates[`/users/${uid}/cells/${key}`] = true;
+          await firebaseDB.ref().update(updates);
+          dispatch({
+            type: FETCH_ITEM_CELLS,
+            payload: key
+          });
+        }
+      } catch (err) {
+        console.error(err);
+      }
+    }
+  };
+}
+
+export function copyCell(item, i, j) {
+    return function(dispatch, getState) {
         const {activeCells} = getState().cells;
         let id = !!getState().cells.list[i][j]?getState().cells.list[i][j].id:null;
-        if(!id||id===null){
-            id = initCell(activeCells,i,j);
+        if (!id||id===null) {
+            id = initCell(activeCells, i, j);
             dispatch({
                 type: UPDATE_CELLS,
-                payload: {id,i,j,item}
+                payload: {id, i, j, item}
             });
         }
-        pushItemToCell(activeCells,id,item.id);
-    }
+        pushItemToCell(activeCells, id, item.id);
+    };
 }
-export function removeCell(id,i,j){
-    return function (dispatch, getState) {
+export function removeCell(id, i, j) {
+    return function(dispatch, getState) {
         const {activeCells} = getState().cells;
         firebaseDB.ref(`/cells/${activeCells}/${id}`).remove()
             .then(() =>{
                 dispatch({
                     type: REMOVE_CELL,
-                    payload: {i,j}
+                    payload: {i, j}
                 });
             });
-    }
+    };
 }
-//Инициалируем компоненту высавляем координаты
-function initCell(activeCells, i,j){
+// Инициалируем компоненту высавляем координаты
+function initCell(activeCells, i, j) {
     const id = firebaseDB.ref().child(`/cells/${activeCells}`).push().key;
     let updates = {};
     updates[`/cells/${activeCells}/${id}/i`] = i;
@@ -337,7 +384,7 @@ function initCell(activeCells, i,j){
     firebaseDB.ref().update(updates);
     return id;
 }
-//Записываем item в Cell
+// Записываем item в Cell
 function pushItemToCell(activeCells, key, item) {
     let updates = {};
     updates[`/cells/${activeCells}/${key}/item`] = item;
@@ -349,27 +396,27 @@ function pushInstanceToCell(activeCells,key, cell) {
 
 }
  */
-export function setActiveCell(i,j){
-    return function (dispatch, getState) {
-        if(getState().cells.list[i][j]!==undefined) {
+export function setActiveCell(i, j) {
+    return function(dispatch, getState) {
+        if (getState().cells.list[i][j]!==undefined) {
             const active = !getState().cells.list[i][j].active;
             dispatch({
                 type: SET_ACTIVE_CELL,
                 payload: {i, j, active}
             });
         }
-    }
+    };
 }
-export function resetActiveCells(i,j){
-    return function (dispatch, getState){
+export function resetActiveCells(i, j) {
+    return function(dispatch, getState) {
         const active = getState().cells.active;
 
-        if(active.length !== 1 || (active[0].i!==i || active[0].j!==j)) {
+        if (active.length !== 1 || (active[0].i!==i || active[0].j!==j)) {
             dispatch({
                 type: RESET_ACTIVE_CELL,
                 payload: active
             });
         }
-    }
+    };
 }
-//End D&DCells
+// End D&DCells

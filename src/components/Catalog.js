@@ -3,7 +3,7 @@ import { Grid,Row,Col } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import * as actions from '../actions';
 
-import CatalogSidebar from '../components/CatalogSidebar';
+import CatalogSidebar from '../containers/CatalogSidebar';
 import ProductList from '../containers/ProductListContainer';
 
 class Catalog extends Component {

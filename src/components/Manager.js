@@ -3,8 +3,8 @@ import { Grid,Row,Col } from 'react-bootstrap';
 import { connect } from 'react-redux'
 import * as actions from '../actions'
 
-import ProductList from '../containers/ProductList';
-import NewManagerSideBar from '../components/NewManagerSidebar';
+import ProductList from '../containers/ProductListContainer';
+import NewManagerSideBar from '../containers/ManagerSidebar';
 
 class Manager extends Component {
     shouldComponentUpdate(nextProps){
