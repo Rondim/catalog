@@ -8,15 +8,15 @@
  * @return {{}} - возвращает объект пересечения
  */
 export function obj_cross(items) {
-    let sidebar = {};
-    items.forEach(item=>{
-        if (Object.keys(sidebar).length === 0) {
-            sidebar=item.filters;
-        } else {
-            sidebar=two_obj_cross(sidebar,item.filters);
-        }
-    });
-    return sidebar;
+  let sidebar = {};
+  items.forEach(item => {
+    if (Object.keys(sidebar).length === 0) {
+      sidebar = item.filters;
+    } else {
+      sidebar = two_obj_cross(sidebar, item.filters);
+    }
+  });
+  return sidebar;
 }
 /**
  * Создает пересечение двух объектов
@@ -26,32 +26,32 @@ export function obj_cross(items) {
  * @return {{}} - возвращает пересечение двух объектов
  */
 function two_obj_cross(a, b) {
-    let c={};
-    Object.keys(a).forEach(i=>{
-        if (a[i]===b[i]) {
-            c[i]=a[i];
-        }
-    });
-    return c;
+  let c = {};
+  Object.keys(a).forEach(i => {
+    if (a[i] === b[i]) {
+      c[i] = a[i];
+    }
+  });
+  return c;
 }
 export function obj_union_wocross(items) {
-    let sidebar = {};
+  let sidebar = {};
 }
 function obj_union(items) {
-    let sidebar = {};
-    items.forEach(item=>{
-        if (Object.keys(sidebar).length === 0) {
-            sidebar=item.filters;
-        } else {
-            sidebar=two_obj_cross(sidebar,item.filters);
-        }
-    });
-    return sidebar;
+  let sidebar = {};
+  items.forEach(item => {
+    if (Object.keys(sidebar).length === 0) {
+      sidebar = item.filters;
+    } else {
+      sidebar = two_obj_cross(sidebar, item.filters);
+    }
+  });
+  return sidebar;
 }
 function two_obj_union(a, b) {
-    let c={};
-    Object.keys(a).forEach( i =>{
-      console.log(i);
-    });
-    return c;
+  let c = {};
+  Object.keys(a).forEach(i => {
+    console.log(i);
+  });
+  return c;
 }

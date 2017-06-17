@@ -1,16 +1,17 @@
-import { SET_INITIAL_STATE,
-    SUBFILTER_SELECT,
-    FILTER_ENTER,
-    FILTER_LEAVE
+import {
+  SET_INITIAL_STATE,
+  SUBFILTER_SELECT,
+  FILTER_ENTER,
+  FILTER_LEAVE
 } from '../actions/types';
-import { initializeProps, handleFilterSelect } from './sidebar_helper';
+import {initializeProps, handleFilterSelect} from './sidebar_helper';
 const initialSidebarState = {
   filters: {},
   activeFilter: ''
 };
 
 
-const sidebarReducer = (state=initialSidebarState, action) => {
+const sidebarReducer = (state = initialSidebarState, action) => {
   switch (action.type) {
     case SET_INITIAL_STATE:
       const filters = initializeProps(action.payload);
@@ -20,9 +21,9 @@ const sidebarReducer = (state=initialSidebarState, action) => {
       handleFilterSelect(newState['filters'], action.filter, action.subfilter, action.prevSelected);
       return newState;
     case FILTER_ENTER:
-      return {...state, activeFilter: action.filterName };
+      return {...state, activeFilter: action.filterName};
     case FILTER_LEAVE:
-      return {...state, activeFilter: '' };
+      return {...state, activeFilter: ''};
     default:
       return state;
   }

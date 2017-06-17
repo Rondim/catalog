@@ -1,5 +1,5 @@
 {
-  "extends": ["eslint:recommended", "google"],
+  "extends": ["eslint:recommended", "google", "plugin:react/recommended"],
   "rules": {
     "no-console": 0,
     "async-await/space-after-async": 2,
@@ -8,10 +8,11 @@
     "arrow-parens": 0,
     "max-len": ["error", 100],
     "comma-dangle": 0,
-    "object-curly-spacing": "off",
     "react/jsx-uses-react": "error",
     "react/jsx-uses-vars": "error",
-    "no-case-declarations": 0
+    "no-case-declarations": 0,
+    "react/prop-types": 0,
+    "object-curly-spacing": [2, "always"]
   },
   "parserOptions": {
     "sourceType": "module",

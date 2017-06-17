@@ -7,23 +7,25 @@ import ProductList from '../containers/ProductListContainer';
 import NewManagerSideBar from '../containers/ManagerSidebar';
 
 class Manager extends Component {
-    shouldComponentUpdate(nextProps) {
-      if (nextProps.uid&&this.props.uid !== nextProps.uid) {
-        return true;
-      }
-      if (this.props.ProductList.activeList !== nextProps.ProductList.activeList) {
-        return true;
-      }
-      if (this.props.ProductList.items!==nextProps.ProductList.items) {
-          return true;
-      }
+  shouldComponentUpdate(nextProps) {
+    if (nextProps.uid && this.props.uid !== nextProps.uid) {
       return true;
     }
-  componentWillUpdate(nextProps) {
-      if (nextProps.uid) {
-          nextProps.fetchItemList();
-      }
+    if (this.props.ProductList.activeList !== nextProps.ProductList.activeList) {
+      return true;
+    }
+    if (this.props.ProductList.items !== nextProps.ProductList.items) {
+      return true;
+    }
+    return true;
   }
+
+  componentWillUpdate(nextProps) {
+    if (nextProps.uid) {
+      nextProps.fetchItemList();
+    }
+  }
+
   render() {
     return (
       <div className="container">
@@ -32,7 +34,7 @@ class Manager extends Component {
             <Col lg={9} md={9} xs={9}>
               <ProductList
                 items={this.props.ProductList.items.manager}
-                setActive={e=>this.props.mark(e, 'active')
+                setActive={e => this.props.mark(e, 'active')
                 }/>
             </Col>
             <Col lg={3} md={3} xs={3}>
@@ -46,7 +48,7 @@ class Manager extends Component {
 }
 
 function mapStateToProps(state) {
-    return { ProductList: state.ProductList, uid: state.auth.authenticated };
+  return { ProductList: state.ProductList, uid: state.auth.authenticated };
 }
 
 export default connect(mapStateToProps, actions)(Manager);

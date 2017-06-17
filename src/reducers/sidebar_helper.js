@@ -49,11 +49,13 @@ export function handleFilterSelect(newFiltersState, filter, subfilter, prevSelec
       });
     });
   }
+
   function resetParentSubfilters(parentSubfilters) {
     Object.keys(parentSubfilters).forEach(subfilter => {
       parentSubfilters[subfilter]['isSelected'] = false;
-    })
+    });
   }
+
   function resetDependentFilters(dependentObj, newFiltersState) {
     Object.keys(dependentObj).forEach(depId => {
       const depFilter = newFiltersState[dependentObj[depId]];

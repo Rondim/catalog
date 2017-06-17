@@ -7,7 +7,7 @@ export default ({ menus, handleFilterClick }) => {
       return <SidebarMenu
         key={menuProps.menuId}
         handleFilterClick={handleFilterClick}
-        {...menuProps}/>
+        {...menuProps}/>;
     })}
   </div>);
 };

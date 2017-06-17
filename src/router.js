@@ -1,5 +1,5 @@
 import React from 'react';
-import { Router, Route, IndexRoute, hashHistory } from 'react-router';
+import {Router, Route, IndexRoute, hashHistory} from 'react-router';
 
 
 import App from './components/App';
@@ -14,11 +14,11 @@ const Routes = () => {
   return (
     <Router history={hashHistory}>
       <Route path="/" component={App}>
-        <IndexRoute component={RequireAuth(Catalog)} />
-        <Route path="/manager" component={RequireAuth(Manager)} />
-          <Route path="/manager2" component={RequireAuth(DandDCells)} />
-          <Route path="/signin" component={Signin} />
-          <Route path="/signout" component={Signout} />
+        <IndexRoute component={RequireAuth(Catalog)}/>
+        <Route path="/manager" component={RequireAuth(Manager)}/>
+        <Route path="/manager2" component={RequireAuth(DandDCells)}/>
+        <Route path="/signin" component={Signin}/>
+        <Route path="/signout" component={Signout}/>
       </Route>
     </Router>
   );

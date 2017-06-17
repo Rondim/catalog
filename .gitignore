@@ -4,3 +4,4 @@ npm-debug.log
 wiki
 .idea/
 doc/
+package-lock.json

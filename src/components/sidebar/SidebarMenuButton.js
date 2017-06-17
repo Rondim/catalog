@@ -1,9 +1,11 @@
 import React from 'react';
-import { Button } from 'react-bootstrap';
+import {Button} from 'react-bootstrap';
 
 export default (props) => {
-  const { filtersSelected, menuName, filters, isActive,
-    handleMouseEnter, handleMouseLeave } = props;
+  const {
+    filtersSelected, menuName, filters, isActive,
+    handleMouseEnter, handleMouseLeave
+  } = props;
   const menuButtonClass = isActive ? getMenuButtonClass(filtersSelected)
     : 'sidebar-menu-button-disabled';
   const menuButtonText = isActive ? getMenuButtonText(filtersSelected, filters, menuName)
@@ -13,7 +15,7 @@ export default (props) => {
     onMouseEnter={isActive && handleMouseEnter}
     onMouseLeave={isActive && handleMouseLeave}>
     {menuButtonText}
-  </Button>
+  </Button>;
 };
 
 
@@ -24,18 +26,18 @@ function getMenuButtonText(filtersSelected, filters, menuName) {
     menuButtonText = menuName;
   } else {
     let namesArr = [];
-    //Заполняем массив имен именами выбранных фильтров
+    // Заполняем массив имен именами выбранных фильтров
     filtersSelected.forEach(filterId => {
       const filterName = filters.filter(filter => {
         return filter.filterId === filterId;
       })[0]['name'];
       namesArr.push(filterName);
     });
-    //Формируем текст кнопки из массива в завимости от длины массива
+    // Формируем текст кнопки из массива в завимости от длины массива
     if (namesArr.length === 1) {
-      menuButtonText = namesArr[0]
+      menuButtonText = namesArr[0];
     } else if (namesArr.length > 1) {
-      menuButtonText = namesArr.map(filterName => filterName.substr(0,4)).join(', ');
+      menuButtonText = namesArr.map(filterName => filterName.substr(0, 4)).join(', ');
     }
   }
 
