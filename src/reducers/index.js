@@ -1,6 +1,7 @@
 import { combineReducers } from 'redux';
 import { reducer as form } from 'redux-form';
 import authReducer from './auth_reducer';
+import adderReducer from './adderReducer';
 
 // export default (state={}, action) => {
 //   return state;
@@ -8,5 +9,6 @@ import authReducer from './auth_reducer';
 
 export default combineReducers({
   form,
-  auth: authReducer
+  auth: authReducer,
+  adder: adderReducer
 });

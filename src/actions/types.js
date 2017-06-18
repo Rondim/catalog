@@ -18,3 +18,5 @@ export const UPDATE_CELLS='update_cells';
 export const REMOVE_CELL='remove_cell';
 export const SET_ACTIVE_CELL='set_active_cell';
 export const RESET_ACTIVE_CELL='reset_active_cell';
+export const ERROR = 'error';
+export const SUCCESS = 'success';
