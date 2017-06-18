@@ -33,34 +33,34 @@ const initialState = {
 };
 
 const cellsReducer = (state = initialState, action) => {
-  let {list, active} = state;
+  let { list, active } = state;
   switch (action.type) {
     case FETCH_ITEM_CELLS:
-      return {...state, activeCells: action.payload};
+      return { ...state, activeCells: action.payload };
     case LOAD_CELLS:
-      const {i} = action.payload;
-      const {j} = action.payload;
+      const { i } = action.payload;
+      const { j } = action.payload;
       list[i][j] = action.payload.cell;
       list[i][j].active = false;
-      return {...state, list};
+      return { ...state, list };
     case UPDATE_CELLS:
       const iu = action.payload.i;
       const ju = action.payload.j;
       list[iu][ju] = list[iu][ju] ? list[iu][ju] : {};
       list[iu][ju].id = action.payload.id;
       list[iu][ju].item = action.payload.item;
-      return {...state, list};
+      return { ...state, list };
     case REMOVE_CELL:
       const ir = action.payload.i;
       const jr = action.payload.j;
       list[ir][jr].id = false;
-      list[ir][jr].item = {url: ''};
-      return {...state, list};
+      list[ir][jr].item = { url: '' };
+      return { ...state, list };
     case SET_ACTIVE_CELL:
       const is = action.payload.i;
       const js = action.payload.j;
       list[is][js].active = action.payload.active;
-      if (action.payload.active) active.push({i: is, j: js});
+      if (action.payload.active) active.push({ i: is, j: js });
       else {
         active.forEach((e, index) => {
           if (e.i === is && e.j === js) {
@@ -68,14 +68,14 @@ const cellsReducer = (state = initialState, action) => {
           }
         });
       }
-      return {...state, active, list};
+      return { ...state, active, list };
     case RESET_ACTIVE_CELL:
       const activeOld = action.payload;
       activeOld.forEach(e => {
         list[e.i][e.j].active = false;
       });
       active = [];
-      return {...state, list, active};
+      return { ...state, list, active };
   }
   return state;
 };

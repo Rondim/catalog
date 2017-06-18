@@ -1,10 +1,10 @@
 /**
  * Created by xax on 23.03.2017.
  */
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import Cells from '../components/cells/Cells';
-import {Grid, Row, Col} from 'react-bootstrap';
-import {connect} from 'react-redux';
+import { Grid, Row, Col } from 'react-bootstrap';
+import { connect } from 'react-redux';
 import * as actions from '../actions';
 
 class DragAndDropCells extends Component {
@@ -24,23 +24,23 @@ class DragAndDropCells extends Component {
   handleKeyDown(e) {
     if (e.keyCode === 39) {
       this.setState((prevState) => {
-        return {j0: prevState.j0 + 1};
+        return { j0: prevState.j0 + 1 };
       });
     } else if (e.keyCode === 37) {
       this.setState((prevState) => {
         if (prevState.j0 > 0) {
-          return {j0: prevState.j0 - 1};
+          return { j0: prevState.j0 - 1 };
         }
       });
     } else if (e.keyCode === 38) {
       this.setState((prevState) => {
         if (prevState.i0 > 0) {
-          return {i0: prevState.i0 - 1};
+          return { i0: prevState.i0 - 1 };
         }
       });
     } else if (e.keyCode === 40) {
       this.setState((prevState) => {
-        return {i0: prevState.i0 + 1};
+        return { i0: prevState.i0 + 1 };
       });
     } else if (e.keyCode === 8 || e.keyCode === 46) {
       this.props.Cells.active.forEach(coord => {
@@ -79,7 +79,7 @@ class DragAndDropCells extends Component {
 }
 
 function mapStateToProps(state) {
-  return {Cells: state.cells};
+  return { Cells: state.cells };
 }
 
 export default connect(mapStateToProps, actions)(DragAndDropCells);

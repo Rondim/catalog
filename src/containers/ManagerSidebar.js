@@ -1,10 +1,10 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import Sidebar from '../components/sidebar/Sidebar';
 
 class ManagerSidebar extends Component {
   constructor(props) {
     super(props);
-    this.state = {menus: []};
+    this.state = { menus: [] };
   }
 
   render() {

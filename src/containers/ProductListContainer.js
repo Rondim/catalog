@@ -1,5 +1,5 @@
-import React, {Component} from 'react';
-import {Button, ButtonGroup} from 'react-bootstrap';
+import React, { Component } from 'react';
+import { Button, ButtonGroup } from 'react-bootstrap';
 
 
 import ProductListItem from '../components/productList/ProductListItem';
@@ -42,9 +42,9 @@ class ProductList extends Component {
     const max = Object.keys(this.props.items).length / 8;
     this.setState((prevState) => {
       if (forward) {
-        if (prevState.page < max) return {page: prevState.page + 1};
-      } else if (prevState.page > 1) return {page: prevState.page - 1};
-      return {page: prevState.page};
+        if (prevState.page < max) return { page: prevState.page + 1 };
+      } else if (prevState.page > 1) return { page: prevState.page - 1 };
+      return { page: prevState.page };
     });
   }
 
@@ -65,7 +65,7 @@ class ProductList extends Component {
         <Button
           active={this.state.page === n}
           key={n}
-          onClick={() => this.setState({page: n}) }
+          onClick={() => this.setState({ page: n }) }
           className="btn">{n}
         </Button>
       );
@@ -103,7 +103,7 @@ class ProductList extends Component {
       <div className="product_list_container" tabIndex="1" onKeyDown={this.handleKeyDown}>
         <div className="text-center">
           <Button onClick={() => this.handleChangePage(false)}>{'<'} </Button>
-          <Button onClick={() => this.handleChangePage(true)}> > </Button>
+          <Button onClick={() => this.handleChangePage(true)}> {'>'} </Button>
         </div>
         <ul className="row product_list">
           {this.renderList()}

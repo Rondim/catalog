@@ -1,10 +1,10 @@
 /**
  * Created by xax on 24.02.2017.
  */
-import React, {Component} from 'react';
-import {NavItem} from 'react-bootstrap';
-import {LinkContainer} from 'react-router-bootstrap';
-import {connect} from 'react-redux';
+import React, { Component } from 'react';
+import { NavItem } from 'react-bootstrap';
+import { LinkContainer } from 'react-router-bootstrap';
+import { connect } from 'react-redux';
 
 class NavBar extends Component {
   render() {
@@ -21,7 +21,7 @@ class NavBar extends Component {
 
 
 function mapStateToProps(state) {
-  return {auth: state.auth};
+  return { auth: state.auth };
 }
 
 export default connect(mapStateToProps)(NavBar);
