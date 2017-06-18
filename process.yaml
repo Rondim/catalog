@@ -1,0 +1,6 @@
+apps:
+  - name: adder
+    script: node_modules/webpack-dev-server/bin/webpack-dev-server.js
+    exec_mode: cluster
+    instances: 2
+    watch: true
