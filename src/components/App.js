@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
-import NavBar from './NavBar';
+import NavBar from '../containers/authNav';
 
 class App extends Component {
   render() {
     return (
       <div>
-        <NavBar />
+        <NavBar/>
         {this.props.children}
       </div>
     );
