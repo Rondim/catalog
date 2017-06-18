@@ -12,7 +12,7 @@ const config = {
 };
 firebase.initializeApp(config);
 export const firebaseAuth = firebase.auth();
-export const Storage = () => {
+export const firebaseStor = () => {
   return firebase.storage().ref('items');
 };
 

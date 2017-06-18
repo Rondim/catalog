@@ -17,7 +17,7 @@ class DragAndDropCells extends Component {
     };
   }
 
-  componentWillUpdate() {
+  componentWillMount() {
     this.props.fetchCells();
   }
 

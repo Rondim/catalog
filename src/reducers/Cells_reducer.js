@@ -36,6 +36,7 @@ const cellsReducer = (state = initialState, action) => {
   let { list, active } = state;
   switch (action.type) {
     case FETCH_ITEM_CELLS:
+      console.log(action.payload);
       return { ...state, activeCells: action.payload };
     case LOAD_CELLS:
       const { i } = action.payload;

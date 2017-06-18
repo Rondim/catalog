@@ -1,4 +1,4 @@
-import { firebaseDB, Storage, firebaseAuth } from '../firebase/api';
+import { firebaseDB, firebaseStor, firebaseAuth } from '../firebase/api';
 import {
   AUTH_USER,
   UNAUTH_USER,
@@ -77,7 +77,7 @@ export function newItem(file) {
     if (file) {
       const list = getState().ProductList.activeList;
       const key = firebaseDB.ref().child(list).push().key;
-      const fileRef = Storage().child(key);
+      const fileRef = firebaseStor().child(key);
       const uploadTask = fileRef.put(file);
       uploadTask.then(
         snapshot => {
@@ -126,18 +126,15 @@ export function signoutUser() {
 /**
  * Обращается к api firebase, сверяет хэш пользователя для доступа к сайту,
  * работает через reduxThunk
+ * @param {string} user hash of user
  * @return {Function}
  */
-export function checkAuthentificated() {
-  return function(dispatch) {
-    firebaseAuth.onAuthStateChanged((user) => {
-      if (user) {
-        dispatch({ type: AUTH_USER, payload: user });
-      } else {
-        hashHistory.push('/signin');
-      }
-    });
-  };
+export function checkAuthentificated(user) {
+  if (user) {
+    return { type: AUTH_USER, payload: user };
+  } else {
+    hashHistory.push('/signin');
+  }
 }
 /**
  * Запрашивает из базы данных список item'ов, на текущий момент не имеет переменных,
@@ -303,8 +300,10 @@ export function fetchCellsOld() {
 }
 
 export function fetchCells() {
+  console.log('start');
   return async function(dispatch, getState) {
     const uid = getState().auth.authenticated;
+    console.log(uid);
     const { activeCells } = getState().cells;
     if (uid && !activeCells) {
       try {
@@ -327,7 +326,7 @@ export function fetchCells() {
               item: snapItem.val()
             };
             cell.item.id = itemId;
-            dispatch({
+            await dispatch({
               type: LOAD_CELLS,
               payload: { cell, i, j }
             });

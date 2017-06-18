@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import SidebarMenuButton from './SidebarMenuButton';
 import SidebarMenuPopup from './SidebarMenuPopup';
 
@@ -6,17 +6,17 @@ import SidebarMenuPopup from './SidebarMenuPopup';
 export default class SidebarMenu extends Component {
   constructor(props) {
     super(props);
-    this.state = {isPopupShow: false};
+    this.state = { isPopupShow: false };
     this.handleMouseEnter = this.handleMouseEnter.bind(this);
     this.handleMouseLeave = this.handleMouseLeave.bind(this);
   }
 
   handleMouseEnter() {
-    this.setState({isPopupShow: true});
+    this.setState({ isPopupShow: true });
   }
 
   handleMouseLeave() {
-    this.setState({isPopupShow: false});
+    this.setState({ isPopupShow: false });
   }
 
   render() {
@@ -32,4 +32,4 @@ export default class SidebarMenu extends Component {
       {this.state.isPopupShow && <SidebarMenuPopup {...props}/>}
     </div>);
   }
-};
+}

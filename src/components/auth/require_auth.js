@@ -4,27 +4,41 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import * as actions from '../../actions';
+import { firebaseAuth } from '../../firebase/api';
 
+let access;
 export default function (ComposedComponent) {
   class Authentication extends Component {
-    static contextTypes = {
+    static contextTypes={
       router: React.PropTypes.object
     };
 
     componentWillMount() {
       if (!this.props.authenticated) {
-        this.props.checkAuthentificated();
-      }
+        access = false;
+        checkAuthFirebase()
+          .then(user =>{
+            this.props.checkAuthentificated(user);
+          });
+      } else access = true;
     }
 
     componentWillUpdate(nextProps) {
       if (!nextProps.authenticated) {
-        nextProps.checkAuthentificated();
-      }
+        access = false;
+        checkAuthFirebase()
+          .then(user => {
+            nextProps.checkAuthentificated(user);
+          });
+      } else access = true;
     }
 
     render() {
-      return <ComposedComponent {...this.props}/>
+      return (
+        access?
+        <ComposedComponent {...this.props}/>:
+          <div/>
+      )
     }
   }
 
@@ -33,4 +47,13 @@ export default function (ComposedComponent) {
   }
 
   return connect(mapStateToProps, actions)(Authentication);
+}
+
+function checkAuthFirebase() {
+  return new Promise((resolve, reject) => {
+    firebaseAuth.onAuthStateChanged((user, err) => {
+      if (err) reject(err);
+      resolve(user);
+    });
+  });
 }
