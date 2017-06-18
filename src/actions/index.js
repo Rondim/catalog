@@ -19,7 +19,7 @@ import {
   RESET_ACTIVE_CELL
 } from './types';
 import { hashHistory } from 'react-router';
-import { obj_cross } from './functions/objects_crossing';
+import { objCross } from './functions/objects_crossing';
 
 
 export function setInitialState() {
@@ -215,7 +215,7 @@ export function mark(key, type) {
         activeItems.forEach((item) => {
           items.push(getState().ProductList.items.manager[item]);
         });
-        const filters = obj_cross(items);
+        const filters = objCross(items);
         const filter = 'itemType';
         if (filters) {
           const subfilteritemType = filters[filter];
@@ -250,70 +250,17 @@ export function mark(key, type) {
 
 
 // Start D&DCells
-export function fetchCellsOld() {
-  return function(dispatch, getState) {
-    const uid = getState().auth.authenticated;
-    const { activeCells } = getState().cells;
-    if (uid && !activeCells) {
-      firebaseDB.ref(`/users/${uid}/cells`).once('value')
-        .then(snapshot => {
-          if (snapshot.val()) {
-            const key = Object.keys(snapshot.val())[0];
-            dispatch({
-              type: FETCH_ITEM_CELLS,
-              payload: key
-            });
-            firebaseDB.ref(`/cells/${key}`).once('value')
-              .then((snapshot) => {
-                const cellsDb = snapshot.val();
-                Object.keys(cellsDb).forEach(cellId => {
-                  const i = cellsDb[cellId].i;
-                  const j = cellsDb[cellId].j;
-                  const itemId = cellsDb[cellId].item;
-                  firebaseDB.ref(`/main/${itemId}`).once('value')
-                    .then((snapshot) => {
-                      let cell = {
-                        id: cellId,
-                        item: snapshot.val()
-                      };
-                      cell.item.id = itemId;
-                      dispatch({
-                        type: LOAD_CELLS,
-                        payload: { cell, i, j }
-                      });
-                    });
-                });
-              }, err => console.log(err));
-          } else {
-            const key = firebaseDB.ref().child(`/cells`).push().key;
-            let updates = {};
-            updates[`/users/${uid}/cells/${key}`] = true;
-            firebaseDB.ref().update(updates);
-            dispatch({
-              type: FETCH_ITEM_CELLS,
-              payload: key
-            });
-          }
-        }, err => console.log(err));
-    }
-  };
-}
 
 export function fetchCells() {
-  console.log('start');
   return async function(dispatch, getState) {
     const uid = getState().auth.authenticated;
-    console.log(uid);
     const { activeCells } = getState().cells;
     if (uid && !activeCells) {
       try {
         const snapUserCells = await firebaseDB.ref(`/users/${uid}/cells`).once('value');
+        let key;
         if (snapUserCells.val()) {
-          const key = Object.keys(snapUserCells.val())[0];
-          dispatch({
-            type: FETCH_ITEM_CELLS,
-            payload: key
-          });
+          key = Object.keys(snapUserCells.val())[0];
           const snapCell = await firebaseDB.ref(`/cells/${key}`).once('value');
           const cellsDb = snapCell.val();
           for (let cellId of Object.keys(cellsDb)) {
@@ -326,21 +273,21 @@ export function fetchCells() {
               item: snapItem.val()
             };
             cell.item.id = itemId;
-            await dispatch({
+            dispatch({
               type: LOAD_CELLS,
               payload: { cell, i, j }
             });
           }
         } else {
-          const key = firebaseDB.ref().child(`/cells`).push().key;
+          key = await firebaseDB.ref().child(`/cells`).push().key;
           let updates = {};
           updates[`/users/${uid}/cells/${key}`] = true;
           await firebaseDB.ref().update(updates);
-          dispatch({
-            type: FETCH_ITEM_CELLS,
-            payload: key
-          });
         }
+        dispatch({
+          type: FETCH_ITEM_CELLS,
+          payload: key
+        });
       } catch (err) {
         console.error(err);
       }
@@ -351,7 +298,7 @@ export function fetchCells() {
 export function copyCell(item, i, j) {
   return function(dispatch, getState) {
     const { activeCells } = getState().cells;
-    let id = !!getState().cells.list[i][j] ? getState().cells.list[i][j].id : null;
+    let id = getState().cells.list[i][j] ? getState().cells.list[i][j].id : null;
     if (!id || id === null) {
       id = initCell(activeCells, i, j);
       dispatch({

@@ -1,18 +1,14 @@
 /**
  * Created by xax on 19.02.2017.
  */
-import React, {Component} from 'react';
-import {connect} from 'react-redux';
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import * as actions from '../../actions';
 import { firebaseAuth } from '../../firebase/api';
 
 let access;
-export default function (ComposedComponent) {
+export default function(ComposedComponent) {
   class Authentication extends Component {
-    static contextTypes={
-      router: React.PropTypes.object
-    };
-
     componentWillMount() {
       if (!this.props.authenticated) {
         access = false;
@@ -38,12 +34,12 @@ export default function (ComposedComponent) {
         access?
         <ComposedComponent {...this.props}/>:
           <div/>
-      )
+      );
     }
   }
 
   function mapStateToProps(state) {
-    return {authenticated: state.auth.authenticated}
+    return { authenticated: state.auth.authenticated };
   }
 
   return connect(mapStateToProps, actions)(Authentication);

@@ -4,10 +4,10 @@
 /**
  * Создает пересечение объектов находящихся в объекте items
  * @member action.index
- * @param items объект в котором находятся объекты для пересечения
+ * @param {object} items объект в котором находятся объекты для пересечения
  * @return {{}} - возвращает объект пересечения
  */
-export function obj_cross(items) {
+export function objCross(items) {
   let sidebar = {};
   items.forEach(item => {
     if (Object.keys(sidebar).length === 0) {
@@ -20,9 +20,9 @@ export function obj_cross(items) {
 }
 /**
  * Создает пересечение двух объектов
- * @member action.index.obj_cross
- * @param a - первый объект для пересечения
- * @param b - второй объект для пересечения
+ * @member action.index.objCross
+ * @param {object} a - первый объект для пересечения
+ * @param {object} b - второй объект для пересечения
  * @return {{}} - возвращает пересечение двух объектов
  */
 function two_obj_cross(a, b) {
