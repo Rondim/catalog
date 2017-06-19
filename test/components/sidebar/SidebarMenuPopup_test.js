@@ -9,13 +9,13 @@ describe('SidebarMenuPopup', () => {
     handleMouseEnter = sinon.spy();
     handleMouseLeave = sinon.spy();
     props = {
-      menuId: 'itemType',
-      filtersSelected: [],
-      filters: [
-        { name: 'Серьги', filterId: 'earrings' },
-        { name: 'Кольца', filterId: 'rings' },
-        { name: 'Браслеты', filterId: 'bands' }
-      ],
+      filters: {
+        chains: { filterName: 'Цепи' },
+        earrings: { filterName: 'Серьги' },
+        rings: { filterName: 'Кольца' }
+      },
+      filtersOrder: ['earrings', 'rings', 'chains'],
+      filtersSelected: { },
       handleFilterClick,
       handleMouseEnter,
       handleMouseLeave
@@ -27,14 +27,21 @@ describe('SidebarMenuPopup', () => {
       expect(component.get(0)).to.exist;
     });
     it('renders filters not selected', () => {
-      expect(component).to.contain('Серьги');
       expect(component.find('button')[0].className).to.contain('default');
     });
     it('renders selection for selected filters', () => {
-      props.filtersSelected = ['earrings', 'rings'];
+      props.filtersSelected = {
+        earrings: 'selected'
+      };
       component = renderComponent(SidebarMenuPopup, props);
       expect(component.find('button')[0].className).to.contain('primary');
-      expect(component.find('button')[1].className).to.contain('primary');
+    });
+    it('renders selection for selectedNotByAll filters', () => {
+      props.filtersSelected = {
+        earrings: 'selectedNotByAll'
+      };
+      component = renderComponent(SidebarMenuPopup, props);
+      expect(component.find('button')[0].className).to.contain('warning');
     });
   });
 
@@ -47,12 +54,9 @@ describe('SidebarMenuPopup', () => {
       component.simulate('mouseLeave');
       assert(handleMouseLeave.called);
     });
-    it('triggers handleFilterClick with menuId and filter clicked', () => {
+    it('triggers handleFilterClick with filter clicked', () => {
       component.children('button').eq(0).simulate('click');
-      assert(handleFilterClick.calledWithMatch({
-        menuId: 'itemType',
-        filterClicked: 'earrings'
-      }));
+      assert(handleFilterClick.calledWithMatch('earrings'));
     });
   });
 });

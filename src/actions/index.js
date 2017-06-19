@@ -16,7 +16,8 @@ import {
     UPDATE_CELLS,
     REMOVE_CELL,
     SET_ACTIVE_CELL,
-    RESET_ACTIVE_CELL
+    RESET_ACTIVE_CELL,
+    SET_CATALOG_SIDEBAR_STATE
 } from './types';
 import {hashHistory} from 'react-router';
 import {obj_cross} from './functions/objects_crossing';
@@ -373,3 +374,12 @@ export function resetActiveCells(i,j){
     }
 }
 //End D&DCells
+
+//SidebarActions
+export function setCatalogSidebarState(newState) {
+  return {
+    type: SET_CATALOG_SIDEBAR_STATE,
+    state: newState
+  };
+}
+// End SidebarActions

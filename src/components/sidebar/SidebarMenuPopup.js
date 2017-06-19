@@ -1,20 +1,6 @@
 import React from 'react';
 import { Button } from 'react-bootstrap';
 
-/* Example of props
-  props = {
-    menuId,
-    filtersSelected: ['earrings'],
-    filters: [
-      { name: 'Серьги', filterId: 'earrings' },
-      { name: 'Кольца', filterId: 'rings' },
-      { name: 'Браслеты', filterId: 'bands' }
-    ],
-    handleFilterClick,
-    handleMouseEnter,
-    handleMouseLeave
-  };
-*/
 export default (props) => {
     const { handleMouseEnter, handleMouseLeave } = props;
     return (<div
@@ -27,15 +13,27 @@ export default (props) => {
 }
 
 function renderFilters(props) {
-  const { filters, filtersSelected, handleFilterClick, menuId } = props;
-  return filters.map(({ name, filterId }) => {
-    const isSelected = filtersSelected.some(filter => filter === filterId);
+  const { filters, filtersSelected, filtersOrder, handleFilterClick } = props;
+  return filtersOrder.map(filterId => {
     return <Button
       key={filterId}
-      bsStyle={ isSelected ? "primary" : "default" }
-      className="sidebar-menu-popup-filter-button"
-      onClick={() => handleFilterClick({ menuId, filterClicked: filterId })}>
-      {name}
+      bsStyle={ getSelectionStyle(filterId, filtersSelected) }
+      className="sidebar-menu-popup-button"
+      onClick={() => handleFilterClick(filterId)}>
+      {filters[filterId]['filterName']}
     </Button>
   });
+}
+
+function getSelectionStyle(filterId, filtersSelected) {
+  switch (filtersSelected[filterId]) {
+    case 'selected':
+      return 'primary';
+      break;
+    case 'selectedNotByAll':
+      return 'warning';
+      break;
+    default:
+      return 'default';
+  }
 }

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import Sidebar from '../../components/sidebar/Sidebar';
+import Sidebar from '../components/sidebar/Sidebar';
 
 class ManagerSidebar extends Component {
   constructor(props) {
