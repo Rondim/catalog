@@ -20,7 +20,7 @@ import {
     SET_CATALOG_SIDEBAR_STATE
 } from './types';
 import {hashHistory} from 'react-router';
-import {obj_cross} from './functions/objects_crossing';
+// import {obj_cross} from './functions/objects_crossing';
 
 
 export function setInitialState() {

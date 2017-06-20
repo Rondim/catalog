@@ -13,15 +13,17 @@ export default (props) => {
 }
 
 function renderFilters(props) {
-  const { filters, filtersSelected, filtersOrder, handleFilterClick } = props;
+  const { filters, filtersSelected, filtersOrder, handleFilterClick, active } = props;
   return filtersOrder.map(filterId => {
-    return <Button
-      key={filterId}
-      bsStyle={ getSelectionStyle(filterId, filtersSelected) }
-      className="sidebar-menu-popup-button"
-      onClick={() => handleFilterClick(filterId)}>
-      {filters[filterId]['filterName']}
-    </Button>
+    return active ?
+      <Button
+        key={filterId}
+        bsStyle={ getSelectionStyle(filterId, filtersSelected) }
+        className="sidebar-menu-popup-button"
+        onClick={() => handleFilterClick(filterId)}>
+        {filters[filterId]['filterName']}
+      </Button> :
+      null;
   });
 }
 
