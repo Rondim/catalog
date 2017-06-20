@@ -24,10 +24,11 @@ export default class SidebarMenu extends Component {
   }
   render() {
     const { filters, filtersOrder, filtersSelected, menuName,
-      blocked, active, handleMenuSelect } = this.props;
+      blocked, handleMenuSelect } = this.props;
+    const active = Object.keys(filters).length > 0;
     const text = getText(filtersOrder, filters, filtersSelected, menuName);
     const selection = getSelection(filtersSelected);
-    const props = { ...this.props, text, selection,
+    const props = { ...this.props, text, selection, active,
       handleFilterClick: this.handleFilterClick,
       handleMouseEnter: this.handleMouseEnter,
       handleMouseLeave: this.handleMouseLeave };
