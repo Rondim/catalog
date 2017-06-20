@@ -22,7 +22,7 @@ const productlistReducer = (state = initialState, action) => {
         action.payload.catalog :
         state.items.catalog;
       // Проверяем завершенные изделия или нет
-      if (action.payload.manager) {
+      /* if (action.payload.manager) {
         Object.keys(items.manager).forEach((item) => {
           if (Object.keys(items.manager[item].filters).length === 5) {
             items.manager[item].complited = true;
@@ -32,7 +32,7 @@ const productlistReducer = (state = initialState, action) => {
             items.manager[item].complited = true;
           }
         });
-      }
+      } */
       return { ...state, items };
     case NEW_ITEM:
       const url = action.payload.url;

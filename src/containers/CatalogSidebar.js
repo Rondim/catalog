@@ -8,18 +8,24 @@ class CatalogSideBar extends Component {
     super(props);
     this.handleMenuSelect = this.handleMenuSelect.bind(this);
   }
+  componentWillMount() {
+    this.props.fetchSidebarConfig('catalogSidebar');
+  }
   handleMenuSelect(menuChanged) {
-    const newCatalogSidebarState = catalogSidebarState(menuChanged, this.props.catalogSidebar);
-    setCatalogSidebarState(newCatalogSidebarState);
+    const newCatalogSidebarState = calcCatalogSidebarState(menuChanged, this.props.catalogSidebar);
+    this.props.setCatalogSidebarState(newCatalogSidebarState);
   }
   render() {
     const { menus, dependencies, order } = this.props.catalogSidebar;
     const menusShowed = calcShowItems(menus, dependencies, order);
+    console.log('menusShowed', menusShowed, 'order', order);
     return (
       <div className="catalog_sidebar">
         <Sidebar
           menus = {menusShowed}
-          order = {order}  />
+          order = {order}
+          handleMenuSelect={this.handleMenuSelect}
+        />
       </div>
     );
   }
@@ -32,14 +38,13 @@ export default connect(mapStateToProps, actions)(CatalogSideBar);
 
 export function calcCatalogSidebarState({ menuId, filtersSelected }, catalogSidebarState) {
   let { menus, dependencies } = catalogSidebarState;
-  //Скопируем состояние
-  let newMenusState = {...menus};
-  //Сбросим выбранные фильтры у дочерних фильтров
+  // Скопируем состояние
+  let newMenusState = { ...menus };
+  // Сбросим выбранные фильтры у дочерних фильтров
   resetChildMenuFilters(menuId, newMenusState, dependencies);
-  //Установим выбранные фильтры для измененного меню
+  // Установим выбранные фильтры для измененного меню
   newMenusState[menuId]['filtersSelected'] = filtersSelected;
-
-  return {...catalogSidebarState, menus: newMenusState };
+  return { ...catalogSidebarState, menus: newMenusState };
 
   function resetChildMenuFilters(parentMenuId, menus, dependencies) {
     if (dependencies[parentMenuId]['childMenus']) {
@@ -53,12 +58,13 @@ export function calcCatalogSidebarState({ menuId, filtersSelected }, catalogSide
 }
 
 export function calcShowItems(menus, dependencies, order) {
-  let newMenus = {...menus};
+  let newMenus = { ...menus };
   order.forEach(menuId => {
     if (!!dependencies[menuId]['parentMenus']) {
       const parentId = Object.keys(dependencies[menuId]['parentMenus'])[0];
       const filtersSelectedIds = Object.keys(menus[parentId]['filtersSelected']);
-      if (filtersSelectedIds.length === 1 && menus[parentId]['filtersSelected'][filtersSelectedIds[0]] === 'selected') {
+      if (filtersSelectedIds.length === 1
+        && menus[parentId]['filtersSelected'][filtersSelectedIds[0]] === 'selected') {
         let filters = newMenus[menuId]['filters'];
         const parentSelectedFilter = filtersSelectedIds[0];
         Object.keys(filters).forEach(filterId => {

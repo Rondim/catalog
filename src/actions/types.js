@@ -19,3 +19,4 @@ export const REMOVE_CELL='remove_cell';
 export const SET_ACTIVE_CELL='set_active_cell';
 export const RESET_ACTIVE_CELL='reset_active_cell';
 export const SET_CATALOG_SIDEBAR_STATE = '  SET_CATALOG_SIDEBAR_STATE';
+export const FETCH_SIDEBAR_CONFIG= 'fetch_sidebar_config';

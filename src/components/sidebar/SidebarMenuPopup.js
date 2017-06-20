@@ -10,7 +10,7 @@ export default (props) => {
       onMouseLeave={handleMouseLeave}>
       {renderFilters(props)}
     </div>);
-}
+};
 
 function renderFilters(props) {
   const { filters, filtersSelected, filtersOrder, handleFilterClick, active } = props;

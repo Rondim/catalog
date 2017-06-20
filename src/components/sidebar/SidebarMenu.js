@@ -25,6 +25,7 @@ export default class SidebarMenu extends Component {
   render() {
     const { filters, filtersOrder, filtersSelected, menuName,
       blocked, handleMenuSelect } = this.props;
+    console.log('filtersOrder', filtersOrder);
     const active = Object.keys(filters).length > 0;
     const text = getText(filtersOrder, filters, filtersSelected, menuName);
     const selection = getSelection(filtersSelected);
@@ -39,7 +40,7 @@ export default class SidebarMenu extends Component {
       {this.state.isPopupShow && <SidebarMenuPopup {...props}/>}
     </div>);
   }
-};
+}
 
 function getText(filtersOrder, filters, filtersSelected, menuName) {
   const filterIds = Object.keys(filtersSelected);
@@ -49,20 +50,20 @@ function getText(filtersOrder, filters, filtersSelected, menuName) {
     menuButtonText = menuName;
   } else {
     let namesArr = [];
-    //Заполняем массив имен именами выбранных фильтров
+    // Заполняем массив имен именами выбранных фильтров
     filtersOrder.forEach(filterId => {
       if (filtersSelected[filterId]) {
         namesArr.push(filters[filterId]['filterName']);
       }
     });
-    //Формируем текст кнопки из массива в завимости от длины массива
+    // Формируем текст кнопки из массива в завимости от длины массива
     if (namesArr.length === 1) {
-      menuButtonText = namesArr[0]
+      menuButtonText = namesArr[0];
     } else if (namesArr.length > 1) {
-      menuButtonText = namesArr.map(filterName => filterName.substr(0,4)).join(', ');
+      menuButtonText = namesArr.map(filterName => filterName.substr(0, 4)).join(', ');
     }
   }
-
+  if (!menuButtonText) console.log('undef', filtersOrder, filtersSelected);
   return menuButtonText.substr(0, 20);
 }
 
@@ -80,7 +81,7 @@ function getSelection(filtersSelected) {
 }
 
 function getFiltersSelected(filtersSelected, filterId, multiselection) {
-  let newFiltersSelected = {...filtersSelected};
+  let newFiltersSelected = { ...filtersSelected };
   if (multiselection) {
     if (filtersSelected[filterId] === 'selected') {
       delete newFiltersSelected[filterId];

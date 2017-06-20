@@ -61,7 +61,7 @@ describe('CatalogSideBar', () => {
               dependentOn: { chains: true }
             }
           },
-          filtersOrder: ['plates', 'kongo', 'wedding','engagement', 'love', 'nonna'],
+          filtersOrder: ['plates', 'kongo', 'wedding', 'engagement', 'love', 'nonna'],
           filtersSelected: {},
           menuName: 'Подтип изделия',
           menuId: 'itemSubtype',
@@ -88,7 +88,7 @@ describe('CatalogSideBar', () => {
               dependentOn: { chains: true }
             }
           },
-          filtersOrder: ['s16', 's16_5', 's40','s45'],
+          filtersOrder: ['s16', 's16_5', 's40', 's45'],
           filtersSelected: {},
           menuName: 'Подтип изделия',
           menuId: 'sizes',
@@ -114,7 +114,7 @@ describe('CatalogSideBar', () => {
   });
   describe('rendering', () => {
     beforeEach(() => {
-      component = renderComponent(CatalogSideBar, null , state);
+      component = renderComponent(CatalogSideBar, null, state);
     });
     it('should exist', () => {
       expect(component.get(0)).to.exist;
@@ -124,7 +124,7 @@ describe('CatalogSideBar', () => {
 
   describe('calculateProps', () => {
     beforeEach(() => {
-      cState = {...state};
+      cState = { ...state };
     });
     it('should remove all filters of child objects if parent is not selected', () => {
       const { menus, dependencies, order } = cState.catalog.sidebar;
@@ -162,7 +162,7 @@ describe('CatalogSideBar', () => {
 
   describe('calcCatalogSidebarState', () => {
     beforeEach( ()=> {
-      sidebarState = {...state.catalog.sidebar};
+      sidebarState = { ...state.catalog.sidebar };
     });
     it('works with one selected', () => {
       const output = calcCatalogSidebarState({

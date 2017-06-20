@@ -1,23 +1,24 @@
 import { firebaseDB, firebaseStor, firebaseAuth } from '../firebase/api';
 import {
-    AUTH_USER,
-    UNAUTH_USER,
-    LOAD_ITEMS,
-    NEW_ITEM,
-    SET_INITIAL_STATE,
-    SUBFILTER_SELECT,
-    FILTER_ENTER,
-    FILTER_LEAVE,
-    FETCH_ITEM_LIST,
-    MARK_ACTIVE,
-    UPDATE_ITEM,
-    FETCH_ITEM_CELLS,
-    LOAD_CELLS,
-    UPDATE_CELLS,
-    REMOVE_CELL,
-    SET_ACTIVE_CELL,
-    RESET_ACTIVE_CELL,
-    SET_CATALOG_SIDEBAR_STATE
+  AUTH_USER,
+  UNAUTH_USER,
+  LOAD_ITEMS,
+  NEW_ITEM,
+  SET_INITIAL_STATE,
+  SUBFILTER_SELECT,
+  FILTER_ENTER,
+  FILTER_LEAVE,
+  FETCH_ITEM_LIST,
+  MARK_ACTIVE,
+  UPDATE_ITEM,
+  FETCH_ITEM_CELLS,
+  LOAD_CELLS,
+  UPDATE_CELLS,
+  REMOVE_CELL,
+  SET_ACTIVE_CELL,
+  RESET_ACTIVE_CELL,
+  SET_CATALOG_SIDEBAR_STATE,
+  FETCH_SIDEBAR_CONFIG
 } from './types';
 import { hashHistory } from 'react-router';
 import { objCross } from './functions/objects_crossing';
@@ -372,7 +373,16 @@ export function resetActiveCells(i, j) {
 export function setCatalogSidebarState(newState) {
   return {
     type: SET_CATALOG_SIDEBAR_STATE,
-    state: newState
+    payload: newState
+  };
+}
+
+export function fetchSidebarConfig(type) {
+  const config = firebaseDB.ref('/sidebarConfigs/' + type).once('value')
+    .then(snapshot => snapshot.val(), err => console.log('Filters fetch error'));
+  return {
+    type: FETCH_SIDEBAR_CONFIG,
+    payload: config
   };
 }
 // End SidebarActions
