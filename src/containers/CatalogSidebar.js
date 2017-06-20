@@ -18,7 +18,6 @@ class CatalogSideBar extends Component {
   render() {
     const { menus, dependencies, order } = this.props.catalogSidebar;
     const menusShowed = calcShowItems(menus, dependencies, order);
-    console.log('menusShowed', menusShowed, 'order', order);
     return (
       <div className="catalog_sidebar">
         <Sidebar

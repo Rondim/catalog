@@ -25,7 +25,6 @@ export default class SidebarMenu extends Component {
   render() {
     const { filters, filtersOrder, filtersSelected, menuName,
       blocked, handleMenuSelect } = this.props;
-    console.log('filtersOrder', filtersOrder);
     const active = Object.keys(filters).length > 0;
     const text = getText(filtersOrder, filters, filtersSelected, menuName);
     const selection = getSelection(filtersSelected);
@@ -57,13 +56,14 @@ function getText(filtersOrder, filters, filtersSelected, menuName) {
       }
     });
     // Формируем текст кнопки из массива в завимости от длины массива
-    if (namesArr.length === 1) {
+    if (namesArr.length === 0) {
+      menuButtonText = menuName;
+    } else if (namesArr.length === 1) {
       menuButtonText = namesArr[0];
     } else if (namesArr.length > 1) {
       menuButtonText = namesArr.map(filterName => filterName.substr(0, 4)).join(', ');
     }
   }
-  if (!menuButtonText) console.log('undef', filtersOrder, filtersSelected);
   return menuButtonText.substr(0, 20);
 }
 
