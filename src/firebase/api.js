@@ -1,19 +1,19 @@
 /**
  * Created by xax on 05.02.2017.
  */
-import * as firebase from "firebase";
+import * as firebase from 'firebase';
 
 
 const config = {
-    apiKey: "AIzaSyB0nn0cVuc7GPb67UYzKeBI1_BAcTImj-g",
-    authDomain: " catalog-26b41.firebaseapp.com",
-    databaseURL: "https://catalog-26b41.firebaseio.com",
-    storageBucket: "catalog-26b41.appspot.com",
+  apiKey: 'AIzaSyB0nn0cVuc7GPb67UYzKeBI1_BAcTImj-g',
+  authDomain: 'catalog-26b41.firebaseapp.com',
+  databaseURL: 'https://catalog-26b41.firebaseio.com',
+  storageBucket: 'catalog-26b41.appspot.com',
 };
 firebase.initializeApp(config);
 export const firebaseAuth = firebase.auth();
-export const Storage = () => {
-    return firebase.storage().ref('items');
+export const firebaseStor = () => {
+  return firebase.storage().ref('items');
 };
 
 export function getTestData() {
