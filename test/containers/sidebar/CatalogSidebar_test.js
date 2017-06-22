@@ -1,14 +1,14 @@
-import { renderComponent, expect, assert, sinon } from '../../test_helper';
+import { renderComponent, expect } from '../../test_helper';
 import CatalogSideBar from '../../../src/containers/CatalogSideBar';
 import { calcShowItems, calcCatalogSidebarState } from '../../../src/containers/CatalogSideBar';
 
 describe('CatalogSideBar', () => {
-  let component, state, cState, sidebarState;
+  let component, state, sidebarState;
   beforeEach(() => {
     state = {
       catalog: {}
     };
-    state.catalog.sidebar = {
+    sidebarState = state.catalog.sidebar = {
       sidebarType: 'setter',
       order: ['itemType', 'itemSubtype', 'sizes'],
       gaps: [0, 0, 0],
@@ -27,7 +27,6 @@ describe('CatalogSideBar', () => {
             }
           },
           filtersOrder: ['earrings', 'rings', 'chains'],
-          filtersSelected: {},
           menuName: 'Тип Изделия',
           menuId: 'itemType',
           blocked: false,
@@ -62,7 +61,6 @@ describe('CatalogSideBar', () => {
             }
           },
           filtersOrder: ['plates', 'kongo', 'wedding', 'engagement', 'love', 'nonna'],
-          filtersSelected: {},
           menuName: 'Подтип изделия',
           menuId: 'itemSubtype',
           blocked: false,
@@ -89,12 +87,16 @@ describe('CatalogSideBar', () => {
             }
           },
           filtersOrder: ['s16', 's16_5', 's40', 's45'],
-          filtersSelected: {},
           menuName: 'Подтип изделия',
           menuId: 'sizes',
           blocked: false,
           multiselection: false
         }
+      },
+      filtersSelected: {
+        itemType: {},
+        itemSubtype: {},
+        sizes: {}
       },
       dependencies: {
         itemType: {
@@ -112,58 +114,59 @@ describe('CatalogSideBar', () => {
       }
     };
   });
-  describe('rendering', () => {
-    beforeEach(() => {
-      component = renderComponent(CatalogSideBar, null, state);
-    });
-    it('should exist', () => {
-      expect(component.get(0)).to.exist;
-    });
-  });
+  // describe('rendering', () => {
+  //   beforeEach(() => {
+  //     component = renderComponent(CatalogSideBar, null, state);
+  //   });
+  //   it('should exist', () => {
+  //     expect(component.get(0)).to.exist;
+  //   });
+  // });
 
 
-  describe('calculateProps', () => {
-    beforeEach(() => {
-      cState = { ...state };
-    });
-    it('should remove all filters of child objects if parent is not selected', () => {
-      const { menus, dependencies, order } = cState.catalog.sidebar;
-      const output = calcShowItems(menus, dependencies, order);
-      expect(Object.keys(output.itemType.filters).length).to.equal(3);
-      expect(Object.keys(output.itemSubtype.filters).length).to.equal(0);
-      expect(Object.keys(output.sizes.filters).length).to.equal(0);
+  describe('calcShowItems', () => {
+    it('should show only parent when parent is not selected', () => {
+      const output = calcShowItems(sidebarState);
+      expect(output).to.eql({
+        itemType: ['earrings', 'rings', 'chains'],
+        itemSubtype: [],
+        sizes: []
+      });
     });
     it('should show 1st dependent items if parent selected', () => {
-      const { menus, dependencies, order } = cState.catalog.sidebar;
-      menus['itemType']['filtersSelected'] = { rings: 'selected' };
-      const output = calcShowItems(menus, dependencies, order);
-      expect(Object.keys(output.itemType.filters).length).to.equal(3);
-      expect(Object.keys(output.itemSubtype.filters).length).to.equal(2);
-      expect(Object.keys(output.sizes.filters).length).to.equal(0);
+      sidebarState.filtersSelected.itemType = { rings: 'selected' };
+      const output = calcShowItems(sidebarState);
+      expect(output).to.eql({
+        itemType: ['earrings', 'rings', 'chains'],
+        itemSubtype: ['wedding', 'engagement'],
+        sizes: []
+      });
     });
     it('should not show 1st dependent items if parent selected twice', () => {
-      const { menus, dependencies, order } = cState.catalog.sidebar;
-      menus['itemType']['filtersSelected'] = { rings: 'selected', earrings: 'selected' };
-      const output = calcShowItems(menus, dependencies, order);
-      expect(Object.keys(output.itemType.filters).length).to.equal(3);
-      expect(Object.keys(output.itemSubtype.filters).length).to.equal(0);
-      expect(Object.keys(output.sizes.filters).length).to.equal(0);
+      sidebarState.menus['itemType']['filtersSelected'] = {
+        rings: 'selected',
+        earrings: 'selected'
+      };
+      const output = calcShowItems(sidebarState);
+      expect(output).to.eql({
+        itemType: ['earrings', 'rings', 'chains'],
+        itemSubtype: [],
+        sizes: []
+      });
     });
     it('should show 1st, 2nd dependent items if parents selected', () => {
-      const { menus, dependencies, order } = cState.catalog.sidebar;
-      menus['itemType']['filtersSelected'] = { rings: 'selected' };
-      menus['itemSubtype']['filtersSelected'] = { wedding: 'selected' };
-      const output = calcShowItems(menus, dependencies, order);
-      expect(Object.keys(output.itemType.filters).length).to.equal(3);
-      expect(Object.keys(output.itemSubtype.filters).length).to.equal(2);
-      expect(Object.keys(output.sizes.filters).length).to.equal(2);
+      sidebarState.filtersSelected.itemType = { rings: 'selected' };
+      sidebarState.filtersSelected.itemSubtype = { wedding: 'selected' };
+      const output = calcShowItems(sidebarState);
+      expect(output).to.eql({
+        itemType: ['earrings', 'rings', 'chains'],
+        itemSubtype: ['wedding', 'engagement'],
+        sizes: ['s16', 's16_5']
+      });
     });
   });
 
   describe('calcCatalogSidebarState', () => {
-    beforeEach( ()=> {
-      sidebarState = { ...state.catalog.sidebar };
-    });
     it('works with one selected', () => {
       const output = calcCatalogSidebarState({
         menuId: 'itemType',

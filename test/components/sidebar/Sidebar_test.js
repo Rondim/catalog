@@ -24,15 +24,9 @@ describe('Sidebar', () => {
               filterName: 'Кольца'
             }
           },
-          filtersOrder: ['earrings', 'rings', 'chains'],
-          filtersSelected: {
-            earrings: 'selected',
-            rings: 'selectedNotByAll'
-          },
           menuName: 'Тип Изделия',
           menuId: 'itemType',
           blocked: false,
-          active: true,
           multiselection: false
         },
         itemSubtype: {
@@ -63,14 +57,22 @@ describe('Sidebar', () => {
               dependentOn: { chains: true }
             }
           },
-          filtersOrder: ['plates', 'kongo', 'wedding','engagement', 'love', 'nonna'],
-          filtersSelected: {},
           menuName: 'Подтип изделия',
           menuId: 'itemSubtype',
           blocked: false,
-          active: true,
           multiselection: false
         }
+      },
+      filtersSelected: {
+        itemType: {
+          earrings: 'selected',
+          rings: 'selectedNotByAll'
+        },
+        itemSubtype: { }
+      },
+      filtersToShow: {
+        itemType: ['earrings', 'rings', 'chains'],
+        itemSubtype: []
       },
       handleMenuSelect
     };
@@ -84,16 +86,16 @@ describe('Sidebar', () => {
       expect(component.children('.sidebar-menu').length).to.equal(2);
     });
     it('should not render menus when is empty ', () => {
-      props = {...props, order: [], menus: {}};
+      props = { ...props, order: [], menus: {} };
       component = renderComponent(Sidebar, props);
       expect(component.get(0)).to.exist;
       expect(component.children('.sidebar-menu').length).to.equal(0);
     });
   });
   it('should invoke filter click handler', () => {
-    //show popup
+    // show popup
     component.find('.sidebar-menu-button').eq(0).simulate('mouseEnter');
-    //simulate click on filter earrings
+    // simulate click on filter earrings
     component.find('.sidebar-menu-popup-button').eq(0).simulate('click');
     assert(handleMenuSelect.calledWithMatch({
       menuId: 'itemType',

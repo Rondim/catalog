@@ -17,12 +17,12 @@ describe('SidebarMenuButton', () => {
       handleMouseLeave
     };
     component = renderComponent(SidebarMenuButton, props);
-  })
+  });
 
   describe('rendering', () => {
     it('should render', () => {
       expect(component.get(0)).to.exist;
-    })
+    });
     it('has class sidebar-menu-button', () => {
       expect(component).to.have.class('sidebar-menu-button');
     });
@@ -30,7 +30,7 @@ describe('SidebarMenuButton', () => {
       expect(component).to.contain('Серь, Коль, Цепи');
     });
     it('has disabled class when button not Active', () => {
-      props = {...props, active: false };
+      props = { ...props, active: false };
       component = renderComponent(SidebarMenuButton, props);
       expect(component).to.have.class('sidebar-menu-button-disabled');
     });
@@ -38,11 +38,13 @@ describe('SidebarMenuButton', () => {
       expect(component).to.have.class('sidebar-menu-button-selected');
     });
     it('has selectedNotByAll class when filter selected', () => {
-      props = {...props, selection: 'selectedNotByAll' };
+      props = { ...props, selection: 'selectedNotByAll' };
       component = renderComponent(SidebarMenuButton, props);
       expect(component).to.have.class('sidebar-menu-button-selectedNotByAll');
     });
     it('has glyphicon lock when it blocked', () => {
+      props = { ...props, blocked: true };
+      component = renderComponent(SidebarMenuButton, props);
       expect(component.children('.glyphicon-lock').length).to.equal(1);
     });
   });
@@ -56,7 +58,7 @@ describe('SidebarMenuButton', () => {
       assert(handleMouseLeave.called);
     });
     it('not triggers handleMouseEnter & handleMouseLeave when active false', () => {
-      props = {...props, active: false };
+      props = { ...props, active: false };
       component = renderComponent(SidebarMenuButton, props);
       component.simulate('mouseEnter');
       component.simulate('mouseLeave');

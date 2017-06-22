@@ -23,10 +23,9 @@ export default class SidebarMenu extends Component {
     handleMenuSelect({ menuId, filtersSelected: newFiltersSelected });
   }
   render() {
-    const { filters, filtersOrder, filtersSelected, menuName,
-      blocked, handleMenuSelect } = this.props;
-    const active = Object.keys(filters).length > 0;
-    const text = getText(filtersOrder, filters, filtersSelected, menuName);
+    const { filters, filtersToShow, filtersSelected, menuName } = this.props;
+    const active = filtersToShow.length > 0;
+    const text = getText(filtersToShow, filters, filtersSelected, menuName);
     const selection = getSelection(filtersSelected);
     const props = { ...this.props, text, selection, active,
       handleFilterClick: this.handleFilterClick,
@@ -41,7 +40,7 @@ export default class SidebarMenu extends Component {
   }
 }
 
-function getText(filtersOrder, filters, filtersSelected, menuName) {
+function getText(filtersToShow, filters, filtersSelected, menuName) {
   const filterIds = Object.keys(filtersSelected);
   let menuButtonText;
 
@@ -50,7 +49,7 @@ function getText(filtersOrder, filters, filtersSelected, menuName) {
   } else {
     let namesArr = [];
     // Заполняем массив имен именами выбранных фильтров
-    filtersOrder.forEach(filterId => {
+    filtersToShow.forEach(filterId => {
       if (filtersSelected[filterId]) {
         namesArr.push(filters[filterId]['filterName']);
       }

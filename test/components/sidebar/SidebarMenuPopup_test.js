@@ -14,9 +14,8 @@ describe('SidebarMenuPopup', () => {
         earrings: { filterName: 'Серьги' },
         rings: { filterName: 'Кольца' }
       },
-      filtersOrder: ['earrings', 'rings', 'chains'],
+      filtersToShow: ['earrings', 'rings', 'chains'],
       filtersSelected: { },
-      active: true,
       handleFilterClick,
       handleMouseEnter,
       handleMouseLeave
@@ -24,8 +23,8 @@ describe('SidebarMenuPopup', () => {
     component = renderComponent(SidebarMenuPopup, props);
   });
   describe('rendering', () => {
-    it('should not render filters when active is false', () => {
-      props = {...props, active: false };
+    it('should not render filters when filtersToShow is []', () => {
+      props = { ...props, filtersToShow: [] };
       component = renderComponent(SidebarMenuPopup, props);
       expect(component.get(0)).to.exist;
     });
