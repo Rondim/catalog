@@ -144,7 +144,7 @@ export function checkAuthentificated(user) {
  * работает через reduxThunk
  * @return {Function}
  */
-export function fetchItemList() {
+export function fetchItemListOld() {
   return function(dispatch, getState) {
     const uid = getState().auth.authenticated;
     const { activeList } = getState().ProductList;
@@ -190,6 +190,79 @@ export function fetchItemList() {
               }, err => console.log(err));
           }
         }, err => console.log(err));
+    }
+  };
+}
+
+export function fetchItemList(type, query) {
+  return async function(dispatch, getState) {
+    const uid = getState().auth.authenticated;
+    const { activeList } = getState().ProductList;
+    if (uid && !activeList) {
+      if (type === 'manager') {
+        try {
+          const snapLists = await firebaseDB.ref(`/users/${uid}/lists`).once('value');
+          if (snapLists.val()) {
+            const key = Object.keys(snapLists.val())[0];
+            dispatch({
+              type: FETCH_ITEM_LIST,
+              payload: key
+            });
+            const snapManItems = await firebaseDB.ref(`/lists/${key}`).once('value');
+            dispatch({
+              type: LOAD_ITEMS,
+              payload: { manager: snapManItems.val() }
+            });
+          } else {
+            const key = await firebaseDB.ref().child(`/lists`).push().key;
+            let updates = {};
+            updates[`/users/${uid}/lists/${key}`] = true;
+            await firebaseDB.ref().update(updates);
+            dispatch({
+              type: FETCH_ITEM_LIST,
+              payload: key
+            });
+          }
+        } catch (err) {
+          console.error(err);
+        }
+      } else if (type === 'catalog') {
+        try {
+          let CatItems = {};
+          if (query) {
+            console.log(query);
+            let keys = Object.keys(query);
+            const snapCatItems = await firebaseDB.ref(`/items`)
+              .orderByChild(keys[0]).equalTo(query[keys[0]]).once('value');
+            keys.shift();
+            if (keys.length !== 0) {
+              snapCatItems.forEach(child => {
+                const item = child.val();
+                let bad = false;
+                keys.forEach(key =>{
+                  if (item[key] !== query[key]) {
+                    bad = true;
+                  }
+                });
+                if (!bad) {
+                  CatItems[child.key] = item;
+                }
+              });
+            } else {
+              CatItems = snapCatItems.val();
+            }
+          } else {
+            const snapCatItems = await firebaseDB.ref(`/items`).once('value');
+            CatItems = snapCatItems.val();
+          }
+          dispatch({
+            type: LOAD_ITEMS,
+            payload: { catalog: CatItems }
+          });
+        } catch (err) {
+          console.error(err);
+        }
+      }
     }
   };
 }

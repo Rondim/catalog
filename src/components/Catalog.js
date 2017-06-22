@@ -4,34 +4,14 @@ import { connect } from 'react-redux';
 import * as actions from '../actions';
 
 import CatalogSidebar from '../containers/CatalogSidebar';
-import ProductList from '../containers/ProductListContainer';
+import ProductList from '../containers/CatalogList';
 
 class Catalog extends Component {
-  shouldComponentUpdate(nextProps) {
-    if (this.props.uid !== nextProps.uid) {
-      return true;
-    }
-    if (this.props.ProductList.activeList !== nextProps.ProductList.activeList) {
-      return true;
-    }
-    if (this.props.ProductList.items !== nextProps.ProductList.items) {
-      return true;
-    }
-    return false;
-  }
-
   componentWillMount() {
     if (this.props.uid) {
-      this.props.fetchItemList();
+      this.props.fetchItemList('catalog');
     }
   }
-
-  componentWillUpdate(nextProps) {
-    if (nextProps.uid) {
-      nextProps.fetchItemList();
-    }
-  }
-
   render() {
     return (
       <div className="container">

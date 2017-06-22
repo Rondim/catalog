@@ -84,7 +84,7 @@ class ProductList extends Component {
             active={items[item].active}
             complited={items[item].complited}
             key={item}
-            url={items[item].url}
+            img={items[item].img}
             handleSelect={e => this.onSelect(e)}
           />);
         }

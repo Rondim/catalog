@@ -14,6 +14,15 @@ class CatalogSideBar extends Component {
   handleMenuSelect(menuChanged) {
     const newCatalogSidebarState = calcCatalogSidebarState(menuChanged, this.props.catalogSidebar);
     this.props.setCatalogSidebarState(newCatalogSidebarState);
+    const filters = Object.keys(newCatalogSidebarState.filtersSelected);
+    let query = {};
+    filters.forEach(filter => {
+      const selected = Object.keys(newCatalogSidebarState.filtersSelected[filter])[0];
+      if (selected) {
+        query[filter] = selected;
+      }
+    });
+    this.props.fetchItemList('catalog', query);
   }
   render() {
     const { menus, order, filtersSelected } = this.props.catalogSidebar;

@@ -9,7 +9,7 @@ const ProductListItem = (props) => {
   return (
     <li className={`col-xs-3 product_item ${complited} ${active}`}>
       <a href="#" onClick={props.handleSelect} className="thumbnail">
-        <img src={props.url} id={props.id} className="img-responsive img-rounded"/>
+        <img src={props.img} id={props.id} className="img-responsive img-rounded"/>
       </a>
     </li>
   );

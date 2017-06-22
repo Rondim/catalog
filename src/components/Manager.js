@@ -3,7 +3,7 @@ import { Grid, Row, Col } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import * as actions from '../actions';
 
-import ProductList from '../containers/ProductListContainer';
+import ProductList from '../containers/CatalogList';
 import NewManagerSideBar from '../containers/ManagerSidebar';
 
 class Manager extends Component {
