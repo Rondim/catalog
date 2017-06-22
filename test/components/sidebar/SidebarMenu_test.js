@@ -19,12 +19,11 @@ describe('SidebarMenu', () => {
           filterName: 'Кольца'
         }
       },
-      filtersOrder: ['earrings', 'rings', 'chains'],
+      filtersToShow: ['earrings', 'rings', 'chains'],
       filtersSelected: {},
       menuName: 'Тип Изделия',
       menuId: 'itemType',
       blocked: false,
-      active: true,
       multiselection: false,
       handleMenuSelect
     };
@@ -35,7 +34,7 @@ describe('SidebarMenu', () => {
     it('should exist', () => {
       expect(component.get(0)).to.exist;
     });
-    //Заменить на нормальные тесты с установкой состояние isPopupShow
+    // Заменить на нормальные тесты с установкой состояние isPopupShow
     it('should not render popup in common', () => {
       expect(component.find('.sidebar-menu-popup')[0]).to.not.exist;
     });
@@ -52,17 +51,17 @@ describe('SidebarMenu', () => {
       expect(component.children('.sidebar-menu-button').eq(0)).to.contain('Тип Изделия');
     });
     it('one full name when one selected and class selected', () => {
-      props = {...props, filtersSelected: { earrings: 'selected' }};
+      props = { ...props, filtersSelected: { earrings: 'selected' } };
       component = renderComponent(SidebarMenu, props);
       expect(component.children('.sidebar-menu-button').eq(0)).to.contain('Серьги');
       expect(component.find('.sidebar-menu-button')[0].className).
         to.contain('sidebar-menu-button-selected');
     });
     it('list of cutted filter names when many selected and class selectedNotByAll', () => {
-      props = {...props, filtersSelected: {
+      props = { ...props, filtersSelected: {
         earrings: 'selected',
         rings: 'selectedNotByAll'
-      }};
+      } };
       component = renderComponent(SidebarMenu, props);
       expect(component.children('.sidebar-menu-button')).to.contain('Серь, Коль');
       expect(component.find('.sidebar-menu-button')[0].className).

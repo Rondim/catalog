@@ -6,22 +6,21 @@ export default (props) => {
   const { text, selection, active, blocked,
     handleMouseEnter, handleMouseLeave } = props;
   return <Button
-    className={`sidebar-menu-button ${active ? getClass(selection) : 'sidebar-menu-button-disabled' }`}
+    className={`sidebar-menu-button ${active ?
+      getClass(selection) : 'sidebar-menu-button-disabled' }`}
     onMouseEnter={active && handleMouseEnter}
     onMouseLeave={active && handleMouseLeave}>
-    {text} <Glyphicon glyph="lock" />
-  </Button>
+    {text} {blocked ? <Glyphicon glyph="lock" /> : null}
+  </Button>;
 };
 
 function getClass(selection) {
   switch (selection) {
     case 'selected':
       return 'sidebar-menu-button-selected';
-      break;
     case 'selectedNotByAll':
       return 'sidebar-menu-button-selectedNotByAll';
-      break;
     default:
       return '';
-  };
+  }
 }

@@ -16,17 +16,17 @@ class CatalogSideBar extends Component {
     this.props.setCatalogSidebarState(newCatalogSidebarState);
   }
   render() {
-    const { menus, dependencies, order } = this.props.catalogSidebar;
-    const menusShowed = calcShowItems(menus, dependencies, order);
-    return (
-      <div className="catalog_sidebar">
+    const { menus, order, filtersSelected } = this.props.catalogSidebar;
+    if (!validateProps(this.props.catalogSidebar)) return null;
+    return <div className="catalog_sidebar">
         <Sidebar
-          menus = {menusShowed}
-          order = {order}
+          menus={menus}
+          order={order}
+          filtersToShow={calcShowItems(this.props.catalogSidebar)}
+          filtersSelected={filtersSelected}
           handleMenuSelect={this.handleMenuSelect}
         />
-      </div>
-    );
+    </div>;
   }
 }
 
@@ -36,45 +36,52 @@ function mapStateToProps(state) {
 export default connect(mapStateToProps, actions)(CatalogSideBar);
 
 export function calcCatalogSidebarState({ menuId, filtersSelected }, catalogSidebarState) {
-  let { menus, dependencies } = catalogSidebarState;
-  // Скопируем состояние
-  let newMenusState = { ...menus };
+  const { dependencies } = catalogSidebarState;
+  let newFiltersSelectedState = { ...catalogSidebarState.filtersSelected };
   // Сбросим выбранные фильтры у дочерних фильтров
-  resetChildMenuFilters(menuId, newMenusState, dependencies);
+  resetChildMenuFilters(menuId, dependencies, newFiltersSelectedState);
   // Установим выбранные фильтры для измененного меню
-  newMenusState[menuId]['filtersSelected'] = filtersSelected;
-  return { ...catalogSidebarState, menus: newMenusState };
+  newFiltersSelectedState[menuId] = filtersSelected;
+  return { ...catalogSidebarState, filtersSelected: newFiltersSelectedState };
 
-  function resetChildMenuFilters(parentMenuId, menus, dependencies) {
+  function resetChildMenuFilters(parentMenuId, dependencies, filtersSelectedState) {
     if (dependencies[parentMenuId]['childMenus']) {
       const childMenuIds = Object.keys(dependencies[parentMenuId]['childMenus']);
       childMenuIds.forEach(menuId => {
-        menus[menuId]['filtersSelected'] = {};
-        resetChildMenuFilters(menuId, menus, dependencies);
+        newFiltersSelectedState[menuId] = {};
+        resetChildMenuFilters(menuId, dependencies, filtersSelectedState);
       });
     }
   }
 }
 
-export function calcShowItems(menus, dependencies, order) {
-  let newMenus = { ...menus };
+export function calcShowItems(sidebarState) {
+  let { menus, dependencies, order, filtersSelected } = sidebarState;
+  let result = {};
   order.forEach(menuId => {
-    if (!!dependencies[menuId]['parentMenus']) {
+    let filtersToShow = [];
+    if (dependencies[menuId]['parentMenus']) {
       const parentId = Object.keys(dependencies[menuId]['parentMenus'])[0];
-      const filtersSelectedIds = Object.keys(menus[parentId]['filtersSelected']);
+      const filtersSelectedIds = Object.keys(filtersSelected[parentId]);
       if (filtersSelectedIds.length === 1
-        && menus[parentId]['filtersSelected'][filtersSelectedIds[0]] === 'selected') {
-        let filters = newMenus[menuId]['filters'];
+        && filtersSelected[parentId][filtersSelectedIds[0]] === 'selected') {
+        let filters = menus[menuId]['filters'];
         const parentSelectedFilter = filtersSelectedIds[0];
-        Object.keys(filters).forEach(filterId => {
-          if (!filters[filterId]['dependentOn'][parentSelectedFilter]) {
-            delete filters[filterId];
+        menus[menuId]['filtersOrder'].forEach(filterId => {
+          if (filters[filterId]['dependentOn'][parentSelectedFilter]) {
+            filtersToShow.push(filterId);
           }
         });
-      } else {
-        newMenus[menuId]['filters'] = {};
       }
+    } else {
+      filtersToShow = [...menus[menuId].filtersOrder];
     }
+    result[menuId] = filtersToShow;
   });
-  return newMenus;
+  return result;
+}
+
+function validateProps(sidebarState) {
+  const { menus, dependencies, order, filtersSelected } = sidebarState;
+  return !(menus === {} || dependencies === {} || order === [] || filtersSelected === {});
 }

@@ -13,28 +13,24 @@ export default (props) => {
 };
 
 function renderFilters(props) {
-  const { filters, filtersSelected, filtersOrder, handleFilterClick, active } = props;
-  return filtersOrder.map(filterId => {
-    return active ?
-      <Button
+  const { filters, filtersSelected, filtersToShow, handleFilterClick } = props;
+  return filtersToShow.length > 0 ? filtersToShow.map(filterId => {
+    return (<Button
         key={filterId}
         bsStyle={ getSelectionStyle(filterId, filtersSelected) }
         className="sidebar-menu-popup-button"
         onClick={() => handleFilterClick(filterId)}>
         {filters[filterId]['filterName']}
-      </Button> :
-      null;
-  });
+    </Button>);
+  }) : null;
 }
 
 function getSelectionStyle(filterId, filtersSelected) {
   switch (filtersSelected[filterId]) {
     case 'selected':
       return 'primary';
-      break;
     case 'selectedNotByAll':
       return 'warning';
-      break;
     default:
       return 'default';
   }
