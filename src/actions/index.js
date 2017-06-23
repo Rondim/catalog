@@ -233,16 +233,14 @@ export function fetchItemList(type, query) {
             console.log(query);
             let keys = Object.keys(query);
             const snapCatItems = await firebaseDB.ref(`/items`)
-              .orderByChild(keys[0]).equalTo(query[keys[0]]).once('value');
+              .orderByChild(keys[0]).equalTo(query[keys[0]][0]).once('value');
             keys.shift();
             if (keys.length !== 0) {
               snapCatItems.forEach(child => {
                 const item = child.val();
                 let bad = false;
                 keys.forEach(key =>{
-                  if (item[key] !== query[key]) {
-                    bad = true;
-                  }
+                  bad = arrayOfCondidtions(query[key], item[key]);
                 });
                 if (!bad) {
                   CatItems[child.key] = item;
@@ -265,6 +263,16 @@ export function fetchItemList(type, query) {
       }
     }
   };
+}
+function arrayOfCondidtions(array, value) {
+  let sumCond;
+  array.forEach(e => {
+    if (e === value) {
+      sumCond = false;
+    }
+  });
+  sumCond = sumCond !==false? true : sumCond;
+  return sumCond;
 }
 /**
  * Меняет состояние item, работает через reduxThunk

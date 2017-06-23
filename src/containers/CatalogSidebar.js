@@ -17,8 +17,8 @@ class CatalogSideBar extends Component {
     const filters = Object.keys(newCatalogSidebarState.filtersSelected);
     let query = {};
     filters.forEach(filter => {
-      const selected = Object.keys(newCatalogSidebarState.filtersSelected[filter])[0];
-      if (selected) {
+      const selected = Object.keys(newCatalogSidebarState.filtersSelected[filter]);
+      if (selected.length > 0) {
         query[filter] = selected;
       }
     });
