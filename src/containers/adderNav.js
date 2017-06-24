@@ -4,13 +4,12 @@
 import React, { Component } from 'react';
 import { Nav, NavItem } from 'react-bootstrap';
 import { IndexLinkContainer, LinkContainer } from 'react-router-bootstrap';
-import { connect } from 'react-redux';
 
 import AuthNav from './authNav';
 
 class NavBar extends Component {
   render() {
-    return (this.props.auth.authenticated ?
+    return (
         <Nav bsStyle="pills">
           <IndexLinkContainer to="/" activeHref="active">
             <NavItem>Добавление изделий</NavItem>
@@ -22,15 +21,9 @@ class NavBar extends Component {
             <NavItem>Конфигурирование второго уровня</NavItem>
           </LinkContainer>
           <AuthNav/>
-        </Nav>:
-        <div/>
+        </Nav>
     );
   }
 }
 
-
-function mapStateToProps(state) {
-  return { auth: state.auth };
-}
-
-export default connect(mapStateToProps)(NavBar);
+export default NavBar;
