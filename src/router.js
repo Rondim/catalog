@@ -4,6 +4,7 @@ import { Router, Route, IndexRoute, hashHistory } from 'react-router';
 
 import App from './components/App';
 import Adder from './containers/adder';
+import AdderConfig from './containers/adderConfig';
 import Signin from './components/auth/signin';
 import Signout from './components/auth/signout';
 import RequireAuth from './components/auth/require_auth';
@@ -13,6 +14,8 @@ const Routes = () => {
     <Router history={hashHistory}>
       <Route path="/" component={App}>
         <IndexRoute component={RequireAuth(Adder)}/>
+        <Route path="/config1" component={RequireAuth(AdderConfig)}/>
+        <Route path="/config2" component={RequireAuth(AdderConfig)}/>
         <Route path="/signin" component={Signin}/>
         <Route path="/signout" component={Signout}/>
       </Route>

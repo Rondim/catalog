@@ -92,13 +92,6 @@ class Adder extends Component {
             label="itemSubtype"
             className="form-group"
           />
-          <Field
-            name="unique"
-            type="checkbox"
-            component={renderField}
-            label="Уникален?"
-            className="form-group"
-          />
         </div>
         <div className="row">
           <FieldArray name="stones" component={param => renderList(param, 'камень')} />
@@ -128,6 +121,9 @@ function validate(formProps) {
   }
   if (!formProps.itemType) {
     errors.itemType = 'Обязательно введи тип изделия!';
+  }
+  if (!formProps.mid) {
+    errors.mid = 'Обязательно введи id производителя!';
   }
   return errors;
 }

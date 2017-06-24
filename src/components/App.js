@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import NavBar from '../containers/authNav';
+import NavBar from '../containers/adderNav';
 
 class App extends Component {
   render() {

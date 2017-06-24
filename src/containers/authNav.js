@@ -6,19 +6,15 @@ import { Nav, NavItem } from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap';
 import { connect } from 'react-redux';
 
-class NavBar extends Component {
+class AuthNav extends Component {
   render() {
     return (this.props.auth.authenticated ?
-      <Nav bsStyle="pills">
-        <LinkContainer to="/signout" activeHref="active">
-          <NavItem>Выход</NavItem>
-        </LinkContainer>
-      </Nav>:
-      <Nav bsStyle="pills">
-        <LinkContainer to="/signin" activeHref="active">
-          <NavItem>Вход</NavItem>
-        </LinkContainer>
-      </Nav>
+      <LinkContainer to="/signout" activeHref="active">
+        <NavItem>Выход</NavItem>
+      </LinkContainer> :
+      <LinkContainer to="/signin" activeHref="active">
+        <NavItem>Вход</NavItem>
+      </LinkContainer>
     );
   }
 }
@@ -28,4 +24,4 @@ function mapStateToProps(state) {
   return { auth: state.auth };
 }
 
-export default connect(mapStateToProps)(NavBar);
+export default connect(mapStateToProps)(AuthNav);

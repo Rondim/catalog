@@ -3,7 +3,9 @@ import {
   AUTH_USER,
   UNAUTH_USER,
   SUCCESS,
-  ERROR
+  ERROR,
+  FETCH_UP_FILTERS,
+  FETCH_DEPENDENCES
 } from './types';
 import { hashHistory } from 'react-router';
 
@@ -50,7 +52,7 @@ export function checkAuthentificated(user) {
 }
 
 
-// Adder
+// Adder of Items
 export async function addItem(values) {
   let data ={ ...values };
   const lists = ['stones', 'tags', 'others'];
@@ -65,6 +67,7 @@ export async function addItem(values) {
       }
     }
   }
+  data['unique'] = true;
   try {
     const key = await firebaseDB.ref().child(`/items`).push().key;
     let updates = {};
@@ -81,4 +84,31 @@ export async function addItem(values) {
     };
   }
 }
-// End Adder
+// End Adder of Items
+// Start configurator
+export async function fetchUpFilters() {
+  const snapUpFilters = await firebaseDB.ref(`/sidebarConfigs/catalogSidebar/order/`).once('value');
+  return {
+    type: FETCH_UP_FILTERS,
+    payload: snapUpFilters.val()
+  };
+}
+export async function fetchDependences() {
+  const snapDependeces = await firebaseDB
+    .ref(`/sidebarConfigs/catalogSidebar/menus/`).once('value');
+  let dependeces = [];
+  await snapDependeces.forEach(child => {
+    dependeces = dependeces.concat(child.child('filtersOrder').val());
+  });
+  return {
+    type: FETCH_DEPENDENCES,
+    payload: dependeces
+  };
+}
+export function addSecondFilter(values) {
+  console.log(values);
+  return {
+    type: SUCCESS,
+    payload: true
+  };
+}
