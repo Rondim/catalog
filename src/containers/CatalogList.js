@@ -85,6 +85,7 @@ class ProductList extends Component {
             complited={items[item].complited}
             key={item}
             img={items[item].img}
+            instanceList = {items[item].instanceList}
             handleSelect={e => this.onSelect(e)}
           />);
         }

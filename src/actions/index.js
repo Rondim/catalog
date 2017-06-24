@@ -242,16 +242,24 @@ export function fetchItemList(type, query) {
                 keys.forEach(key =>{
                   bad = arrayOfCondidtions(query[key], item[key]);
                 });
-                if (!bad) {
+                if (!bad && child.hasChild('instanceList')) {
                   CatItems[child.key] = item;
                 }
               });
             } else {
-              CatItems = snapCatItems.val();
+              snapCatItems.forEach(child => {
+                if (child.hasChild('instanceList')) {
+                  CatItems[child.key] = child.val();
+                }
+              });
             }
           } else {
             const snapCatItems = await firebaseDB.ref(`/items`).once('value');
-            CatItems = snapCatItems.val();
+            snapCatItems.forEach(child => {
+              if (child.hasChild('instanceList')) {
+                CatItems[child.key] = child.val();
+              }
+            });
           }
           dispatch({
             type: LOAD_ITEMS,
