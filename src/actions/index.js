@@ -105,10 +105,27 @@ export async function fetchDependences() {
     payload: dependeces
   };
 }
-export function addSecondFilter(values) {
-  console.log(values);
-  return {
-    type: SUCCESS,
-    payload: true
-  };
+export async function addSecondFilter(values) {
+  try {
+    console.log(values);
+    let updates = {};
+    const path = `/sidebarConfigs/catalogSidebar/menus/${values.parent}`;
+    updates[`${path}/filters/${values.id}/filterName`] = values.name;
+    values.dependentOn.forEach(dep => {
+      updates[`${path}/filters/${values.id}/dependentOn/${dep}`] = true;
+    });
+    const snapOrder = await firebaseDB.ref(`${path}/filtersOrder`).once('value');
+    updates[`${path}/filtersOrder/${snapOrder.val().length}`] = values.id;
+    await firebaseDB.ref().update(updates);
+    console.log(snapOrder.val().length);
+    return {
+      type: SUCCESS,
+      payload: true
+    };
+  } catch (err) {
+    return {
+      type: ERROR,
+      payload: err
+    };
+  }
 }
