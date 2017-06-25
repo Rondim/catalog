@@ -17,6 +17,7 @@ class AdderConfig extends Component {
   }
   componentWillMount() {
     this.props.fetchUpFilters();
+    this.props.fetchPopupFilters('itemType');
     this.props.fetchDependences();
   }
   renderAlert() {
@@ -36,7 +37,7 @@ class AdderConfig extends Component {
   render() {
     const { handleSubmit, submitting } = this.props;
     return (
-      <form onSubmit={handleSubmit(this.props.addUpFilter)} className="form" role="form">
+      <form onSubmit={handleSubmit(this.props.addSecondFilter)} className="form" role="form">
         <div className="row">
           <Field
             name="id"
@@ -53,47 +54,24 @@ class AdderConfig extends Component {
             className="form-group"
           />
           <div className="form-group col-xs-4">
-            <label>Родительские фильтры</label>
-            <Field
-              name="parentMenus"
-              component={renderMultiselect}
-              data={this.props.upFilters}/>
-          </div>
-        </div>
-        <div className="row">
-          <div className="form-group col-xs-4">
-            <label>Дочерние фильтры</label>
-            <Field
-              name="childMenus"
-              component={renderMultiselect}
-              data={this.props.upFilters}/>
-          </div>
-          <Field
-            name="multiselection"
-            type="checkbox"
-            component={renderField}
-            label="Множественный выбор"
-            className="form-control"
-          />
-          <Field
-            name="block"
-            type="checkbox"
-            component={renderField}
-            label="Заблокированы для изменений"
-            className="form-control"
-          />
-        </div>
-        <div className="row">
-          <div className="form-group col-xs-4">
-            <label>Тип меню</label>
+            <label>Фильтр первого уровня</label>
             <div>
               <Field
-                name="menuType"
+                name="parent"
                 component={renderDropdownList}
-                data={['filter', 'button']}
-                defaultValue='filter'
-                textField="menuType"/>
+                data={this.props.upFilters}
+                defaultValue={this.props.upFilters[0]}
+                textField="parent"/>
             </div>
+          </div>
+        </div>
+        <div className="row">
+          <div className="form-group col-xs-4">
+            <label>Зависит?</label>
+            <Field
+              name="dependentOn"
+              component={renderMultiselect}
+              data={this.props.dependences}/>
           </div>
         </div>
         {this.renderAlert()}
@@ -118,8 +96,8 @@ function validate(formProps) {
   if (!formProps.name) {
     errors.name = 'Обязательно введи Имя!';
   }
-  if (!formProps.menuType) {
-    errors.menuType = 'Обязательно выбери тип меню!';
+  if (!formProps.parent) {
+    errors.parent = 'Обязательно выбери фильтр первого уровня!';
   }
   return errors;
 }
@@ -129,7 +107,8 @@ function mapStateToProps(state) {
   return {
     upFilters: state.adder.upFilters,
     dependences: state.adder.dependences,
-    success: state.adder.success
+    success: state.adder.success,
+    error: state.adder.error
   };
 }
 

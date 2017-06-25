@@ -1,8 +1,20 @@
 /**
  * Created by xax on 18.06.2017.
  */
-import { SUCCESS, ERROR, FETCH_UP_FILTERS, FETCH_DEPENDENCES } from '../actions/types';
-const initialState = { success: false, error: '', upFilters: [], dependences: [] };
+import {
+  SUCCESS,
+  ERROR,
+  FETCH_UP_FILTERS,
+  FETCH_DEPENDENCES,
+  FETCH_POPUP_FILTERS
+} from '../actions/types';
+const initialState = {
+  success: false,
+  error: '',
+  upFilters: [],
+  dependences: [],
+  popupFilters: []
+};
 export default function(state = initialState, action) {
   switch (action.type) {
     case SUCCESS:
@@ -15,6 +27,8 @@ export default function(state = initialState, action) {
       return { ...state, upFilters: action.payload };
     case FETCH_DEPENDENCES:
       return { ...state, dependences: action.payload };
+    case FETCH_POPUP_FILTERS:
+      return { ...state, popupFilters: action.payload };
   }
   return state;
 }

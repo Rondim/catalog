@@ -4,11 +4,20 @@
 import React from 'react';
 import DropdownList from 'react-widgets/lib/DropdownList';
 import 'react-widgets/lib/less/react-widgets.less';
-const renderDropdownList = ({ input, data, valueField, textField, defaultValue }) =>
-  <DropdownList {...input}
+const renderDropdownList = ({ input,
+                              data,
+                              valueField,
+                              textField,
+                              defaultValue,
+                              meta: { touched, error, warning }
+}) =>
+  (<div>
+    <DropdownList {...input}
                 data={data}
                 defaultValue={defaultValue}
                 valueField={valueField}
                 textField={textField}
-                onChange={input.onChange} />;
+                onChange={input.onChange} />
+    {touched && ((error && <span className="error form-group-addon">{error}</span>) )}
+  </div>);
 export default renderDropdownList;

@@ -5,7 +5,8 @@ import {
   SUCCESS,
   ERROR,
   FETCH_UP_FILTERS,
-  FETCH_DEPENDENCES
+  FETCH_DEPENDENCES,
+  FETCH_POPUP_FILTERS
 } from './types';
 import { hashHistory } from 'react-router';
 
@@ -93,6 +94,21 @@ export async function fetchUpFilters() {
     payload: snapUpFilters.val()
   };
 }
+export async function fetchPopupFilters(filter) {
+  try {
+    const snapPopupFilters = await firebaseDB
+      .ref(`/sidebarConfigs/catalogSidebar/menus/${filter}/filtersOrder`).once('value');
+    return {
+      type: FETCH_POPUP_FILTERS,
+      payload: snapPopupFilters.val()
+    };
+  } catch (err) {
+    return {
+      type: FETCH_POPUP_FILTERS,
+      payload: []
+    };
+  }
+}
 export async function fetchDependences() {
   const snapDependeces = await firebaseDB
     .ref(`/sidebarConfigs/catalogSidebar/menus/`).once('value');
@@ -107,7 +123,6 @@ export async function fetchDependences() {
 }
 export async function addSecondFilter(values) {
   try {
-    console.log(values);
     let updates = {};
     const path = `/sidebarConfigs/catalogSidebar/menus/${values.parent}`;
     updates[`${path}/filters/${values.id}/filterName`] = values.name;
@@ -115,12 +130,83 @@ export async function addSecondFilter(values) {
       updates[`${path}/filters/${values.id}/dependentOn/${dep}`] = true;
     });
     const snapOrder = await firebaseDB.ref(`${path}/filtersOrder`).once('value');
-    updates[`${path}/filtersOrder/${snapOrder.val().length}`] = values.id;
+    const len = snapOrder.val() ? snapOrder.val().length : 0;
+    updates[`${path}/filtersOrder/${len}`] = values.id;
     await firebaseDB.ref().update(updates);
-    console.log(snapOrder.val().length);
     return {
       type: SUCCESS,
       payload: true
+    };
+  } catch (err) {
+    console.error(err);
+    return {
+      type: ERROR,
+      payload: err
+    };
+  }
+}
+export async function addUpFilter(values) {
+  try {
+    let updates = {};
+    const depPath = `/sidebarConfigs/catalogSidebar/dependencies/${values.id}`;
+    const menusPath = `/sidebarConfigs/catalogSidebar/menus/${values.id}`;
+    const orderPath = `/sidebarConfigs/catalogSidebar/order`;
+    if (!values.childMenus) {
+      updates[`${depPath}/childMenus`] = false;
+    } else {
+      values.childMenus.forEach(filter => {
+        updates[`${depPath}/childMenus/${filter}`] = true;
+      });
+    }
+    if (!values.parentMenus) {
+      updates[`${depPath}/parentMenus`] = false;
+    } else {
+      values.parentMenus.forEach(filter => {
+        updates[`${depPath}/parentMenus/${filter}`] = true;
+      });
+    }
+    updates[`${menusPath}/blocked`] = !!values.blocked;
+    updates[`${menusPath}/multiselection`] = !!values.multiselection;
+    updates[`${menusPath}/menuName`] = values.name;
+    updates[`${menusPath}/menuType`] = values.menuType;
+    const snapOrder = await firebaseDB.ref(orderPath).once('value');
+    updates[`${orderPath}/${snapOrder.val().length}`] = values.id;
+    await firebaseDB.ref().update(updates);
+    return {
+      type: SUCCESS,
+      payload: true
+    };
+  } catch (err) {
+    return {
+      type: ERROR,
+      payload: err
+    };
+  }
+}
+export async function orderUpFilters(newFilters) {
+  try {
+    let updates = {};
+    updates[`/sidebarConfigs/catalogSidebar/order`] = newFilters;
+    await firebaseDB.ref().update(updates);
+    return {
+      type: FETCH_UP_FILTERS,
+      payload: newFilters
+    };
+  } catch (err) {
+    return {
+      type: ERROR,
+      payload: err
+    };
+  }
+}
+export async function orderPopupFilters(newFilters, parentFilter) {
+  try {
+    let updates = {};
+    updates[`/sidebarConfigs/catalogSidebar/menus/${parentFilter}/filtersOrder`] = newFilters;
+    await firebaseDB.ref().update(updates);
+    return {
+      type: FETCH_POPUP_FILTERS,
+      payload: newFilters
     };
   } catch (err) {
     return {

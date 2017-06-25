@@ -39,6 +39,9 @@ module.exports = {
     })
   ],
   devServer: {
-      historyApiFallback: true
+    historyApiFallback: true,
+    contentBase: './',
+    host: 'localhost',
+    disableHostCheck: true
   }
 };

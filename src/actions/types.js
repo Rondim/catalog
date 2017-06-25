@@ -8,3 +8,4 @@ export const ERROR = 'error';
 export const SUCCESS = 'success';
 export const FETCH_UP_FILTERS= 'fetch_up_filters';
 export const FETCH_DEPENDENCES= 'fetch_dependeces';
+export const FETCH_POPUP_FILTERS = 'fetch_popup_filters';
