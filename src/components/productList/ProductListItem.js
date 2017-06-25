@@ -11,9 +11,9 @@ class ProductListItem extends Component {
       );
     });
   }
-  renderInstanceList(instanceList) {
+  renderInstances(instances) {
     let i=0;
-    return instanceList.map(instance => {
+    return instances.map(instance => {
       i++;
       return (
         <tr key={i}>{this.renderInstance(instance)}</tr>
@@ -34,7 +34,7 @@ class ProductListItem extends Component {
           <table style={{ marginBottom: '0px' }}
                  className="table table-hover table-condensed table-bordered">
             <tbody>
-            {this.renderInstanceList(this.props.instanceList)}
+            {this.renderInstances(this.props.instances)}
             </tbody>
           </table>
         </span>

@@ -18,7 +18,8 @@ import {
   SET_ACTIVE_CELL,
   RESET_ACTIVE_CELL,
   SET_CATALOG_SIDEBAR_STATE,
-  FETCH_SIDEBAR_CONFIG
+  FETCH_SIDEBAR_CONFIG,
+  AFTER_RESET_PAGE
 } from './types';
 import { hashHistory } from 'react-router';
 import { objCross } from './functions/objects_crossing';
@@ -144,55 +145,6 @@ export function checkAuthentificated(user) {
  * работает через reduxThunk
  * @return {Function}
  */
-export function fetchItemListOld() {
-  return function(dispatch, getState) {
-    const uid = getState().auth.authenticated;
-    const { activeList } = getState().ProductList;
-    if (uid && !activeList) {
-      firebaseDB.ref(`/users/${uid}/lists`).once('value')
-        .then(snapshot => {
-          if (snapshot.val()) {
-            const key = Object.keys(snapshot.val())[0];
-            dispatch({
-              type: FETCH_ITEM_LIST,
-              payload: key
-            });
-            firebaseDB.ref(`/lists/${key}`).once('value')
-              .then((snapshot) => {
-                console.log(snapshot.numChildren());
-                dispatch({
-                  type: LOAD_ITEMS,
-                  payload: { manager: snapshot.val() }
-                });
-              }, err => console.log(err));
-            firebaseDB.ref(`/main`).once('value')
-              .then((snapshot) => {
-                dispatch({
-                  type: LOAD_ITEMS,
-                  payload: { catalog: snapshot.val() }
-                });
-              }, err => console.log(err));
-          } else {
-            const key = firebaseDB.ref().child(`/lists`).push().key;
-            let updates = {};
-            updates[`/users/${uid}/lists/${key}`] = true;
-            firebaseDB.ref().update(updates);
-            dispatch({
-              type: FETCH_ITEM_LIST,
-              payload: key
-            });
-            firebaseDB.ref(`/main`).once('value')
-              .then((snapshot) => {
-                dispatch({
-                  type: LOAD_ITEMS,
-                  payload: { catalog: snapshot.val() }
-                });
-              }, err => console.log(err));
-          }
-        }, err => console.log(err));
-    }
-  };
-}
 
 export function fetchItemList(type, query) {
   return async function(dispatch, getState) {
@@ -229,8 +181,7 @@ export function fetchItemList(type, query) {
       } else if (type === 'catalog') {
         try {
           let CatItems = {};
-          if (query) {
-            console.log(query);
+          if (query && Object.keys(query).length > 0) {
             let keys = Object.keys(query);
             const snapCatItems = await firebaseDB.ref(`/items`)
               .orderByChild(keys[0]).equalTo(query[keys[0]][0]).once('value');
@@ -242,13 +193,13 @@ export function fetchItemList(type, query) {
                 keys.forEach(key =>{
                   bad = arrayOfCondidtions(query[key], item[key]);
                 });
-                if (!bad && child.hasChild('instanceList')) {
+                if (!bad && child.hasChild('instances')) {
                   CatItems[child.key] = item;
                 }
               });
             } else {
               snapCatItems.forEach(child => {
-                if (child.hasChild('instanceList')) {
+                if (child.hasChild('instances')) {
                   CatItems[child.key] = child.val();
                 }
               });
@@ -256,7 +207,7 @@ export function fetchItemList(type, query) {
           } else {
             const snapCatItems = await firebaseDB.ref(`/items`).once('value');
             snapCatItems.forEach(child => {
-              if (child.hasChild('instanceList')) {
+              if (child.hasChild('instances')) {
                 CatItems[child.key] = child.val();
               }
             });
@@ -472,6 +423,13 @@ export function fetchSidebarConfig(type) {
   return {
     type: FETCH_SIDEBAR_CONFIG,
     payload: config
+  };
+}
+
+export function afterResetPage() {
+  return {
+    type: AFTER_RESET_PAGE,
+    payload: true
   };
 }
 // End SidebarActions

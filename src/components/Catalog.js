@@ -18,7 +18,11 @@ class Catalog extends Component {
         <Grid>
           <Row className="show-grid">
             <Col lg={9} md={9} xs={9}>
-              <ProductList items={this.props.ProductList.items.catalog}/>
+              <ProductList
+                items={this.props.ProductList.items.catalog}
+                resetPage={this.props.resetPage}
+                afterResetPage={this.props.afterResetPage}
+              />
             </Col>
             <Col lg={3} md={3} xs={3}>
               <CatalogSidebar />
@@ -30,7 +34,11 @@ class Catalog extends Component {
   }
 }
 function mapStateToProps(state) {
-  return { ProductList: state.ProductList, uid: state.auth.authenticated };
+  return {
+    ProductList: state.ProductList,
+    uid: state.auth.authenticated,
+    resetPage: state.catalog.resetPage
+  };
 }
 
 export default connect(mapStateToProps, actions)(Catalog);

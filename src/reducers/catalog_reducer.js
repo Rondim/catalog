@@ -1,4 +1,8 @@
-import { SET_CATALOG_SIDEBAR_STATE, FETCH_SIDEBAR_CONFIG } from '../actions/types';
+import {
+  SET_CATALOG_SIDEBAR_STATE,
+  FETCH_SIDEBAR_CONFIG,
+  AFTER_RESET_PAGE
+} from '../actions/types';
 
 const initialCatalogState = {
   sidebar: {
@@ -6,7 +10,8 @@ const initialCatalogState = {
     menus: {},
     filtersSelected: {},
     dependencies: {}
-  }
+  },
+  resetPage: false
 };
 // order: [],
 // menus: {
@@ -21,10 +26,12 @@ const initialCatalogState = {
 const catalogReducer = (state=initialCatalogState, action) => {
   switch (action.type) {
     case SET_CATALOG_SIDEBAR_STATE:
-      return { ...state, sidebar: action.payload };
+      return { ...state, sidebar: action.payload, resetPage: true };
     case FETCH_SIDEBAR_CONFIG:
       let sidebar = initConfigToState(action.payload);
       return { ...state, sidebar };
+    case AFTER_RESET_PAGE:
+      return { ...state, resetPage: false };
     default:
       return state;
   }

@@ -19,12 +19,17 @@ class ProductList extends Component {
       page: 1
     };
   }
-
   /**
    * Передает состояние активности из ProductListItem родителю
    * @memberof app.components.ProductList
    * @param {object} e - event полученный из ProductListItem
    */
+  componentWillUpdate() {
+    if (this.props.resetPage) {
+      this.setState({ page: 1 });
+    }
+    this.props.afterResetPage();
+  }
   onSelect(e) {
     e.preventDefault();
     this.props.setActive(e.target.id);
@@ -85,7 +90,7 @@ class ProductList extends Component {
             complited={items[item].complited}
             key={item}
             img={items[item].img}
-            instanceList = {items[item].instanceList}
+            instances = {items[item].instances}
             handleSelect={e => this.onSelect(e)}
           />);
         }

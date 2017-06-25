@@ -177,3 +177,7 @@ a#instanse.vis:hover span{ /*CSS for enlarged image on hover*/
     top: 0;
     left: 60px; /*position where enlarged image should offset horizontally */
 }
+.thumbnail>img {
+    width: 182.5px;
+    height: 182.5px;
+}
