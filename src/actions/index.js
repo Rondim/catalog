@@ -198,19 +198,11 @@ export function fetchItemList(type, query) {
                 }
               });
             } else {
-              snapCatItems.forEach(child => {
-                if (child.hasChild('instances')) {
-                  CatItems[child.key] = child.val();
-                }
-              });
+              CatItems = pushWithInstances(snapCatItems);
             }
           } else {
             const snapCatItems = await firebaseDB.ref(`/items`).once('value');
-            snapCatItems.forEach(child => {
-              if (child.hasChild('instances')) {
-                CatItems[child.key] = child.val();
-              }
-            });
+            CatItems = pushWithInstances(snapCatItems);
           }
           dispatch({
             type: LOAD_ITEMS,
@@ -223,6 +215,15 @@ export function fetchItemList(type, query) {
     }
   };
 }
+function pushWithInstances(snap) {
+  let items = {};
+  snap.forEach(child => {
+    if (child.hasChild('instances')) {
+      items[child.key] = child.val();
+    }
+  });
+  return items;
+}
 function arrayOfCondidtions(array, value) {
   let sumCond;
   array.forEach(e => {
@@ -230,7 +231,7 @@ function arrayOfCondidtions(array, value) {
       sumCond = false;
     }
   });
-  sumCond = sumCond !==false? true : sumCond;
+  sumCond = sumCond !== false ? true : sumCond;
   return sumCond;
 }
 /**
