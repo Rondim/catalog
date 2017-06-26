@@ -24,6 +24,7 @@ export default function(state = initialState, action) {
     case ERROR:
       return { ...state, error: action.payload.message, success: false };
     case FETCH_UP_FILTERS:
+      console.log(action.payload, action);
       return { ...state, upFilters: action.payload };
     case FETCH_DEPENDENCES:
       return { ...state, dependences: action.payload };

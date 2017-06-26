@@ -110,16 +110,24 @@ export async function fetchPopupFilters(filter) {
   }
 }
 export async function fetchDependences() {
-  const snapDependeces = await firebaseDB
-    .ref(`/sidebarConfigs/catalogSidebar/menus/`).once('value');
-  let dependeces = [];
-  await snapDependeces.forEach(child => {
-    dependeces = dependeces.concat(child.child('filtersOrder').val());
-  });
-  return {
-    type: FETCH_DEPENDENCES,
-    payload: dependeces
-  };
+  try {
+    const snapDependeces = await firebaseDB
+      .ref(`/sidebarConfigs/catalogSidebar/menus/`).once('value');
+    let dependeces = [];
+    await snapDependeces.forEach(child => {
+      dependeces = dependeces.concat(child.child('filtersOrder').val());
+    });
+    return {
+      type: FETCH_DEPENDENCES,
+      payload: dependeces
+    };
+  } catch (err) {
+    console.error(err);
+    return {
+      type: ERROR,
+      payload: err
+    };
+  }
 }
 export async function addSecondFilter(values) {
   try {
