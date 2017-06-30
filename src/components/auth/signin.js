@@ -75,7 +75,7 @@ Signin = reduxForm({
   validate
 })(Signin);
 
-Signin = connect(mapStateToProps, {signinUser})(Signin);
+Signin = connect(mapStateToProps, { signinUser })(Signin);
 
 export default Signin;
 
