@@ -7,6 +7,7 @@ import PropTypes from 'prop-types';
 import { graphql } from 'react-apollo';
 import query from './queries/CurentUser';
 import mutation from './mutations/SigninUser';
+import Loading from '../../components/Loading';
 
 
 class Signin extends Component {
@@ -44,7 +45,7 @@ class Signin extends Component {
 
   render() {
     if (this.props.data.loading) {
-      return (<div>Loading</div>);
+      return (<Loading />);
     }
     return (
       <form

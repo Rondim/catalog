@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import _ from 'lodash';
 
 import ProductListItem from './ProductListItem';
+import Loading from '../Loading';
 
 class ProductList extends Component {
   static propTypes = {
@@ -66,7 +67,7 @@ class ProductList extends Component {
     const { items, setActive } = this.props;
     const { page } = this.state;
     let i = 0;
-    if (items.length === 0) return <div>Loading...</div>;
+    if (items.length === 0) return <Loading />;
     return _.map(items, item => {
       const { active, complited, img: { url }, id } = item;
       i++;
