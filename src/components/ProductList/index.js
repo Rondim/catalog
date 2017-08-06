@@ -1,39 +1,35 @@
 import React, { Component } from 'react';
 import { Button, ButtonGroup } from 'react-bootstrap';
 import PropTypes from 'prop-types';
-import { graphql } from 'react-apollo';
+import _ from 'lodash';
 
 import ProductListItem from './ProductListItem';
-import query from './queries/FetchItems';
 
 class ProductList extends Component {
   static propTypes = {
-    data: PropTypes.object
+    items: PropTypes.array.isRequired,
+    setActive: PropTypes.func
   };
   state = {
     page: 1
   };
 
-  /**
-   * Передает состояние активности из ProductListItem родителю
-   * @memberof app.components.ProductList
-   * @param {object} e - event полученный из ProductListItem
-   */
-  onSelect = (e) => {
-    e.preventDefault();
-    this.props.setActive(e.target.id);
+  onSelect = (ev) => {
+    const { setActive } = this.props;
+    ev.preventDefault();
+    setActive && setActive(ev.target.id);
   };
 
-  handleKeyDown = (e) => {
-    if (e.keyCode === 39) {
+  handleKeyDown = (ev) => {
+    if (ev.keyCode === 39) {
       this.handleChangePage(true);
-    } else if (e.keyCode === 37) {
+    } else if (ev.keyCode === 37) {
       this.handleChangePage(false);
     }
   };
 
   handleChangePage = (forward) => {
-    const max = Object.keys(this.props.data.allItems).length / 8;
+    const max = Object.keys(this.props.items).length / 8;
     this.setState((prevState) => {
       if (forward) {
         if (prevState.page < max) return { page: prevState.page + 1 };
@@ -49,7 +45,7 @@ class ProductList extends Component {
    * @return {string} - HTML markup for the component List
    */
   renderPages() {
-    const itemsCount = Object.keys(this.props.data.allItems).length;
+    const itemsCount = Object.keys(this.props.items).length;
     let pages = [];
     for (let i = 0; i < itemsCount / 8; i++) {
       pages.push(i + 1);
@@ -67,23 +63,25 @@ class ProductList extends Component {
   }
 
   renderList() {
-    let items = this.props.data.allItems;
+    const { items, setActive } = this.props;
+    const { page } = this.state;
     let i = 0;
-    const page = this.state.page;
-    return Object.keys(items).map(item => {
-        i++;
-        if (i <= page * 8 && i > (page - 1) * 8) {
-          return (<ProductListItem
-            id={item}
-            active={items[item].active}
-            complited={items[item].complited}
-            key={item}
-            img={items[item].img}
-            handleSelect={e => this.onSelect(e)}
-          />);
-        }
+    if (items.length === 0) return <div>Loading...</div>;
+    return _.map(items, item => {
+      const { active, complited, img: { url }, id } = item;
+      i++;
+      if (i <= page * 8 && i > (page - 1) * 8) {
+        return (<ProductListItem
+          id={id}
+          active={active}
+          complited={complited}
+          key={id}
+          img={url}
+          handleSelect={this.onSelect}
+          disabled={!setActive}
+        />);
       }
-    );
+    });
   }
 
   /**
@@ -93,9 +91,6 @@ class ProductList extends Component {
    * @return {string} - HTML markup for the component
    */
   render() {
-    if (this.props.data.loading) {
-      return (<div>Loading</div>);
-    }
     return (
       <div className="product_list_container" tabIndex="1" onKeyDown={this.handleKeyDown}>
         <div className="text-center">
@@ -114,4 +109,4 @@ class ProductList extends Component {
 }
 
 
-export default graphql(query)(ProductList);
+export default ProductList;

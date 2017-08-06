@@ -1,16 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const ProductListItem = (props) => {
-  let active;
-  let complited;
-  active = props.active ? 'active' : '';
-  complited = props.complited ? 'complited' : '';
-  active = !props.active && !props.complited ? 'bad' : active;
+const ProductListItem = ({ active, complited, handleSelect, img, id, disabled }) => {
+  let activeClass = active && !disabled ? 'active' : '';
+  let complitedClass = complited ? 'complited' : '';
+  activeClass = !disabled && !active && !complited ? 'bad' : activeClass;
   return (
-    <li className={`col-xs-3 product_item ${complited} ${active}`}>
-      <a href="#" onClick={props.handleSelect} className="thumbnail">
-        <img src={props.img.url} id={props.id} className="img-responsive img-rounded" />
+    <li className={`col-xs-3 product_item ${complitedClass} ${activeClass}`}>
+      <a href="#" onClick={handleSelect} className="thumbnail">
+        <img src={img} id={id} className="img-responsive img-rounded" />
       </a>
     </li>
   );
@@ -18,12 +16,10 @@ const ProductListItem = (props) => {
 ProductListItem.propTypes = {
   active: PropTypes.bool,
   complited: PropTypes.bool,
-  img: PropTypes.shape({
-    url: PropTypes.string.isRequired,
-    id: PropTypes.string.isRequired
-  }),
+  img: PropTypes.string.isRequired,
   handleSelect: PropTypes.func.isRequired,
-  id: PropTypes.string.isRequired
+  id: PropTypes.string.isRequired,
+  disabled: PropTypes.bool
 };
 
 export default ProductListItem;

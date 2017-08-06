@@ -3,11 +3,11 @@ import { Router, Route, IndexRoute, hashHistory } from 'react-router';
 
 
 import App from './components/App';
-import Catalog from './components/Catalog';
+import Catalog from './containers/Catalog';
 import Manager from './components/Manager';
 import DandDCells from './containers/CellsContainer';
-import Signin from './components/auth/signin';
-import requireAuth from './components/auth/require_auth';
+import Signin from './containers/auth/signin';
+import requireAuth from './containers/auth/require_auth';
 
 const Routes = () => {
   return (
