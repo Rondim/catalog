@@ -11,10 +11,17 @@
     "comma-dangle": 0,
     "react/jsx-uses-react": "error",
     "react/jsx-uses-vars": "error",
+    "react/jsx-tag-spacing": "error",
     "no-case-declarations": 0,
-    "react/prop-types": 0,
-    "object-curly-spacing": [2, "always"]
+    "object-curly-spacing": [2, "always"],
+    "no-invalid-this": 0,
+    "space-before-function-paren": ["error", {
+      "anonymous": "never",
+      "named": "never",
+      "asyncArrow": "always"
+    }]
   },
+  "parser": "babel-eslint",
   "parserOptions": {
     "sourceType": "module",
     "ecmaVersion": 8,
@@ -35,5 +42,8 @@
       "pragma": "React",  // Pragma to use, default to "React"
       "version": "15.4" // React version, default to the latest React stable release
     }
+  },
+  "globals": {
+    "localStorage": true
   }
 }

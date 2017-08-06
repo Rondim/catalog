@@ -1,18 +1,29 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { createStore, applyMiddleware } from 'redux';
-import { Provider } from 'react-redux';
-import ReduxPromise from 'redux-promise';
-import reducers from './reducers';
 import Routes from './router';
 import '../style/style.css';
-import reduxThunk from 'redux-thunk';
+import { ApolloClient, ApolloProvider, createNetworkInterface } from 'react-apollo';
 
-const App = () => {
-  const store = createStore(reducers, {}, applyMiddleware(ReduxPromise, reduxThunk));
+const networkInterface = createNetworkInterface({
+  uri: 'https://api.graph.cool/simple/v1/cj5tpc7zsj16i012285uxa6j5'
+});
+networkInterface.use([{
+  applyMiddleware(req, next) {
+    if (!req.options.headers) {
+      req.options.headers = {};
+    }
 
-  return <Provider store={store}>
+    // get the authentication token from local storage if it exists
+    if (localStorage.getItem('token')) {
+      req.options.headers.authorization = `Bearer ${localStorage.getItem('token')}`;
+    }
+    next();
+  },
+}]);
+const client = new ApolloClient({ networkInterface });
+ReactDOM.render((
+  <ApolloProvider client={client}>
     <Routes />
-  </Provider>;
-};
-ReactDOM.render(<App />, document.getElementById('root'));
+  </ApolloProvider>
+), document.getElementById('root'));
+

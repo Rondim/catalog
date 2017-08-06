@@ -1,55 +1,20 @@
-/**
- * Created by xax on 19.02.2017.
- */
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import * as actions from '../../actions';
-import { firebaseAuth } from '../../firebase/api';
+import { graphql } from 'react-apollo';
+import curentUserQuery from './queries/CurentUser';
+import { hashHistory } from 'react-router';
 
-let access;
-export default function(ComposedComponent) {
-  class Authentication extends Component {
-    componentWillMount() {
-      if (!this.props.authenticated) {
-        access = false;
-        checkAuthFirebase()
-          .then(user =>{
-            this.props.checkAuthentificated(user);
-          });
-      } else access = true;
-    }
-
-    componentWillUpdate(nextProps) {
-      if (!nextProps.authenticated) {
-        access = false;
-        checkAuthFirebase()
-          .then(user => {
-            nextProps.checkAuthentificated(user);
-          });
-      } else access = true;
+export default (WrappedComponent) => {
+  class RequireAuth extends Component {
+    componentWillUpdate({ data: { user, loading } }) {
+      if (!loading && !user) {
+        hashHistory.push('/login');
+      }
     }
 
     render() {
-      return (
-        access?
-        <ComposedComponent {...this.props}/>:
-          <div/>
-      );
+      return <WrappedComponent {...this.props} />;
     }
   }
 
-  function mapStateToProps(state) {
-    return { authenticated: state.auth.authenticated };
-  }
-
-  return connect(mapStateToProps, actions)(Authentication);
-}
-
-function checkAuthFirebase() {
-  return new Promise((resolve, reject) => {
-    firebaseAuth.onAuthStateChanged((user, err) => {
-      if (err) reject(err);
-      resolve(user);
-    });
-  });
-}
+  return graphql(curentUserQuery)(RequireAuth);
+};
