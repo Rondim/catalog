@@ -20,7 +20,10 @@ networkInterface.use([{
     next();
   },
 }]);
-const client = new ApolloClient({ networkInterface });
+const client = new ApolloClient({
+  dataIdFromObject: o => o.id,
+  networkInterface
+});
 ReactDOM.render((
   <ApolloProvider client={client}>
     <Routes />

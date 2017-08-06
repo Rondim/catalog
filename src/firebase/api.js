@@ -11,7 +11,6 @@ const config = {
   storageBucket: 'catalog-26b41.appspot.com',
 };
 firebase.initializeApp(config);
-export const firebaseAuth = firebase.auth();
 export const firebaseStor = () => {
   return firebase.storage().ref('items');
 };

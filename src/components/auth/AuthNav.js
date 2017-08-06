@@ -7,17 +7,23 @@ import { LinkContainer } from 'react-router-bootstrap';
 import { graphql } from 'react-apollo';
 import query from './queries/CurentUser';
 import PropTypes from 'prop-types';
+import { hashHistory } from 'react-router';
 
 class AuthNav extends Component {
   static propTypes = {
     data: PropTypes.object.isRequired
   };
 
+  logout = () => {
+    localStorage.clear();
+    hashHistory.push('/signin');
+  };
+
   render() {
     const { loading, user } = this.props.data;
     if (loading) return <div />;
     return (user ?
-        <NavItem onClick={() => localStorage.clear()}>
+        <NavItem onClick={() => this.logout()}>
           Выход
         </NavItem> :
         <LinkContainer to="/signin" activeHref="active">

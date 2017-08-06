@@ -1,52 +1,46 @@
 import React, { Component } from 'react';
 import { Button, ButtonGroup } from 'react-bootstrap';
+import PropTypes from 'prop-types';
+import { graphql } from 'react-apollo';
 
+import ProductListItem from './ProductListItem';
+import query from './queries/FetchItems';
 
-import ProductListItem from '../components/productList/ProductListItem';
-
-/**
- * Отрисовывает Лист продуктов через параметры принимает функцию, которая делает item активным
- * и обект объектов продуктов(items)
- * @memberof app.components
- */
 class ProductList extends Component {
-  constructor(props) {
-    super(props);
-    this.onSelect = this.onSelect.bind(this);
-    this.handleChangePage = this.handleChangePage.bind(this);
-    this.handleKeyDown = this.handleKeyDown.bind(this);
-    this.state = {
-      page: 1
-    };
-  }
+  static propTypes = {
+    data: PropTypes.object
+  };
+  state = {
+    page: 1
+  };
 
   /**
    * Передает состояние активности из ProductListItem родителю
    * @memberof app.components.ProductList
    * @param {object} e - event полученный из ProductListItem
    */
-  onSelect(e) {
+  onSelect = (e) => {
     e.preventDefault();
     this.props.setActive(e.target.id);
-  }
+  };
 
-  handleKeyDown(e) {
+  handleKeyDown = (e) => {
     if (e.keyCode === 39) {
       this.handleChangePage(true);
     } else if (e.keyCode === 37) {
       this.handleChangePage(false);
     }
-  }
+  };
 
-  handleChangePage(forward) {
-    const max = Object.keys(this.props.items).length / 8;
+  handleChangePage = (forward) => {
+    const max = Object.keys(this.props.data.allItems).length / 8;
     this.setState((prevState) => {
       if (forward) {
         if (prevState.page < max) return { page: prevState.page + 1 };
       } else if (prevState.page > 1) return { page: prevState.page - 1 };
       return { page: prevState.page };
     });
-  }
+  };
 
   /**
    * Renders the component List.
@@ -55,7 +49,7 @@ class ProductList extends Component {
    * @return {string} - HTML markup for the component List
    */
   renderPages() {
-    const itemsCount = Object.keys(this.props.items).length;
+    const itemsCount = Object.keys(this.props.data.allItems).length;
     let pages = [];
     for (let i = 0; i < itemsCount / 8; i++) {
       pages.push(i + 1);
@@ -73,7 +67,7 @@ class ProductList extends Component {
   }
 
   renderList() {
-    let items = this.props.items;
+    let items = this.props.data.allItems;
     let i = 0;
     const page = this.state.page;
     return Object.keys(items).map(item => {
@@ -99,6 +93,10 @@ class ProductList extends Component {
    * @return {string} - HTML markup for the component
    */
   render() {
+    console.log(this.props);
+    if (this.props.data.loading) {
+      return (<div>Loading</div>);
+    }
     return (
       <div className="product_list_container" tabIndex="1" onKeyDown={this.handleKeyDown}>
         <div className="text-center">
@@ -117,4 +115,4 @@ class ProductList extends Component {
 }
 
 
-export default ProductList;
+export default graphql(query)(ProductList);

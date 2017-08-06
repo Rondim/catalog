@@ -22,6 +22,7 @@ class Signin extends Component {
   };
 
   componentWillUpdate(nextProps) {
+    console.log(nextProps.data.user);
     if (!this.props.data.user && nextProps.data.user) {
       hashHistory.push('/');
     }
@@ -30,12 +31,15 @@ class Signin extends Component {
   signinUser = async () => {
     const { email, password } = this.state;
     try {
-      const response = await this.props.mutate({ variables: { email, password } });
-      localStorage.setItem('token', response.data.mutate.token);
+      const response = await this.props.mutate({
+        variables: { email, password }
+      });
+      this.setState({ errors: [] });
+      localStorage.setItem('token', response.data.signinUser.token);
       hashHistory.push('/');
-    } catch (err) {
-      console.error(err);
-      hashHistory.push('/');
+    } catch (res) {
+      const errors = res.graphQLErrors.map(err => err.message);
+      this.setState({ errors });
     }
   };
 
@@ -75,7 +79,11 @@ class Signin extends Component {
           </div>
         </div>
         <div className="errors">
-          {this.state.errors.map(err => <div key={err}>{err}</div>)}
+          {this.state.errors.map(err =>
+            <div className="col-sm-offset-2 col-sm-10 alert alert-danger" role="alert" key={err}>
+              {err}
+            </div>
+          )}
         </div>
         <button className="btn btn-primary col-sm-12">Submit</button>
       </form>
@@ -85,12 +93,4 @@ class Signin extends Component {
 
 export default graphql(query)(
   graphql(mutation)(Signin)
-);
-
-const renderField = ({ input, label, type, meta: { touched, error, warning } }) => (
-  <div className="form-group">
-    <label className="form-group-addon">{label}</label>
-    <input {...input} placeholder={label} type={type} className="form-control" />
-    {touched && ((error && <span className="error form-group-addon">{error}</span>) )}
-  </div>
 );

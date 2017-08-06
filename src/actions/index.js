@@ -1,7 +1,5 @@
-import { firebaseDB, firebaseStor, firebaseAuth } from '../firebase/api';
+import { firebaseDB, firebaseStor } from '../firebase/api';
 import {
-  AUTH_USER,
-  UNAUTH_USER,
   LOAD_ITEMS,
   NEW_ITEM,
   SET_INITIAL_STATE,
@@ -20,7 +18,6 @@ import {
   SET_CATALOG_SIDEBAR_STATE,
   FETCH_SIDEBAR_CONFIG
 } from './types';
-import { hashHistory } from 'react-router';
 import { objCross } from './functions/objects_crossing';
 
 
@@ -96,47 +93,6 @@ export function newItem(file) {
       );
     }
   };
-}
-/**
- * Иницирует начало сессии пользоателя, отправляя запрос в firebase на вход по почте/паролю,
- * пользователи создаются в firebase
- * @param {object} values содержит в себе два знаечения:
- * 1 email - для почты
- * 2 password - для пароля
- * @return {{type, payload: (firebase.Promise<any>|*|{name, a}|!firebase.Promise.<!firebase.User>)}}
- */
-export function signinUser(values) {
-  const email = values.email;
-  const password = values.password;
-  const request = firebaseAuth.signInWithEmailAndPassword(email, password);
-  return {
-    type: AUTH_USER,
-    payload: request
-  };
-}
-/**
- * Иницирует окончание сессии пользователя, посылая в firebase запрос на выход.
- * @return {{type, payload: (firebase.Promise<any>|*|{name, a}|!firebase.Promise.<void>)}}
- */
-export function signoutUser() {
-  const request = firebaseAuth.signOut();
-  return {
-    type: UNAUTH_USER,
-    payload: request
-  };
-}
-/**
- * Обращается к api firebase, сверяет хэш пользователя для доступа к сайту,
- * работает через reduxThunk
- * @param {string} user hash of user
- * @return {Function}
- */
-export function checkAuthentificated(user) {
-  if (user) {
-    return { type: AUTH_USER, payload: user };
-  } else {
-    hashHistory.push('/signin');
-  }
 }
 /**
  * Запрашивает из базы данных список item'ов, на текущий момент не имеет переменных,
