@@ -7,7 +7,7 @@ import { LinkContainer } from 'react-router-bootstrap';
 import { graphql } from 'react-apollo';
 import query from './queries/CurentUser';
 import PropTypes from 'prop-types';
-import { hashHistory } from 'react-router';
+import { hashHistory, withRouter } from 'react-router';
 
 class AuthNav extends Component {
   static propTypes = {
@@ -17,6 +17,7 @@ class AuthNav extends Component {
   logout = () => {
     localStorage.clear();
     hashHistory.push('/signin');
+    location.reload();
   };
 
   render() {
@@ -33,4 +34,4 @@ class AuthNav extends Component {
   }
 }
 
-export default graphql(query)(AuthNav);
+export default graphql(query)(withRouter(AuthNav));

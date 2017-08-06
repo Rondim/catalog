@@ -22,7 +22,6 @@ class Signin extends Component {
   };
 
   componentWillUpdate(nextProps) {
-    console.log(nextProps.data.user);
     if (!this.props.data.user && nextProps.data.user) {
       hashHistory.push('/');
     }

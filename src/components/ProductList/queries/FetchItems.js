@@ -2,7 +2,11 @@ import gql from 'graphql-tag';
 export default gql`
     query {
         allItems{
-            id
+            id,
+            img{
+                id
+                url
+            }
         }
     }
 `;

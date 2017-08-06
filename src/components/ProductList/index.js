@@ -93,7 +93,6 @@ class ProductList extends Component {
    * @return {string} - HTML markup for the component
    */
   render() {
-    console.log(this.props);
     if (this.props.data.loading) {
       return (<div>Loading</div>);
     }
