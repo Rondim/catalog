@@ -50,16 +50,20 @@ export default graphql(FetchItems, {
       loadMoreItems(page) {
         return fetchMore({
           variables: {
-            skippedItems: (page)*8,
+            skippedItems: page*8,
             size: 8
           },
           updateQuery: (previousResult, { fetchMoreResult }) => {
             if (!fetchMoreResult) {
               return previousResult;
             }
-            return Object.assign({}, previousResult, {
-              allItems: [...previousResult.allItems, ...fetchMoreResult.allItems],
+            let allItems = [...previousResult.allItems];
+            let i = page * 8;
+            fetchMoreResult.allItems.forEach(item => {
+              allItems[i] = item;
+              i++;
             });
+            return Object.assign({}, previousResult, { allItems });
           },
         });
       },
