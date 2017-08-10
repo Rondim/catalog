@@ -7,9 +7,9 @@ import CatalogSidebar from '../CatalogSidebar';
 import ProductList from '../../components/ProductList';
 import FetchItems from './queries/FetchItems';
 
-
 const Catalog = ({ loading, allItems, loadMoreItems, _allItemsMeta }) => (
   <div className="container">
+    {console.log('parent:', allItems)}
     <Grid>
       <Row className="show-grid">
         <Col lg={9} md={9} xs={9}>
@@ -20,7 +20,7 @@ const Catalog = ({ loading, allItems, loadMoreItems, _allItemsMeta }) => (
           />
         </Col>
         <Col lg={3} md={3} xs={3}>
-           {/* <CatalogSidebar /> */}
+          {/* <CatalogSidebar /> */}
         </Col>
       </Row>
     </Grid>
@@ -30,8 +30,10 @@ const Catalog = ({ loading, allItems, loadMoreItems, _allItemsMeta }) => (
 Catalog.propTypes = {
   loading: PropTypes.bool,
   allItems: PropTypes.array,
-  loadMoreItems: PropTypes.func
+  loadMoreItems: PropTypes.func,
+  _allItemsMeta: PropTypes.object
 };
+
 export default graphql(FetchItems, {
   options(props) {
     return {
@@ -57,7 +59,13 @@ export default graphql(FetchItems, {
             if (!fetchMoreResult) {
               return previousResult;
             }
-            let allItems = [...previousResult.allItems];
+            // let allItems = [...previousResult.allItems];
+            let allItems = [];
+            previousResult.allItems.forEach((item, index) => {
+              if (item) {
+                allItems[index] = item;
+              }
+            });
             let i = (page-1) * 8;
             fetchMoreResult.allItems.forEach(item => {
               allItems[i] = item;

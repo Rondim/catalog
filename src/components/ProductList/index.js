@@ -12,11 +12,16 @@ class ProductList extends Component {
     items: PropTypes.array.isRequired,
     setActive: PropTypes.func,
     fetchMore: PropTypes.func,
-    count: PropTypes.number
+    max: PropTypes.number
   };
   state = {
     page: 1
   };
+
+  componentWillUpdate(nextProps, nextState, nextContext) {
+    console.log('update component');
+  }
+
 
   onSelect = (ev) => {
     const { setActive } = this.props;
@@ -33,15 +38,13 @@ class ProductList extends Component {
   };
 
   handleChangePage = (forward, page) => {
-    const { count, fetchMore, items } = this.props;
-    const max = Math.ceil(count / 8);
+    const { max, fetchMore, items } = this.props;
     this.setState(prevState => {
       if (page) {
         fetchMore(page);
         return { page };
       }
       if (forward) {
-        console.log(items);
         fetchMore(prevState.page + 1);
         if (prevState.page < max) return { page: prevState.page + 1 };
       } else if (prevState.page > 1) {
@@ -59,9 +62,9 @@ class ProductList extends Component {
    * @return {string} - HTML markup for the component List
    */
   renderPages() {
-    const { count } = this.props;
+    const { max } = this.props;
     let pages = [];
-    for (let i = 0; i < Math.ceil(count / 8); i++) {
+    for (let i = 0; i < max; i++) {
       pages.push(i + 1);
     }
     return pages.map(n => {
