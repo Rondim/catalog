@@ -37,14 +37,15 @@ class ProductList extends Component {
     const max = Math.ceil(count / 8);
     this.setState(prevState => {
       if (page) {
-        fetchMore(page - 1);
+        fetchMore(page);
         return { page };
       }
       if (forward) {
+        console.log(items);
         fetchMore(prevState.page + 1);
         if (prevState.page < max) return { page: prevState.page + 1 };
       } else if (prevState.page > 1) {
-        !items[(prevState.page-2)*8] && fetchMore(prevState.page - 2);
+        !items[(prevState.page-2)*8] && fetchMore(prevState.page - 1);
         return { page: prevState.page - 1 };
       }
       return { page: prevState.page };
@@ -80,7 +81,6 @@ class ProductList extends Component {
     const { page } = this.state;
     let i = 0;
     if (items.length === 0) return <Loading />;
-    let j = 0;
     return _.map(items, item => {
       if (item) {
         const { active, complited, img: { url }, id } = item;

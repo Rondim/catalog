@@ -37,7 +37,7 @@ export default graphql(FetchItems, {
     return {
       variables: {
         skippedItems: 0,
-        size: 16,
+        size: 8,
       },
       fetchPolicy: 'network-only',
     };
@@ -50,7 +50,7 @@ export default graphql(FetchItems, {
       loadMoreItems(page) {
         return fetchMore({
           variables: {
-            skippedItems: page*8,
+            skippedItems: (page-1)*8,
             size: 8
           },
           updateQuery: (previousResult, { fetchMoreResult }) => {
@@ -58,7 +58,7 @@ export default graphql(FetchItems, {
               return previousResult;
             }
             let allItems = [...previousResult.allItems];
-            let i = page * 8;
+            let i = (page-1) * 8;
             fetchMoreResult.allItems.forEach(item => {
               allItems[i] = item;
               i++;
