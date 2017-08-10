@@ -9,7 +9,9 @@ import Loading from '../Loading';
 class ProductList extends Component {
   static propTypes = {
     items: PropTypes.array.isRequired,
-    setActive: PropTypes.func
+    setActive: PropTypes.func,
+    fetchMore: PropTypes.func,
+    count: PropTypes.number
   };
   state = {
     page: 1
@@ -30,9 +32,10 @@ class ProductList extends Component {
   };
 
   handleChangePage = (forward) => {
-    const max = Object.keys(this.props.items).length / 8;
-    this.setState((prevState) => {
+    const max = Math.ceil(this.props.count / 8);
+    this.setState(prevState => {
       if (forward) {
+        this.props.fetchMore(prevState.page + 1);
         if (prevState.page < max) return { page: prevState.page + 1 };
       } else if (prevState.page > 1) return { page: prevState.page - 1 };
       return { page: prevState.page };
@@ -46,9 +49,10 @@ class ProductList extends Component {
    * @return {string} - HTML markup for the component List
    */
   renderPages() {
-    const itemsCount = Object.keys(this.props.items).length;
+    const { count } = this.props;
+    console.log(count);
     let pages = [];
-    for (let i = 0; i < itemsCount / 8; i++) {
+    for (let i = 0; i < Math.ceil(count / 8); i++) {
       pages.push(i + 1);
     }
     return pages.map(n => {

@@ -2,7 +2,7 @@ const request = require('request').defaults({ encoding: null });
 
 function sendFile(fileName) {
   return new Promise((resolve, reject) => {
-    const fileUrl = 'https://firebasestorage.googleapis.com/v0/b/catalog-26b41.appspot.com/o/items%2F-KdploACMTh4jUKOtf5d?alt=media&token=79faec85-ca59-45d8-ad88-ebea9ef7e34d';
+    const fileUrl = 'https://firebasestorage.googleapis.com/v0/b/catalog-26b41.appspot.com/o/items%2F-KexYTTAcwXeC_LjWOOR?alt=media&token=4fac58e3-7ccd-4d4d-9aa5-833e0bcd7c86';
     request(fileUrl, uploadFile);
 
     function uploadFile(err, response, body) {
@@ -14,15 +14,25 @@ function sendFile(fileName) {
       });
     }
 
-    function requestCallback(e, httpResponse, body) {
-
-      if (!e) {
+    function requestCallback(err, httpResponse, body) {
+      if (!err) {
         resolve(body);
       } else {
-        reject(e);
+        reject(err);
       }
     }
   });
 }
 
-sendFile('test.jpg');
+sendFile('test27.jpg');
+sendFile('test28.jpg');
+sendFile('test29.jpg');
+sendFile('test210.jpg');
+sendFile('test211.jpg');
+sendFile('test212.jpg');
+sendFile('test213.jpg');
+sendFile('test214.jpg');
+sendFile('test215.jpg');
+sendFile('test216.jpg');
+sendFile('test217.jpg');
+sendFile('test218.jpg');
