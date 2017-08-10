@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Button, ButtonGroup } from 'react-bootstrap';
 import PropTypes from 'prop-types';
 import _ from 'lodash';
+import FontAwesome from 'react-fontawesome';
 
 import ProductListItem from './ProductListItem';
 import Loading from '../Loading';
@@ -31,13 +32,21 @@ class ProductList extends Component {
     }
   };
 
-  handleChangePage = (forward) => {
-    const max = Math.ceil(this.props.count / 8);
+  handleChangePage = (forward, page) => {
+    const { count, fetchMore, items } = this.props;
+    const max = Math.ceil(count / 8);
     this.setState(prevState => {
+      if (page) {
+        fetchMore(page - 1);
+        return { page };
+      }
       if (forward) {
-        this.props.fetchMore(prevState.page + 1);
+        fetchMore(prevState.page + 1);
         if (prevState.page < max) return { page: prevState.page + 1 };
-      } else if (prevState.page > 1) return { page: prevState.page - 1 };
+      } else if (prevState.page > 1) {
+        !items[(prevState.page-2)*8] && fetchMore(prevState.page - 2);
+        return { page: prevState.page - 1 };
+      }
       return { page: prevState.page };
     });
   };
@@ -50,7 +59,6 @@ class ProductList extends Component {
    */
   renderPages() {
     const { count } = this.props;
-    console.log(count);
     let pages = [];
     for (let i = 0; i < Math.ceil(count / 8); i++) {
       pages.push(i + 1);
@@ -60,7 +68,7 @@ class ProductList extends Component {
         <Button
           active={this.state.page === n}
           key={n}
-          onClick={() => this.setState({ page: n }) }
+          onClick={() => this.handleChangePage(null, n) }
           className="btn">{n}
         </Button>
       );
@@ -72,20 +80,23 @@ class ProductList extends Component {
     const { page } = this.state;
     let i = 0;
     if (items.length === 0) return <Loading />;
+    let j = 0;
     return _.map(items, item => {
-      const { active, complited, img: { url }, id } = item;
-      i++;
-      if (i <= page * 8 && i > (page - 1) * 8) {
-        return (<ProductListItem
-          id={id}
-          active={active}
-          complited={complited}
-          key={id}
-          img={url}
-          handleSelect={this.onSelect}
-          disabled={!setActive}
-        />);
-      }
+      if (item) {
+        const { active, complited, img: { url }, id } = item;
+        i++;
+        if (i <= page * 8 && i > (page - 1) * 8) {
+          return (<ProductListItem
+            id={id}
+            active={active}
+            complited={complited}
+            key={id}
+            img={url}
+            handleSelect={this.onSelect}
+            disabled={!setActive}
+          />);
+        }
+      } else i++;
     });
   }
 
@@ -99,8 +110,12 @@ class ProductList extends Component {
     return (
       <div className="product_list_container" tabIndex="1" onKeyDown={this.handleKeyDown}>
         <div className="text-center">
-          <Button onClick={() => this.handleChangePage(false)}>{'<'} </Button>
-          <Button onClick={() => this.handleChangePage(true)}> {'>'} </Button>
+          <Button onClick={() => this.handleChangePage(false)}>
+            <FontAwesome name="arrow-left" />
+          </Button>
+          <Button onClick={() => this.handleChangePage(true)}>
+            <FontAwesome name="arrow-right" />
+          </Button>
         </div>
         <ul className="row product_list">
           {this.renderList()}
