@@ -2,35 +2,44 @@
  * Created by xax on 18.06.2017.
  */
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { Field, FieldArray, reduxForm } from 'redux-form';
-import { connect } from 'react-redux';
+import { graphql } from 'react-apollo';
 
-import * as actions from '../actions';
-import renderList from '../components/adder/renderList';
-import renderField from '../components/adder/renderField';
+import renderList from '../../components/Adder/renderList';
+import renderField from '../../components/Adder/renderField';
+import mutation from './mutations/AddItem';
 
 class Adder extends Component {
-  constructor(props) {
-    super(props);
-  }
+  static propTypes = {
+    handleSubmit: PropTypes.func,
+    submitting: PropTypes.func
+  };
+
   renderAlert() {
     return (this.props.errorMessage ?
         <div className="alert alert-danger">
           <strong>Oops! </strong>{this.props.errorMessage}
-        </div> : <div/>
+        </div> : <div />
     );
   }
+
   renderSuccess() {
     return (this.props.success ?
         <div className="alert alert-success">
           <strong>Добавлено</strong>
-        </div> : <div/>
+        </div> : <div />
     );
   }
+
+  addItem = (values) => {
+    console.log(values);
+  };
+
   render() {
     const { handleSubmit, submitting } = this.props;
     return (
-      <form onSubmit={handleSubmit(this.props.addItem)} className="form" role="form">
+      <form onSubmit={handleSubmit(this.addItem)} className="form" role="form">
         <div className="row">
           <Field
             name="img"
@@ -128,17 +137,10 @@ function validate(formProps) {
   return errors;
 }
 
-
-function mapStateToProps(state) {
-  return { errorMessage: state.adder.error, success: state.adder.success };
-}
-
 const AdderForm = reduxForm({
   form: 'adder',
   validate
 })(Adder);
 
-const AdderRedux = connect(mapStateToProps, actions)(AdderForm);
-
-export default AdderRedux;
+export default graphql(mutation)(AdderForm);
 

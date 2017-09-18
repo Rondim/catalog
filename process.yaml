@@ -1,5 +1,5 @@
 apps:
-  - name: adder
+  - name: Adder
     script: node_modules/webpack-dev-server/bin/webpack-dev-server.js
     args: '--port 8081'
     exec_mode: cluster

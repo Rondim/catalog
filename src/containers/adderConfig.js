@@ -7,9 +7,9 @@ import { connect } from 'react-redux';
 import 'react-widgets/lib/less/react-widgets.less';
 
 import * as actions from '../actions';
-import renderField from '../components/adder/renderField';
-import renderDropdownList from '../components/adder/renderDropdownList';
-import renderMultiselect from '../components/adder/renderMultiselect';
+import renderField from '../components/Adder/renderField';
+import renderDropdownList from '../components/Adder/renderDropdownList';
+import renderMultiselect from '../components/Adder/renderMultiselect';
 
 class AdderConfig extends Component {
   constructor(props) {

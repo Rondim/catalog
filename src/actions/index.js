@@ -8,7 +8,10 @@ import {
   FETCH_DEPENDENCES,
   FETCH_POPUP_FILTERS
 } from './types';
-import { hashHistory } from 'react-router';
+import createHistory from 'history/createHashHistory';
+
+const hashHistory = createHistory();
+
 
 /**
  * Иницирует начало сессии пользоателя, отправляя запрос в firebase на вход по почте/паролю,

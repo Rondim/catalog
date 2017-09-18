@@ -1,27 +1,27 @@
-import React from 'react';
-import { Router, Route, IndexRoute, hashHistory } from 'react-router';
-
-
-import App from './components/App';
-import Adder from './containers/adder';
+import Adder from './containers/Adder';
 import MainConfig from './containers/mainConfig';
 import PopupConfig from './containers/popupConfig';
-import Signin from './components/auth/signin';
-import Signout from './components/auth/signout';
-import RequireAuth from './components/auth/require_auth';
+import Signin from './containers/Auth/Signin';
+import requireAuth from './containers/Auth/require_auth';
 
-const Routes = () => {
-  return (
-    <Router history={hashHistory}>
-      <Route path="/" component={App}>
-        <IndexRoute component={RequireAuth(Adder)}/>
-        <Route path="/config1" component={RequireAuth(MainConfig)}/>
-        <Route path="/config2" component={RequireAuth(PopupConfig)}/>
-        <Route path="/signin" component={Signin}/>
-        <Route path="/signout" component={Signout}/>
-      </Route>
-    </Router>
-  );
-};
 
-export default Routes;
+const routes = [
+  {
+    path: '/',
+    component: requireAuth(Adder)
+  },
+  {
+    path: '/signin',
+    component: Signin
+  },
+  /* {
+    path: '/config1',
+    component: requireAuth(MainConfig)
+  },
+  {
+    path: '/config2',
+    component: requireAuth(PopupConfig)
+  } */
+];
+
+export default routes;
