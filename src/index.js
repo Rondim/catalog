@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { ApolloProvider } from 'react-apollo';
+import 'react-widgets/lib/less/react-widgets.less';
 
 import App from './components/App';
 import { AUTH_USER } from './containers/Auth/actions/types';

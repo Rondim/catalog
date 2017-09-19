@@ -24,7 +24,7 @@ class NavBar extends Component {
         </button>
         <div className="collapse navbar-collapse" id="navbarSupportedContent">
           <ul className="navbar-nav mr-auto">
-            <IndexLinkContainer className='nav-item' to="/" activeHref="active">
+            <IndexLinkContainer className='nav-item' to="/adder" activeHref="active">
               <NavItem className="nav-link">Добавление изделий</NavItem>
             </IndexLinkContainer>
             <LinkContainer className='nav-item' to="/config1" activeHref="active">

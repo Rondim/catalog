@@ -46,6 +46,15 @@ class Signin extends Component {
     }
   };
 
+  renderErrors() {
+    const { errors } = this.state;
+    return !!errors.length && errors.map( (error, index) => {
+      return (<div key={index} className="alert alert-danger">
+        {error}
+      </div>);
+    });
+  }
+
   render() {
     const { handleSubmit, submitting, data } = this.props;
     if (data.loading) {
@@ -69,6 +78,7 @@ class Signin extends Component {
             label="Пароль:"
             className="form-group"
           />
+          {this.renderErrors()}
           <div className="text-right">
             <button type="submit" disabled={submitting} className="btn btn-outline-primary">Sign in</button>
           </div>

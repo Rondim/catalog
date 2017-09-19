@@ -1,7 +1,7 @@
 apps:
   - name: Adder
-    script: node_modules/webpack-dev-server/bin/webpack-dev-server.js
-    args: '--port 8081'
+    script: ./node_modules/react-scripts/bin/react-scripts.js
+    args: 'start --port 8081'
     exec_mode: cluster
     instances: 2
     watch: true

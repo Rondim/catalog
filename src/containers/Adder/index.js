@@ -13,7 +13,7 @@ import mutation from './mutations/AddItem';
 class Adder extends Component {
   static propTypes = {
     handleSubmit: PropTypes.func,
-    submitting: PropTypes.func
+    submitting: PropTypes.bool
   };
 
   renderAlert() {

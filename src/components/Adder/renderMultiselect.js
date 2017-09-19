@@ -3,7 +3,8 @@
  */
 import React from 'react';
 import Multiselect from 'react-widgets/lib/Multiselect';
-import 'react-widgets/lib/less/react-widgets.less';
+import 'react-widgets/dist/css/react-widgets.css';
+
 const renderMultiselect = ({ input, data, valueField, textField }) =>
   <Multiselect {...input}
                onBlur={() => input.onBlur()}
@@ -12,4 +13,5 @@ const renderMultiselect = ({ input, data, valueField, textField }) =>
                valueField={valueField}
                textField={textField}
   />;
+
 export default renderMultiselect;

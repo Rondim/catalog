@@ -2,49 +2,39 @@
  * Created by xax on 24.06.2017.
  */
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { Field, reduxForm } from 'redux-form';
-import { connect } from 'react-redux';
 import 'react-widgets/lib/less/react-widgets.less';
+import _ from 'lodash';
 
-import * as actions from '../actions';
-import renderField from '../components/Adder/renderField';
-import renderDropdownList from '../components/Adder/renderDropdownList';
-import renderMultiselect from '../components/Adder/renderMultiselect';
+import renderField from '../../components/Adder/renderField';
+import renderDropdownList from '../../components/Adder/renderDropdownList';
+import renderMultiselect from '../../components/Adder/renderMultiselect';
 
 class AdderConfig extends Component {
-  constructor(props) {
-    super(props);
-  }
-  componentWillMount() {
-    this.props.fetchUpFilters();
-    this.props.fetchDependences();
-  }
+  static propTypes = {
+    data: PropTypes.shape({
+      error: PropTypes.object
+    }),
+    handleSubmit: PropTypes.func,
+    submitting: PropTypes.bool,
+    upFilters: PropTypes.array,
+    addUpFilter: PropTypes.func.isRequired
+  };
+
   renderAlert() {
-    return (this.props.errorMessage ?
+    return (_.get(this.props, 'data.error.message') ?
         <div className="alert alert-danger">
-          <strong>Oops! </strong>{this.props.errorMessage}
-        </div> : <div/>
+          <strong>Oops! </strong>{this.props.data.error.message}
+        </div> : <div />
     );
   }
-  renderSuccess() {
-    return (this.props.success ?
-        <div className="alert alert-success">
-          <strong>Добавлено</strong>
-        </div> : <div/>
-    );
-  }
+
   render() {
-    const { handleSubmit, submitting } = this.props;
+    const { handleSubmit, submitting, upFilters } = this.props;
     return (
       <form onSubmit={handleSubmit(this.props.addUpFilter)} className="form" role="form">
         <div className="row">
-          <Field
-            name="id"
-            type="input"
-            component={renderField}
-            label="Идентификатор"
-            className="form-group"
-          />
           <Field
             name="name"
             type="input"
@@ -55,18 +45,24 @@ class AdderConfig extends Component {
           <div className="form-group col-xs-4">
             <label>Родительские фильтры</label>
             <Field
-              name="parentMenus"
+              name="parents"
               component={renderMultiselect}
-              data={this.props.upFilters}/>
+              data={upFilters}
+              textField = 'name'
+              valueField = 'id'
+            />
           </div>
         </div>
         <div className="row">
           <div className="form-group col-xs-4">
             <label>Дочерние фильтры</label>
             <Field
-              name="childMenus"
+              name="childs"
               component={renderMultiselect}
-              data={this.props.upFilters}/>
+              data={upFilters}
+              textField = 'name'
+              valueField = 'id'
+            />
           </div>
           <Field
             name="multiselection"
@@ -75,29 +71,28 @@ class AdderConfig extends Component {
             label="Множественный выбор"
             className="form-control"
           />
-          <Field
+          {false && <Field
             name="block"
             type="checkbox"
             component={renderField}
             label="Заблокированы для изменений"
             className="form-control"
-          />
+          />}
         </div>
         <div className="row">
           <div className="form-group col-xs-4">
             <label>Тип меню</label>
             <div>
               <Field
-                name="menuType"
+                name="type"
                 component={renderDropdownList}
                 data={['filter', 'button']}
                 defaultValue='filter'
-                textField="menuType"/>
+                textField="menuType" />
             </div>
           </div>
         </div>
         {this.renderAlert()}
-        {this.renderSuccess()}
         <div className="row">
           <button
             type="submit"
@@ -124,20 +119,10 @@ function validate(formProps) {
   return errors;
 }
 
-
-function mapStateToProps(state) {
-  return {
-    upFilters: state.adder.upFilters,
-    dependences: state.adder.dependences,
-    success: state.adder.success
-  };
-}
-
 const AdderForm = reduxForm({
   form: 'adder',
   validate
 })(AdderConfig);
 
-const AdderConfigRedux = connect(mapStateToProps, actions)(AdderForm);
+export default AdderForm;
 
-export default AdderConfigRedux;

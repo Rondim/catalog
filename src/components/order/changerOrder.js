@@ -2,27 +2,29 @@
  * Created by xax on 25.06.2017.
  */
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 
 class ChangerOrder extends Component {
-  constructor(props) {
-    super(props);
-    this.handleSelect = this.handleSelect.bind(this);
-    this.handleKeyDown = this.handleKeyDown.bind(this);
-    this.state = {
-      active: false
-    };
-  }
-  handleKeyDown(e) {
+  static propTypes = {
+    handleNew: PropTypes.func,
+    list: PropTypes.array
+  };
+
+  state = {
+    active: false
+  };
+
+  handleKeyDown = (e) => {
     let newFilters = [];
     if (e.keyCode === 40) {
       let activeFilter = false;
       this.props.list.map(filter => {
         if (activeFilter) {
-          newFilters.push(filter);
+          newFilters.push(filter.id);
           newFilters.push(this.state.active);
           activeFilter = false;
-        } else if (filter !== this.state.active && !activeFilter) {
-          newFilters.push(filter);
+        } else if (filter.id !== this.state.active && !activeFilter) {
+          newFilters.push(filter.id);
         } else {
           activeFilter = true;
         }
@@ -33,34 +35,36 @@ class ChangerOrder extends Component {
     } else if (e.keyCode === 38) {
       let oldFilter = false;
       this.props.list.map(filter => {
-        if (!oldFilter && filter !== this.state.active) {
-          oldFilter = filter;
-        } else if (oldFilter && filter !== this.state.active) {
+        if (!oldFilter && filter.id !== this.state.active) {
+          oldFilter = filter.id;
+        } else if (oldFilter && filter.id !== this.state.active) {
           newFilters.push(oldFilter);
-          oldFilter = filter;
-        } else if (filter === this.state.active) {
-          newFilters.push(filter);
+          oldFilter = filter.id;
+        } else if (filter.id === this.state.active) {
+          newFilters.push(filter.id);
         }
       });
       newFilters.push(oldFilter);
     }
     this.props.handleNew(newFilters);
-  }
-  handleSelect(e) {
+  };
+
+  handleSelect = (e) => {
     this.setState({ active: e.target.id });
-  }
+  };
+
   renderList() {
     return this.props.list.map(filter => {
-      const style = filter === this.state.active?
+      const style = filter.id === this.state.active?
         'list-group-item active':
         'list-group-item';
       return (
         <li
         className={style}
         onClick={this.handleSelect}
-        id={filter}
-        key={filter}>
-        {filter}
+        id={filter.id}
+        key={filter.id}>
+        {filter.name}
         </li>
       );
     });
