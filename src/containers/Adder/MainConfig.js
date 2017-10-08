@@ -7,7 +7,7 @@ import { Grid, Row, Col } from 'react-bootstrap';
 import { graphql, compose } from 'react-apollo';
 import _ from 'lodash';
 
-import AdderConfig from './AdderConfig';
+import AdderConfig from './AdderUpFilters';
 import ChangerOrder from '../../components/order/changerOrder';
 import query from './queries/FetchUpWithDep';
 import SetOrderUpFilters from './mutations/SetOrderUpFilters';

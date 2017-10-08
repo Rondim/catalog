@@ -4,7 +4,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Field, reduxForm } from 'redux-form';
-import 'react-widgets/lib/less/react-widgets.less';
 import _ from 'lodash';
 
 import renderField from '../../components/Adder/renderField';

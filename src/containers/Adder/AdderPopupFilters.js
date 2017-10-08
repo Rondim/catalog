@@ -2,50 +2,40 @@
  * Created by xax on 24.06.2017.
  */
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { Field, reduxForm } from 'redux-form';
-import { connect } from 'react-redux';
-import 'react-widgets/lib/less/react-widgets.less';
+import { graphql } from 'react-apollo';
+import _ from 'lodash';
 
-import * as actions from '../actions';
-import renderField from '../components/Adder/renderField';
-import renderDropdownList from '../components/Adder/renderDropdownList';
-import renderMultiselect from '../components/Adder/renderMultiselect';
+import renderField from '../../components/Adder/renderField';
+import renderDropdownList from '../../components/Adder/renderDropdownList';
+import renderMultiselect from '../../components/Adder/renderMultiselect';
+import PopupFilters from './queries/FetchPopupFilters';
 
 class AdderConfig extends Component {
-  constructor(props) {
-    super(props);
-  }
-  componentWillMount() {
-    this.props.fetchUpFilters();
-    this.props.fetchPopupFilters('itemType');
-    this.props.fetchDependences();
-  }
+  static propTypes = {
+    handleSubmit: PropTypes.func,
+    addSecondFilter: PropTypes.func,
+    submitting: PropTypes.bool,
+    upFilters: PropTypes.array,
+    dependences: PropTypes.array,
+    data: PropTypes.object
+  };
+
   renderAlert() {
     return (this.props.errorMessage ?
         <div className="alert alert-danger">
           <strong>Oops! </strong>{this.props.errorMessage}
-        </div> : <div/>
+        </div> : <div />
     );
   }
-  renderSuccess() {
-    return (this.props.success ?
-        <div className="alert alert-success">
-          <strong>Добавлено</strong>
-        </div> : <div/>
-    );
-  }
+
   render() {
-    const { handleSubmit, submitting } = this.props;
+    const { handleSubmit, submitting, upFilters, data: { loading, allSidebarFilters } } = this.props;
+    if (loading) return <div />;
     return (
       <form onSubmit={handleSubmit(this.props.addSecondFilter)} className="form" role="form">
         <div className="row">
-          <Field
-            name="id"
-            type="input"
-            component={renderField}
-            label="Идентификатор"
-            className="form-group"
-          />
           <Field
             name="name"
             type="input"
@@ -57,11 +47,13 @@ class AdderConfig extends Component {
             <label>Фильтр первого уровня</label>
             <div>
               <Field
-                name="parent"
+                name="property"
                 component={renderDropdownList}
-                data={this.props.upFilters}
-                defaultValue={this.props.upFilters[0]}
-                textField="parent"/>
+                data={upFilters}
+                defaultValue={upFilters[0]}
+                textField="name"
+                valueField='id'
+              />
             </div>
           </div>
         </div>
@@ -71,11 +63,14 @@ class AdderConfig extends Component {
             <Field
               name="dependentOn"
               component={renderMultiselect}
-              data={this.props.dependences}/>
+              data={allSidebarFilters}
+              textField='name'
+              valueField='id'
+              groupBy='property.name'
+            />
           </div>
         </div>
         {this.renderAlert()}
-        {this.renderSuccess()}
         <div className="row">
           <button
             type="submit"
@@ -88,6 +83,7 @@ class AdderConfig extends Component {
     );
   }
 }
+
 function validate(formProps) {
   const errors = {};
   if (!formProps.id) {
@@ -102,21 +98,9 @@ function validate(formProps) {
   return errors;
 }
 
-
-function mapStateToProps(state) {
-  return {
-    upFilters: state.adder.upFilters,
-    dependences: state.adder.dependences,
-    success: state.adder.success,
-    error: state.adder.error
-  };
-}
-
 const AdderForm = reduxForm({
   form: 'adder',
   validate
 })(AdderConfig);
 
-const AdderConfigRedux = connect(mapStateToProps, actions)(AdderForm);
-
-export default AdderConfigRedux;
+export default graphql(PopupFilters)(AdderForm);
